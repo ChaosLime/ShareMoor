@@ -16,8 +16,9 @@
 
 	<properties>
 		<java.version>14</java.version>
-		<!-- The main class to start -->
-  		<start-class>uploadingfiles.UploadingFilesApplication</start-class>
+		<!-- This is currently not necessary because there is only 1 main. Uncomment and modify if needed. -->
+			<!-- The main class to start --> 
+	  		<!-- <start-class>uploadingfiles.UploadingFilesApplication</start-class> -->
 	</properties>
 
 
@@ -60,22 +61,22 @@
 	</dependencies>
 
 	<build>
+		<resources>
+	        <resource>
+	            <directory>src/main/resources</directory>
+	            <filtering>true</filtering>
+	            <excludes>
+	                <exclude>**/*.yaml</exclude>
+	            </excludes>
+	        </resource>
+	    </resources>
+	    
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<resources>
-	        <resource>
-	            <directory>src/main/resources</directory>
-	            <filtering>true</filtering>
-	            <excludes>
-	                <exclude>**/conf.yaml</exclude>
-	                <exclude>**/application.yaml</exclude>
-	            </excludes>
-	        </resource>
-	    </resources>
 	</build>
 	
 </project>
