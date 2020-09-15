@@ -53,13 +53,19 @@ public class FileUploadController {
         "attachment; filename=\"" + file.getFilename() + "\"").body(file);
   }
 
+  // To make this multiple file friendly, I'm following this forum: https://stackoverflow.com/questions/25699727/multipart-file-upload-spring-boot
   @PostMapping("/")
-  public String handleFileUpload(@RequestParam("file") MultipartFile file,
+  public String handleFileUpload(@RequestParam("file") MultipartFile[] file,
       RedirectAttributes redirectAttributes) {
 
-    storageService.store(file);
-    redirectAttributes.addFlashAttribute("message",
-        "You successfully uploaded " + file.getOriginalFilename() + "!");
+    String successMessage = "You successfully uploaded your selected files!";
+    
+    for (int i = 0; i < file.length; i++) {
+      storageService.store(file[i]);
+      //successMessage += "You successfully uploaded " + file[i].getOriginalFilename() + "!<br />";
+    }
+    
+    redirectAttributes.addFlashAttribute("message", successMessage);
 
     return "redirect:/";
   }
