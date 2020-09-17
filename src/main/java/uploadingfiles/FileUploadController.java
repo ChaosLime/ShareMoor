@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import uploadingfiles.storage.StorageFileNotFoundException;
 import uploadingfiles.storage.StorageService;
 
 @Controller
@@ -61,7 +59,11 @@ public class FileUploadController {
     String successMessage = "You successfully uploaded your selected files!";
     
     for (int i = 0; i < file.length; i++) {
-      storageService.store(file[i]);
+      try {
+        storageService.store(file[i]);
+      } catch(Exception e) {
+        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+      }
       //successMessage += "You successfully uploaded " + file[i].getOriginalFilename() + "!<br />";
     }
     
@@ -70,9 +72,9 @@ public class FileUploadController {
     return "redirect:/";
   }
 
-  @ExceptionHandler(StorageFileNotFoundException.class)
+  /*@ExceptionHandler(StorageFileNotFoundException.class)
   public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
     return ResponseEntity.notFound().build();
-  }
+  }*/
 
 }
