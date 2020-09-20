@@ -1,6 +1,6 @@
 //https://spring.io/guides/gs/uploading-files/
 //https://github.com/spring-guides/gs-uploading-files
-package uploadingfiles.storage;
+package services;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import exception.StorageException;
+import exception.StorageFileNotFoundException;
 
 @Service
 public class FileSystemStorageService implements StorageService {

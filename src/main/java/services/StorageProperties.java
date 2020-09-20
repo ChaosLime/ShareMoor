@@ -1,10 +1,10 @@
 //https://spring.io/guides/gs/uploading-files/
 //https://github.com/spring-guides/gs-uploading-files
-package uploadingfiles.storage;
+package services;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("storage")
+@ConfigurationProperties("services")
 public class StorageProperties {
 
   /**
@@ -19,5 +19,4 @@ public class StorageProperties {
   public void setLocation(String location) {
     this.location = location;
   }
-
 }

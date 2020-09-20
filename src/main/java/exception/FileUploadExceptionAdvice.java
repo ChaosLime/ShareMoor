@@ -1,6 +1,6 @@
 //https://www.baeldung.com/spring-maxuploadsizeexceeded
 
-package uploadingfiles.storage;
+package exception;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
