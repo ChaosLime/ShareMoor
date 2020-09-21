@@ -1,6 +1,6 @@
 //https://spring.io/guides/gs/uploading-files/
 //https://github.com/spring-guides/gs-uploading-files
-package services;
+package shareMoor.services;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

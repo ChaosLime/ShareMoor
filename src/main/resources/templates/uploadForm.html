@@ -21,7 +21,23 @@
 			</table>
 		</form>
 	</div>
-
+	
+	<div>
+		<form method="POST" action="/contactInfo">
+			<table>
+				<tr>
+					<td>If you would like to be notified of where all of the uploads will be after the event, please provide your contact information below.</td>
+				</tr>
+				<tr>
+					<td><input type="text" id="contactInfo" name="contactInfo" ><span th:if="${contactInfoErrorMessage}" th:text="${contactInfoErrorMessage}" ></span></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Submit" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
 	<div>
 		<ul>
 			<li th:each="file : ${files}">

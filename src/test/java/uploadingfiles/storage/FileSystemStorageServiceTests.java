@@ -25,9 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import exception.StorageException;
-import services.FileSystemStorageService;
-import services.StorageProperties;
+import shareMoor.exception.StorageException;
+import shareMoor.services.FileSystemStorageService;
+import shareMoor.services.StorageProperties;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

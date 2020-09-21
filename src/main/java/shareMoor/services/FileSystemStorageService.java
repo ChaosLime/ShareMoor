@@ -1,6 +1,6 @@
 //https://spring.io/guides/gs/uploading-files/
 //https://github.com/spring-guides/gs-uploading-files
-package services;
+package shareMoor.services;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import exception.StorageException;
-import exception.StorageFileNotFoundException;
+import shareMoor.exception.StorageException;
+import shareMoor.exception.StorageFileNotFoundException;
 
 @Service
 public class FileSystemStorageService implements StorageService {

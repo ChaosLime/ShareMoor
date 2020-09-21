@@ -1,6 +1,6 @@
 //https://www.baeldung.com/spring-maxuploadsizeexceeded
 
-package exception;
+package shareMoor.exception;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

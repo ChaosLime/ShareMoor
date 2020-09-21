@@ -1,6 +1,6 @@
 //https://spring.io/guides/gs/uploading-files/
 //https://github.com/spring-guides/gs-uploading-files
-package exception;
+package shareMoor.exception;
 
 public class StorageException extends RuntimeException {
 
