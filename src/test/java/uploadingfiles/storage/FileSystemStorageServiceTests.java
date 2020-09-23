@@ -22,12 +22,14 @@ import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import shareMoor.exception.StorageException;
 import shareMoor.services.FileSystemStorageService;
 import shareMoor.services.StorageProperties;
+import shareMoor.services.StorageService;
+import shareMoor.services.ThumbnailService;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -38,11 +40,14 @@ public class FileSystemStorageServiceTests {
 
 	private StorageProperties properties = new StorageProperties();
 	private FileSystemStorageService service;
+	
+	@MockBean
+    private ThumbnailService thumbnailService;
 
 	@BeforeEach
 	public void init() {
 		properties.setLocation("target/files/" + Math.abs(new Random().nextLong()));
-		service = new FileSystemStorageService(properties);
+		service = new FileSystemStorageService(properties, thumbnailService);
 		service.init();
 	}
 

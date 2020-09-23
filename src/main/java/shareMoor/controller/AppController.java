@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import shareMoor.services.StorageService;
-import shareMoor.services.StoreUserContactService;
+import shareMoor.services.*;
 
 @Controller
 public class AppController {
@@ -28,12 +27,16 @@ public class AppController {
   private final StorageService storageService;
   
   private final StoreUserContactService storeUserContactService;
+  
+ // private final ThumbnailService thumbnailService;
 
   @Autowired
   public AppController(StorageService storageService, 
-                              StoreUserContactService storeUserContactService) {
+                       StoreUserContactService storeUserContactService) {//,
+                       //ThumbnailService thumbnailService) {
     this.storageService = storageService;
     this.storeUserContactService = storeUserContactService;
+    //this.thumbnailService = thumbnailService;
   }
 
   @GetMapping("/")
@@ -80,6 +83,7 @@ public class AppController {
     for (int i = 0; i < file.length; i++) {
       try {
         storageService.store(file[i]);
+        //thumbnailService.saveThumbnail(file[i].getOriginalFilename());
       } catch(Exception e) {
         redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
       }

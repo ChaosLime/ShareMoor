@@ -23,12 +23,16 @@ import shareMoor.exception.StorageFileNotFoundException;
 
 @Service
 public class FileSystemStorageService implements StorageService {
-
+  
   private final Path rootLocation;
+  
+  private final ThumbnailService thumbnailService;
 
   @Autowired
-  public FileSystemStorageService(StorageProperties properties) {
+  public FileSystemStorageService(StorageProperties properties,
+                                  ThumbnailService thumbnailService) {
     this.rootLocation = Paths.get(properties.getLocation());
+    this.thumbnailService = thumbnailService;
   }
 
   @Override
@@ -44,9 +48,13 @@ public class FileSystemStorageService implements StorageService {
             "Cannot store file with relative path outside current directory "
                 + filename);
       }
+      
+      // TODO: Check that the file type is acceptable, if not, then just skip file.
+      // optionally, provide useful error message back to webapge
       try (InputStream inputStream = file.getInputStream()) {
         Files.copy(inputStream, this.rootLocation.resolve(filename),
                   StandardCopyOption.REPLACE_EXISTING);
+        thumbnailService.saveThumbnail(this.rootLocation.resolve(filename).toString());
       }
     }
     catch (IOException e) {
