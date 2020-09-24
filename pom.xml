@@ -18,7 +18,7 @@
 		<java.version>14</java.version>
 		<!-- This is currently not necessary because there is only 1 main. Uncomment and modify if needed. -->
 			<!-- The main class to start --> 
-	  		<start-class>uploadingfiles.UploadingFilesApplication</start-class>
+	  		<start-class>shareMoor.UploadingFilesApplication</start-class>
 	</properties>
 
 
