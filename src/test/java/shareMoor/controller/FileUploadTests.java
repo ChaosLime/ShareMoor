@@ -1,6 +1,6 @@
 //https://spring.io/guides/gs/uploading-files/
 //https://github.com/spring-guides/gs-uploading-files
-package uploadingfiles;
+package shareMoor.controller;
 
 import java.nio.file.Paths;
 import java.util.stream.Stream;
@@ -14,11 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import shareMoor.UploadingFilesApplication;
 import shareMoor.exception.StorageFileNotFoundException;
 import shareMoor.services.StorageService;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest
+@SpringBootTest //(classes = UploadingFilesApplication.class)
 public class FileUploadTests {
 
 	@Autowired
@@ -39,7 +39,7 @@ public class FileUploadTests {
 	public void shouldListAllFiles() throws Exception {
 		given(this.storageService.loadAll())
 				.willReturn(Stream.of(Paths.get("first.txt"), Paths.get("second.txt")));
-
+		
 		this.mvc.perform(get("/")).andExpect(status().isOk())
 				.andExpect(model().attribute("files",
 						Matchers.contains("http://localhost/files/first.txt",
