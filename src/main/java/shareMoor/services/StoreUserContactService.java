@@ -8,9 +8,8 @@ import org.springframework.stereotype.Service;
 import shareMoor.exception.StorageException;
 
 @Service
-//@Repository
 public class StoreUserContactService {
-  final String fileName = "../contact_info.csv";
+  final String fileName = ".." + File.separator + "contact_info.csv";
   
   public void writeContactInfo(String contactInfo) {
     createFile(fileName);

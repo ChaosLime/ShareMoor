@@ -28,15 +28,19 @@ public class AppController {
   
   private final StoreUserContactService storeUserContactService;
   
- // private final ThumbnailService thumbnailService;
+  private final ThumbnailService thumbnailService;
+  
+  private final ApprovalService approvalService;
 
   @Autowired
   public AppController(StorageService storageService, 
-                       StoreUserContactService storeUserContactService) {//,
-                       //ThumbnailService thumbnailService) {
+                       StoreUserContactService storeUserContactService,
+                       ThumbnailService thumbnailService,
+                       ApprovalService approvalService) {
     this.storageService = storageService;
     this.storeUserContactService = storeUserContactService;
-    //this.thumbnailService = thumbnailService;
+    this.thumbnailService = thumbnailService;
+    this.approvalService = approvalService;
   }
 
   @GetMapping("/")
@@ -82,8 +86,17 @@ public class AppController {
     
     for (int i = 0; i < file.length; i++) {
       try {
-        storageService.store(file[i]);
-        //thumbnailService.saveThumbnail(file[i].getOriginalFilename());
+        // This service call will result in a file stored in the staging folder.
+        // The file will be given a sequential name to ensure that it doesn't
+        // conflict with another file. TODO: Check for highest file number on start.
+        String storedFileLocation = storageService.store(file[i]);
+        System.out.println(storedFileLocation);
+        
+        thumbnailService.createThumbnail(storedFileLocation);
+        
+        // TODO: Move this to its own mapping at a later date.
+        approvalService.saveFileInFinishedFolder(storedFileLocation);
+        
       } catch(Exception e) {
         redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
       }

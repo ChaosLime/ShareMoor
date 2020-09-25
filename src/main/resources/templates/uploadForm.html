@@ -45,6 +45,12 @@
 			</li>
 		</ul>
 	</div>
-
+	<div>
+		<ul>
+			<li th:each="file : ${files}">
+				<img th:src="${file}"></img>
+			</li>
+		</ul>
+	</div>
 </body>
 </html>

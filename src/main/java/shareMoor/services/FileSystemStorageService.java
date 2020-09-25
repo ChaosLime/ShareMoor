@@ -2,6 +2,7 @@
 //https://github.com/spring-guides/gs-uploading-files
 package shareMoor.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -18,59 +19,71 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import shareMoor.domain.HelperClass;
 import shareMoor.exception.StorageException;
 import shareMoor.exception.StorageFileNotFoundException;
 
 @Service
 public class FileSystemStorageService implements StorageService {
+
+  // TODO: Create a counter and a method in this service that will be responsible
+  //        for finding the next file number to use.
   
-  private final Path rootLocation;
+  private final Path uploadLocation;
+  private final Path finishedFullLocation;
+  private final Path finishedThumbLocation;
+  private final Path needsReviewLocation;
+  private final Path reviewThumbLocation;
   
-  private final ThumbnailService thumbnailService;
+  private int fileCounter = 1;
 
   @Autowired
-  public FileSystemStorageService(StorageProperties properties,
-                                  ThumbnailService thumbnailService) {
-    this.rootLocation = Paths.get(properties.getLocation());
-    this.thumbnailService = thumbnailService;
+  public FileSystemStorageService(StorageProperties properties) {
+    this.uploadLocation = Paths.get(properties.getUploadLocation());
+    this.finishedFullLocation = Paths.get(properties.getFinishedFullLocation());
+    this.finishedThumbLocation = Paths.get(properties.getFinishedThumbLocation());
+    this.needsReviewLocation = Paths.get(properties.getDeniedLocation());
+    this.reviewThumbLocation = Paths.get(properties.getReviewThumbLocation());
   }
 
   @Override
-  public void store(MultipartFile file) {
-    String filename = StringUtils.cleanPath(file.getOriginalFilename());
+  public String store(MultipartFile file) {
+    String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+    String newFilename = "";
     try {
       if (file.isEmpty()) {
-        throw new StorageException("Failed to store empty file " + filename);
+        throw new StorageException("Failed to store empty file " + originalFilename);
       }
-      if (filename.contains("..")) {
+      if (originalFilename.contains("..")) {
         // This is a security check
         throw new StorageException(
             "Cannot store file with relative path outside current directory "
-                + filename);
+                + originalFilename);
       }
       
       // TODO: Check that the file type is acceptable, if not, then just skip file.
-      // optionally, provide useful error message back to webapge
+      // optionally, provide useful error message back to the webpage
       try (InputStream inputStream = file.getInputStream()) {
-        Files.copy(inputStream, this.rootLocation.resolve(filename),
+        newFilename = String.valueOf(fileCounter) + HelperClass.getExtension(originalFilename);
+        fileCounter++;
+        
+        Files.copy(inputStream, this.uploadLocation.resolve(newFilename),
                   StandardCopyOption.REPLACE_EXISTING);
-        thumbnailService.saveThumbnail(this.rootLocation.resolve(filename).toString());
       }
     }
     catch (IOException e) {
-      throw new StorageException("Failed to store file " + filename, e);
+      throw new StorageException("Failed to store file " + newFilename, e);
     }
-    /*catch (Exception e) {
-      throw new StorageException("Failed to store file " + filename, e);
-    }*/
+    
+    return this.uploadLocation + File.separator + newFilename;
   }
 
   @Override
   public Stream<Path> loadAll() {
     try {
-      return Files.walk(this.rootLocation, 1)
-        .filter(path -> !path.equals(this.rootLocation))
-        .map(this.rootLocation::relativize);
+      return Files.walk(this.finishedThumbLocation, 1)
+        .filter(path -> !path.equals(this.finishedThumbLocation))
+        .map(this.finishedThumbLocation::relativize);
     }
     catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
@@ -78,9 +91,16 @@ public class FileSystemStorageService implements StorageService {
 
   }
 
+  
   @Override
   public Path load(String filename) {
-    return rootLocation.resolve(filename);
+    // Code will grab file name in the finsihed full location that corrleates with the
+    // filename in the thumbnail folder.
+    String filenameWithoutExt = HelperClass.getFilename(filename);
+    String filenameWithExt = HelperClass.findFilenameWOExt(finishedFullLocation.toString(),
+                                                          filenameWithoutExt);
+    
+      return finishedFullLocation.resolve(filenameWithExt);
   }
 
   @Override
@@ -104,13 +124,21 @@ public class FileSystemStorageService implements StorageService {
 
   @Override
   public void deleteAll() {
-    FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    FileSystemUtils.deleteRecursively(uploadLocation.toFile());
+    FileSystemUtils.deleteRecursively(finishedFullLocation.toFile());
+    FileSystemUtils.deleteRecursively(needsReviewLocation.toFile());
+    FileSystemUtils.deleteRecursively(finishedThumbLocation.toFile());
+    FileSystemUtils.deleteRecursively(reviewThumbLocation.toFile());
   }
 
   @Override
   public void init() {
     try {
-      Files.createDirectories(rootLocation);
+      Files.createDirectories(uploadLocation);
+      Files.createDirectories(finishedFullLocation);
+      Files.createDirectories(needsReviewLocation);
+      Files.createDirectories(finishedThumbLocation);
+      Files.createDirectories(reviewThumbLocation);
     }
     catch (IOException e) {
       throw new StorageException("Could not initialize storage", e);
