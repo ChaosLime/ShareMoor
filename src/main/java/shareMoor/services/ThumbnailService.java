@@ -22,7 +22,7 @@ public class ThumbnailService {
   
   private final Path reviewThumbLocation;
   
-  public final String imageExtTxt = ".tiff";
+  public final String imageExtTxt = ".png";
   
   @Autowired
   public ThumbnailService(StorageProperties properties) {
@@ -37,7 +37,7 @@ public class ThumbnailService {
     
     BufferedImage img;
     
-    final ImageFormat desiredImageFormat = ImageFormats.TIFF;
+    final ImageFormat desiredImageFormat = ImageFormats.PNG;
     
     // First read file into BufferedImage obj.
     try {

@@ -36,7 +36,7 @@ public class ConvertPhotoService {
     String newFilePath = needsReviewLocation + File.separator +
                          HelperClass.getFilename(filePath) + newFileExtension;
     
-    final ImageFormat desiredImageFormat = ImageFormats.TIFF;
+    final ImageFormat desiredImageFormat = ImageFormats.PNG;
     
     //String desiredFilename = "../upload-dir/" + String.valueOf(imageCounter) + ".tiff";
     
