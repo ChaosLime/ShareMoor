@@ -14,11 +14,17 @@ public interface StorageService {
 
   String store(MultipartFile file);
 
-  Stream<Path> loadAll();
+  Stream<Path> loadAllFull();
+  
+  Stream<Path> loadAllThumbs();
 
-  Path load(String filename);
+  Path loadFull(String filename);
+  
+  Path loadThumb(String filename);
 
-  Resource loadAsResource(String filename);
+  Resource loadAsResourceFull(String filename);
 
   void deleteAll();
+
+  Resource loadAsResourceThumbs(String filename);
 }

@@ -46,9 +46,13 @@ public class AppController {
   @GetMapping("/")
   public String listUploadedFiles(Model model) throws IOException {
 
-    model.addAttribute("files", storageService.loadAll().map(
+    model.addAttribute("files", storageService.loadAllFull().map(
         path -> MvcUriComponentsBuilder.fromMethodName(AppController.class,
             "serveFile", path.getFileName().toString()).build().toUri().toString())
+        .collect(Collectors.toList()));
+    model.addAttribute("thumbs", storageService.loadAllThumbs().map(
+        path -> MvcUriComponentsBuilder.fromMethodName(AppController.class,
+            "serveThumb", path.getFileName().toString()).build().toUri().toString())
         .collect(Collectors.toList()));
 
     return "uploadForm";
@@ -58,7 +62,16 @@ public class AppController {
   @ResponseBody
   public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
-    Resource file = storageService.loadAsResource(filename);
+    Resource file = storageService.loadAsResourceFull(filename);
+    return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+        "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+  }
+  
+  @GetMapping("/thumbs/{filename:.+}")
+  @ResponseBody
+  public ResponseEntity<Resource> serveThumb(@PathVariable String filename) {
+
+    Resource file = storageService.loadAsResourceThumbs(filename);
     return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
         "attachment; filename=\"" + file.getFilename() + "\"").body(file);
   }
@@ -68,9 +81,13 @@ public class AppController {
    
     storeUserContactService.writeContactInfo(contactInfo);
     
-    model.addAttribute("files", storageService.loadAll().map(
+    model.addAttribute("files", storageService.loadAllFull().map(
         path -> MvcUriComponentsBuilder.fromMethodName(AppController.class,
             "serveFile", path.getFileName().toString()).build().toUri().toString())
+        .collect(Collectors.toList()));
+    model.addAttribute("thumbs", storageService.loadAllThumbs().map(
+        path -> MvcUriComponentsBuilder.fromMethodName(AppController.class,
+            "serveThumb", path.getFileName().toString()).build().toUri().toString())
         .collect(Collectors.toList()));
     model.addAttribute("message", "Thank you for providing your contact information!");
     

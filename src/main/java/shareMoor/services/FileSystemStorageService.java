@@ -79,7 +79,7 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public Stream<Path> loadAll() {
+  public Stream<Path> loadAllThumbs() {
     try {
       return Files.walk(this.finishedThumbLocation, 1)
         .filter(path -> !path.equals(this.finishedThumbLocation))
@@ -90,23 +90,59 @@ public class FileSystemStorageService implements StorageService {
     }
 
   }
-
   
   @Override
-  public Path load(String filename) {
+  public Stream<Path> loadAllFull() {
+    try {
+      return Files.walk(this.finishedFullLocation, 1)
+        .filter(path -> !path.equals(this.finishedFullLocation))
+        .map(this.finishedFullLocation::relativize);
+    }
+    catch (IOException e) {
+      throw new StorageException("Failed to read stored files", e);
+    }
+
+  }
+
+  @Override
+  public Path loadThumb(String filename) {
+    return finishedThumbLocation.resolve(filename);
+  }
+  
+  @Override
+  public Path loadFull(String filename) {
     // Code will grab file name in the finsihed full location that corrleates with the
     // filename in the thumbnail folder.
     String filenameWithoutExt = HelperClass.getFilename(filename);
     String filenameWithExt = HelperClass.findFilenameWOExt(finishedFullLocation.toString(),
                                                           filenameWithoutExt);
     
-      return finishedFullLocation.resolve(filenameWithExt);
+    return finishedFullLocation.resolve(filenameWithExt);
   }
 
   @Override
-  public Resource loadAsResource(String filename) {
+  public Resource loadAsResourceFull(String filename) {
     try {
-      Path file = load(filename);
+      Path file = loadFull(filename);
+      Resource resource = new UrlResource(file.toUri());
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      }
+      else {
+        throw new StorageFileNotFoundException(
+            "Could not read file: " + filename);
+
+      }
+    }
+    catch (MalformedURLException e) {
+      throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+    }
+  }
+  
+  @Override
+  public Resource loadAsResourceThumbs(String filename) {
+    try {
+      Path file = loadThumb(filename);
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
         return resource;
