@@ -15,7 +15,6 @@ public class StoreUserContactService {
 
   public void writeContactInfo(String contactInfo) {
     createFile(filePath);
-    System.out.println("file path: " + filePath);
 
     try {
       FileWriter myWriter = new FileWriter(filePath, true);
