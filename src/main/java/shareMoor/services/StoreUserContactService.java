@@ -1,4 +1,4 @@
-//https://www.w3schools.com/java/java_files_create.asp
+// https://www.w3schools.com/java/java_files_create.asp
 package shareMoor.services;
 
 import java.io.File;
@@ -9,22 +9,24 @@ import shareMoor.exception.StorageException;
 
 @Service
 public class StoreUserContactService {
-  final String fileName = ".." + File.separator + "contact_info.csv";
-  
+  // final String fileName = ConfigService.getSettingsDir("contactInfo-dir");
+  final String fileName = ConfigService.getSettingsDir("contactInfo-name");
+  final String filePath = ConfigService.getSettingsDir("contactInfo-dir") + fileName;
+
   public void writeContactInfo(String contactInfo) {
-    createFile(fileName);
-    
+    createFile(filePath);
+
     try {
-      FileWriter myWriter = new FileWriter(fileName, true);
+      FileWriter myWriter = new FileWriter(filePath, true);
       myWriter.write(contactInfo + System.getProperty("line.separator"));
       myWriter.close();
       System.out.println("Successfully wrote " + contactInfo + " to the file.");
     } catch (IOException e) {
-      throw new StorageException("An error occured attempting to add text to file "
-          + fileName + ". Error message is: " + e.getMessage());
+      throw new StorageException("An error occured attempting to add text to file " + fileName
+          + ". Error message is: " + e.getMessage());
     }
   }
-  
+
   // Try to create the file. The row an error if there is an issue.
   private void createFile(String fileName) {
     try {
@@ -36,8 +38,8 @@ public class StoreUserContactService {
       }
     } catch (IOException e) {
       System.out.println("An error occurred.");
-      throw new StorageException("An error occurred attempting to write" + fileName +
-          ". Error message is: " + e.getMessage());
+      throw new StorageException("An error occurred attempting to write" + fileName
+          + ". Error message is: " + e.getMessage());
     }
   }
 }
