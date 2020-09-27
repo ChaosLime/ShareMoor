@@ -61,7 +61,7 @@ public class FileSystemStorageServiceTests {
 	public void saveAndLoad() {
 		service.store(new MockMultipartFile("foo", "foo.txt", MediaType.TEXT_PLAIN_VALUE,
 				"Hello, World".getBytes()));
-		assertThat(service.load("foo.txt")).exists();
+		assertThat(service.loadFull("foo.txt")).exists();
 	}
 
 	@Test

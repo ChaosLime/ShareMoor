@@ -37,7 +37,7 @@ public class FileUploadTests {
 
 	@Test
 	public void shouldListAllFiles() throws Exception {
-		given(this.storageService.loadAll())
+		given(this.storageService.loadAllFull())
 				.willReturn(Stream.of(Paths.get("first.txt"), Paths.get("second.txt")));
 		
 		this.mvc.perform(get("/")).andExpect(status().isOk())
@@ -60,7 +60,7 @@ public class FileUploadTests {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void should404WhenMissingFile() throws Exception {
-		given(this.storageService.loadAsResource("test.txt"))
+		given(this.storageService.loadAsResourceFull("test.txt"))
 				.willThrow(StorageFileNotFoundException.class);
 
 		this.mvc.perform(get("/files/test.txt")).andExpect(status().isNotFound());
