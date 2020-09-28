@@ -101,7 +101,8 @@ public class ThumbnailService {
   private BufferedImage getDefaultThumbnail() {
     BufferedImage img;
     try {
-      File file = new File(getClass().getClassLoader().getResource(".").getFile() + "/fileIcon.jpg");
+      //File file = new File(getClass().getClassLoader().getResource(".").getFile() + "/fileIcon.jpg");
+      File file = new File(".." + File.separator+"assests-dir"+File.separator+"fileIcon.jpg");
       img = Imaging.getBufferedImage(file);
     } catch (IOException | ImageReadException e) {
       throw new StorageException("Failed to retrieve fileIcon.jpg from resoruces folder.", e);

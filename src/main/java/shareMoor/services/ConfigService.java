@@ -87,8 +87,8 @@ public class ConfigService {
 
   public static Map<String, Object> loadConfig() {
     // load config
-    String defaultConfigPath =
-        "src" + File.separator + "resources" + File.separator + "config_default.yaml";
+    //String defaultConfigPath =
+    //    "src" + File.separator + "resources" + File.separator + "config_default.yaml";
     // default saving path for the config file.
     String activeConfigPath = ".." + File.separator + "config.yaml";
     String savePath = activeConfigPath;
@@ -102,7 +102,7 @@ public class ConfigService {
     } else {
       System.out.println("Config file at: [" + activeConfigPath + "] Not found.");
       System.out.println("Grabbing default config.");
-      path = defaultConfigPath;
+      //path = defaultConfigPath;
 
     }
 
