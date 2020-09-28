@@ -6,12 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javax.imageio.ImageIO;
 import org.apache.commons.imaging.ImageFormat;
 import org.apache.commons.imaging.ImageFormats;
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.ImageWriteException;
 import org.apache.commons.imaging.Imaging;
 import org.imgscalr.Scalr;
+import org.imgscalr.Scalr.Method;
+import org.imgscalr.Scalr.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.drew.imaging.ImageMetadataReader;
@@ -55,15 +58,22 @@ public class ThumbnailService {
     try {
       imageInfo = HelperClass.readImageInformation(file);
       System.out.println(imageInfo.toString());
-    } catch (MetadataException | ImageProcessingException | IOException e1) {
+    } catch (MetadataException | ImageProcessingException | IOException | NullPointerException e1) {
       System.out.println("Failed to read metadata on " + filePath);
       //e1.printStackTrace();
     }
     
     try {
-      img = Imaging.getBufferedImage(file);
-      img = HelperClass.CorrectOrientation(img, imageInfo);
-    } catch (IOException | ImageReadException e) {
+      //img = Imaging.getBufferedImage(file);
+      img = ImageIO.read(file);
+      
+      if (imageInfo != null) {
+        img = HelperClass.CorrectOrientation(img, imageInfo);
+      }
+      if (img == null) {
+        throw new IOException();
+      }
+    } catch (IOException e ) { //| ImageReadException e) {
       // If it fails, then use default thumbnail
       System.out.println("Failed to make thumbnail of file. Error message: " + e.getMessage());
       System.out.println("Using default thumbnail...");
@@ -72,7 +82,7 @@ public class ThumbnailService {
     }
 
     try {
-      img = Scalr.resize(img, 250);
+      img = Scalr.resize(img, Method.AUTOMATIC, 250);
     } catch (Exception e) {
       throw new StorageException("Unable to scale image.", e);
     }
