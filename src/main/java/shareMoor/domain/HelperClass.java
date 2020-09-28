@@ -12,6 +12,8 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.jpeg.JpegDirectory;
+//import javax.activation.MimetypesFileTypeMap;
+//import java.io.File;
 
 public class HelperClass {
 
@@ -135,4 +137,13 @@ public class HelperClass {
     }
     return bImg;
   }
+  
+  /*public static boolean IsThisFileAnImage(File f) {
+    String mimetype = new MimetypesFileTypeMap().getContentType(f);
+    String type = mimetype.split("/")[0];
+    if (type.equals("image"))
+      System.out.println("It's an image");
+    else
+      System.out.println("It's NOT an image");
+  }*/
 }
