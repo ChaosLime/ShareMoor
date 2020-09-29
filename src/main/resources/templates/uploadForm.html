@@ -41,14 +41,15 @@
 	<div>
 		<ul>
 			<li th:each="file,iter : ${files}">
-				<a th:href="${file}" th:text="${file}"></a>
-				<!-- <span th:text="${iter.index}"></span>-->
-				<p th:each="file2,iter2 : ${thumbs}">
-					 <th:block th:if="${iter2.index == iter.index}">
-						<img th:src="${file2}"></img>
-						<!-- <span th:text="${iter.index}"></span>-->
-					</th:block>
-				</p>
+				<a th:href="${file}">
+					<!-- <span th:text="${iter.index}"></span>-->
+					<span th:each="file2,iter2 : ${thumbs}">
+						 <th:block th:if="${iter2.index == iter.index}">
+							<img th:src="${file2}"/>
+							<!-- <span th:text="${iter.index}"></span>-->
+						</th:block>
+					</span>
+				</a>
 			</li>
 		</ul>
 	</div>
