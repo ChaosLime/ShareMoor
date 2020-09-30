@@ -1,4 +1,4 @@
-package shareMoor.services;
+package shareMoor.domain;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 
-public class ConfigService {
+
+public class ConfigHandler {
   private static Map<String, Object> getConfigAsMap(String path) {
     try {
       return strToMapping(path);
@@ -19,7 +20,7 @@ public class ConfigService {
   }
 
   private static Map<String, Object> strToMapping(String path) throws IOException {
-    String sb = FileIOService.getStrFromFile(path);
+    String sb = FileIO.getStrFromFile(path);
 
     Map<String, Object> map = null;
     Yaml yaml = new Yaml();
@@ -87,22 +88,22 @@ public class ConfigService {
 
   public static Map<String, Object> loadConfig() {
     // load config
-    //String defaultConfigPath =
-    //    "src" + File.separator + "resources" + File.separator + "config_default.yaml";
+    // String defaultConfigPath =
+    // "src" + File.separator + "resources" + File.separator + "config_default.yaml";
     // default saving path for the config file.
     String activeConfigPath = ".." + File.separator + "config.yaml";
     String savePath = activeConfigPath;
 
     String path = "";
 
-    boolean stateOfConfigFile = FileIOService.checkIfFileExists(activeConfigPath);
+    boolean stateOfConfigFile = FileIO.checkIfFileExists(activeConfigPath);
 
     if (stateOfConfigFile == true) {
       path = activeConfigPath;
     } else {
       System.out.println("Config file at: [" + activeConfigPath + "] Not found.");
       System.out.println("Grabbing default config.");
-      //path = defaultConfigPath;
+      // path = defaultConfigPath;
 
     }
 
@@ -117,7 +118,7 @@ public class ConfigService {
 
   public static void saveMappingToFile(Map<String, Object> map, String savePath) {
     String sb = mappingToStr(map);
-    FileIOService.writeStrBufferToNewFile(savePath, sb);
+    FileIO.writeStrBufferToNewFile(savePath, sb);
     System.out.println("Saved.");
   }
 
@@ -143,8 +144,8 @@ public class ConfigService {
   }
 
   public static String getSettingsDir(String key) {
-    Map<String, Object> configMap = ConfigService.loadConfig();
-    Map<String, Object> settingsMap = ConfigService.getConfMapByPath(configMap, "Settings");
+    Map<String, Object> configMap = ConfigHandler.loadConfig();
+    Map<String, Object> settingsMap = ConfigHandler.getConfMapByPath(configMap, "Settings");
     String result = settingsMap.get(key).toString();
     // System.out.println("Before: " + result);
     for (int i = 0; i < result.length(); i++) {
@@ -153,8 +154,55 @@ public class ConfigService {
         c = File.separatorChar;
       }
     }
-    // System.out.println("After: " + result);
     return result;
+  }
+
+  public static String getSettingsValue(String key) {
+    Map<String, Object> configMap = loadConfig();
+    Map<String, Object> settingsMap = getConfMapByPath(configMap, "Settings");
+    return settingsMap.get(key).toString();
+  }
+
+  public static String getServerValue(String key) {
+    Map<String, Object> configMap = loadConfig();
+    Map<String, Object> springServerMap =
+        getConfMapByPath(configMap, "SpringServerApplicationObject");
+    Map<String, Object> serverMap = getConfMapByPath(springServerMap, "server");
+    return serverMap.get(key).toString();
+  }
+
+  // TODO: remove when going through refactor of class.
+  public static String getPort() {
+    // TODO: reduce loading of config here.
+    Map<String, Object> map = loadConfig();
+    Map<String, Object> springServerMap = getConfMapByPath(map, "SpringServerApplicationObject");
+    Map<String, Object> serverMap = getConfMapByPath(springServerMap, "server");
+
+    return serverMap.get("port").toString();
+  }
+
+  public static String getProtocol() {
+    // TODO: remove when going through refactor of class.
+    Map<String, Object> map = ConfigHandler.loadConfig();
+    Map<String, Object> settingsMap = getConfMapByPath(map, "Settings");
+    // TODO: fix up and reduce code reuse.
+    // System.out.println(getSettingsValue("https"));
+
+    if ((boolean) settingsMap.get("https")) {
+      return "https";
+    } else {
+      return "http";
+    }
+
+  }
+
+  public static String getFullAddress() {
+    String address = getServerValue("address");
+    String port = getServerValue("port");
+    String protocol = getProtocol();
+    String result = protocol + "://" + address + ":" + port;
+    return result;
+
   }
 
 }
