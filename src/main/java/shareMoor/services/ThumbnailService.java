@@ -14,17 +14,10 @@ import org.apache.commons.imaging.ImageWriteException;
 import org.apache.commons.imaging.Imaging;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
-import org.imgscalr.Scalr.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
-import com.drew.metadata.Tag;
-import com.drew.metadata.exif.ExifSubIFDDescriptor;
-import com.drew.metadata.exif.ExifSubIFDDirectory;
 import shareMoor.domain.HelperClass;
 import shareMoor.domain.ImageInformation;
 import shareMoor.exception.StorageException;
@@ -33,12 +26,15 @@ import shareMoor.exception.StorageException;
 public class ThumbnailService {
 
   private final Path reviewThumbLocation;
+  private final Path assestsLocation;
 
   public final String imageExtTxt = ".png";
 
   @Autowired
   public ThumbnailService(StorageProperties properties) {
     this.reviewThumbLocation = Paths.get(properties.getReviewThumbLocation());
+    this.assestsLocation = Paths.get(properties.getAssestsLocation());
+
   }
 
   public void createThumbnail(String filePath) {// throws IOException {
@@ -52,28 +48,28 @@ public class ThumbnailService {
     final ImageFormat desiredImageFormat = ImageFormats.PNG;
 
     File file = new File(filePath);
-    
+
     ImageInformation imageInfo = null;
-    
+
     try {
       imageInfo = HelperClass.readImageInformation(file);
       System.out.println(imageInfo.toString());
     } catch (MetadataException | ImageProcessingException | IOException | NullPointerException e1) {
       System.out.println("Failed to read metadata on " + filePath);
-      //e1.printStackTrace();
+      // e1.printStackTrace();
     }
-    
+
     try {
-      //img = Imaging.getBufferedImage(file);
+      // img = Imaging.getBufferedImage(file);
       img = ImageIO.read(file);
-      
+
       if (imageInfo != null) {
         img = HelperClass.CorrectOrientation(img, imageInfo);
       }
       if (img == null) {
         throw new IOException();
       }
-    } catch (IOException e ) { //| ImageReadException e) {
+    } catch (IOException e) { // | ImageReadException e) {
       // If it fails, then use default thumbnail
       System.out.println("Failed to make thumbnail of file. Error message: " + e.getMessage());
       System.out.println("Using default thumbnail...");
@@ -101,8 +97,7 @@ public class ThumbnailService {
   private BufferedImage getDefaultThumbnail() {
     BufferedImage img;
     try {
-      //File file = new File(getClass().getClassLoader().getResource(".").getFile() + "/fileIcon.jpg");
-      File file = new File(".." + File.separator+"assests-dir"+File.separator+"fileIcon.jpg");
+      File file = new File(assestsLocation + File.separator + "fileIcon.jpg");
       img = Imaging.getBufferedImage(file);
     } catch (IOException | ImageReadException e) {
       throw new StorageException("Failed to retrieve fileIcon.jpg from resoruces folder.", e);

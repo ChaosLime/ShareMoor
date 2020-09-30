@@ -1,5 +1,5 @@
-//https://spring.io/guides/gs/uploading-files/
-//https://github.com/spring-guides/gs-uploading-files
+// https://spring.io/guides/gs/uploading-files/
+// https://github.com/spring-guides/gs-uploading-files
 package shareMoor.services;
 
 import java.io.File;
@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -27,14 +26,15 @@ import shareMoor.exception.StorageFileNotFoundException;
 public class FileSystemStorageService implements StorageService {
 
   // TODO: Create a counter and a method in this service that will be responsible
-  //        for finding the next file number to use.
-  
+  // for finding the next file number to use.
+
   private final Path uploadLocation;
   private final Path finishedFullLocation;
   private final Path finishedThumbLocation;
   private final Path needsReviewLocation;
   private final Path reviewThumbLocation;
-  
+  private final Path assestsLocation;
+
   private int fileCounter = 1;
 
   @Autowired
@@ -44,6 +44,7 @@ public class FileSystemStorageService implements StorageService {
     this.finishedThumbLocation = Paths.get(properties.getFinishedThumbLocation());
     this.needsReviewLocation = Paths.get(properties.getDeniedLocation());
     this.reviewThumbLocation = Paths.get(properties.getReviewThumbLocation());
+    this.assestsLocation = Paths.get(properties.getAssestsLocation());
   }
 
   @Override
@@ -57,24 +58,22 @@ public class FileSystemStorageService implements StorageService {
       if (originalFilename.contains("..")) {
         // This is a security check
         throw new StorageException(
-            "Cannot store file with relative path outside current directory "
-                + originalFilename);
+            "Cannot store file with relative path outside current directory " + originalFilename);
       }
-      
+
       // TODO: Check that the file type is acceptable, if not, then just skip file.
       // optionally, provide useful error message back to the webpage
       try (InputStream inputStream = file.getInputStream()) {
         newFilename = String.valueOf(fileCounter) + HelperClass.getExtension(originalFilename);
         fileCounter++;
-        
+
         Files.copy(inputStream, this.uploadLocation.resolve(newFilename),
-                  StandardCopyOption.REPLACE_EXISTING);
+            StandardCopyOption.REPLACE_EXISTING);
       }
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       throw new StorageException("Failed to store file " + newFilename, e);
     }
-    
+
     return this.uploadLocation + File.separator + newFilename;
   }
 
@@ -82,23 +81,21 @@ public class FileSystemStorageService implements StorageService {
   public Stream<Path> loadAllThumbs() {
     try {
       return Files.walk(this.finishedThumbLocation, 1)
-        .filter(path -> !path.equals(this.finishedThumbLocation))
-        .map(this.finishedThumbLocation::relativize);
-    }
-    catch (IOException e) {
+          .filter(path -> !path.equals(this.finishedThumbLocation))
+          .map(this.finishedThumbLocation::relativize);
+    } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
 
   }
-  
+
   @Override
   public Stream<Path> loadAllFull() {
     try {
       return Files.walk(this.finishedFullLocation, 1)
-        .filter(path -> !path.equals(this.finishedFullLocation))
-        .map(this.finishedFullLocation::relativize);
-    }
-    catch (IOException e) {
+          .filter(path -> !path.equals(this.finishedFullLocation))
+          .map(this.finishedFullLocation::relativize);
+    } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
 
@@ -108,15 +105,15 @@ public class FileSystemStorageService implements StorageService {
   public Path loadThumb(String filename) {
     return finishedThumbLocation.resolve(filename);
   }
-  
+
   @Override
   public Path loadFull(String filename) {
     // Code will grab file name in the finsihed full location that corrleates with the
     // filename in the thumbnail folder.
     String filenameWithoutExt = HelperClass.getFilename(filename);
-    String filenameWithExt = HelperClass.findFilenameWOExt(finishedFullLocation.toString(),
-                                                          filenameWithoutExt);
-    
+    String filenameWithExt =
+        HelperClass.findFilenameWOExt(finishedFullLocation.toString(), filenameWithoutExt);
+
     return finishedFullLocation.resolve(filenameWithExt);
   }
 
@@ -127,18 +124,15 @@ public class FileSystemStorageService implements StorageService {
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
         return resource;
-      }
-      else {
-        throw new StorageFileNotFoundException(
-            "Could not read file: " + filename);
+      } else {
+        throw new StorageFileNotFoundException("Could not read file: " + filename);
 
       }
-    }
-    catch (MalformedURLException e) {
+    } catch (MalformedURLException e) {
       throw new StorageFileNotFoundException("Could not read file: " + filename, e);
     }
   }
-  
+
   @Override
   public Resource loadAsResourceThumbs(String filename) {
     try {
@@ -146,14 +140,11 @@ public class FileSystemStorageService implements StorageService {
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
         return resource;
-      }
-      else {
-        throw new StorageFileNotFoundException(
-            "Could not read file: " + filename);
+      } else {
+        throw new StorageFileNotFoundException("Could not read file: " + filename);
 
       }
-    }
-    catch (MalformedURLException e) {
+    } catch (MalformedURLException e) {
       throw new StorageFileNotFoundException("Could not read file: " + filename, e);
     }
   }
@@ -175,9 +166,34 @@ public class FileSystemStorageService implements StorageService {
       Files.createDirectories(needsReviewLocation);
       Files.createDirectories(finishedThumbLocation);
       Files.createDirectories(reviewThumbLocation);
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       throw new StorageException("Could not initialize storage", e);
     }
   }
+
+  public Resource loadAsResourceAssest(String filename) {
+    try {
+      Path file = loadAssest(filename);
+      Resource resource = new UrlResource(file.toUri());
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      } else {
+        throw new StorageFileNotFoundException("Could not read file: " + filename);
+
+      }
+    } catch (MalformedURLException e) {
+      throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+    }
+  }
+
+  @Override
+  public Path loadAssest(String filename) {
+
+    String filenameWithoutExt = HelperClass.getFilename(filename);
+    String filenameWithExt =
+        HelperClass.findFilenameWOExt(assestsLocation.toString(), filenameWithoutExt);
+
+    return assestsLocation.resolve(filenameWithExt);
+  }
+
 }
