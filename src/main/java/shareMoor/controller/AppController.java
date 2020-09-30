@@ -61,6 +61,10 @@ public class AppController {
                 .build().toUri().toString())
             .collect(Collectors.toList()));
 
+    String fullAddr = ConfigHandler.getFullAddress().toString();
+    String sharePath = fullAddr + "/share";
+    model.addAttribute("page", sharePath);
+
     return "uploadForm";
   }
 
@@ -81,8 +85,6 @@ public class AppController {
     return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
         "attachment; filename=\"" + file.getFilename() + "\"").body(file);
   }
-
-
 
   @GetMapping("/assests/{filename:.+}")
   @ResponseBody
@@ -134,6 +136,10 @@ public class AppController {
                 .build().toUri().toString())
             .collect(Collectors.toList()));
     model.addAttribute("message", "Thank you for providing your contact information!");
+
+    String fullAddr = ConfigHandler.getFullAddress().toString();
+    String sharePath = fullAddr + "/share";
+    model.addAttribute("page", sharePath);
 
     return "uploadForm";
   }
