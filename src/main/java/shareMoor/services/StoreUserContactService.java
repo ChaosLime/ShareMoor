@@ -5,13 +5,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.springframework.stereotype.Service;
+import shareMoor.domain.ConfigHandler;
 import shareMoor.exception.StorageException;
 
 @Service
 public class StoreUserContactService {
   // final String fileName = ConfigService.getSettingsDir("contactInfo-dir");
-  final String fileName = ConfigService.getSettingsDir("contactInfo-name");
-  final String filePath = ConfigService.getSettingsDir("contactInfo-dir") + fileName;
+  final String fileName = ConfigHandler.getSettingsDir("contactInfo-name");
+  final String filePath = ConfigHandler.getSettingsDir("contactInfo-dir") + fileName;
 
   public void writeContactInfo(String contactInfo) {
     createFile(filePath);
