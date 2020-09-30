@@ -53,7 +53,7 @@ public class FileUploadIntegrationTests {
 	@Test
 	public void shouldDownloadFile() throws Exception {
 		ClassPathResource resource = new ClassPathResource("testupload.txt", getClass());
-		given(this.storageService.loadAsResourceFull("testupload.txt")).willReturn(resource);
+		given(this.storageService.loadAsResourceFinishedFull("testupload.txt")).willReturn(resource);
 
 		ResponseEntity<String> response = this.restTemplate
 				.getForEntity("/files/{filename}", String.class, "testupload.txt");

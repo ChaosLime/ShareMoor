@@ -1,0 +1,61 @@
+<!-- Webpage came from the following places:
+//https://spring.io/guides/gs/uploading-files/
+//https://github.com/spring-guides/gs-uploading-files -->
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<h1>Approval Page</h1>
+	<div th:if="${message}">
+		<h2 th:text="${message}"></h2>
+	</div>
+
+	<!--<div>
+		<form method="POST" enctype="multipart/form-data" action="/">
+			<table>
+				<tr>
+					<td>Select files to upload:</td><td><input type="file" name="file" multiple="multiple" /></td>
+					<td><span th:if="${errorMessage}" th:text="${errorMessage}">Error</span>
+				</tr>
+				<tr>
+					<td></td><td><input type="submit" value="Upload" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>-->
+	
+	<!--<div>
+		<form method="POST" action="/contactInfo">
+			<table>
+				<tr>
+					<td>If you would like to be notified of where all of the uploads will be after the event, please provide your contact information below.</td>
+				</tr>
+				<tr>
+					<td><input type="text" id="contactInfo" name="contactInfo" ><span th:if="${contactInfoErrorMessage}" th:text="${contactInfoErrorMessage}" ></span></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Submit" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>-->
+	
+	<div>
+		<ul>
+			<li th:each="file,iter : ${reviewFiles}">
+				<form method="POST" action="/approval">
+					<button type="submit" name="approvedFilename" th:value="${file}">Approve</button>
+						<a th:href="${file}">
+							<!-- <span th:text="${iter.index}"></span>-->
+							<span th:each="file2,iter2 : ${reviewThumbs}">
+								 <th:block th:if="${iter2.index == iter.index}">
+									<img th:src="${file2}"/>
+									<!-- <span th:text="${iter.index}"></span>-->
+								</th:block>
+							</span>
+						</a>
+					<button type="submit" name="deniedFilename" th:value="${file}">Deny</button>
+				</form>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

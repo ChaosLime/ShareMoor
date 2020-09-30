@@ -68,7 +68,7 @@ public class ThumbnailService {
       img = ImageIO.read(file);
       
       if (imageInfo != null) {
-        img = HelperClass.CorrectOrientation(img, imageInfo);
+        img = HelperClass.correctOrientation(img, imageInfo);
       }
       if (img == null) {
         throw new IOException();
