@@ -1,4 +1,4 @@
-package shareMoor.services;
+package shareMoor.domain;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FileIOService {
+public class FileIO {
   public static String getStrFromFile(String path) {
     BufferedReader br = null;
     FileReader fr = null;
