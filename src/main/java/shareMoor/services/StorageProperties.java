@@ -2,7 +2,9 @@
 // https://github.com/spring-guides/gs-uploading-files
 package shareMoor.services;
 
+import java.io.File;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import shareMoor.domain.ConfigHandler;
 
 @ConfigurationProperties("services")
 public class StorageProperties {
@@ -10,11 +12,21 @@ public class StorageProperties {
   /**
    * Folder location for storing files
    */
-  private static String uploadLocation = ConfigService.getSettingsDir("upload-dir");
-  private static String deniedLocation = ConfigService.getSettingsDir("denied-dir");
-  private static String reviewThumbLocation = ConfigService.getSettingsDir("reviewThumb-dir");
-  private static String finishedFullLocation = ConfigService.getSettingsDir("processedFull-dir");
-  private static String finishedThumbLocation = ConfigService.getSettingsDir("processedThumb-dir");
+  private static String uploadLocation = ConfigHandler.getSettingsDir("upload-dir");
+  private static String deniedLocation = ConfigHandler.getSettingsDir("denied-dir");
+  private static String reviewThumbLocation = ConfigHandler.getSettingsDir("reviewThumb-dir");
+  private static String finishedFullLocation = ConfigHandler.getSettingsDir("processedFull-dir");
+  private static String finishedThumbLocation = ConfigHandler.getSettingsDir("processedThumb-dir");
+  // The assests Directory should always be in the same location relative to the project.
+  private static String assestsLocation = ".." + File.separator + "assests-dir";
+
+  public static String getAssestsLocation() {
+    return assestsLocation;
+  }
+
+  public static void setAssestsLocation(String assestsLocation) {
+    assestsLocation = assestsLocation;
+  }
 
   public String getUploadLocation() {
     return uploadLocation;
