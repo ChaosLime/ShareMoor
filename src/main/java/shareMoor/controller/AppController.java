@@ -1,7 +1,9 @@
 package shareMoor.controller;
 
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shareMoor.domain.HelperClass;
 import shareMoor.services.*;
 
 /**
@@ -91,6 +94,7 @@ public class AppController {
    * @param model Model
    * @return "approvalForm" String HTML template.
    */
+  @SuppressWarnings("unchecked")
   @GetMapping("/approval")
   public String listFiles(Model model) {
 
@@ -102,6 +106,22 @@ public class AppController {
         storageService.loadAllReviewThumbs().map(path -> MvcUriComponentsBuilder
             .fromMethodName(AppController.class, "serveReviewThumb", path.getFileName().toString())
             .build().toUri().toString()).collect(Collectors.toList()));
+    
+    /*Stream<Path> firstFullFile = storageService.loadFirstReviewFull();
+    Stream<Path> firstFullThumb = storageService.loadAllReviewThumbs();
+    
+    //if (firstFullFile.isPresent()) {
+      model.addAttribute("reviewFiles",
+          firstFullFile.map(path -> MvcUriComponentsBuilder
+          .fromMethodName(AppController.class, "serveReviewFile", path.getFileName().toString())
+          .build().toUri().toString()));
+    //}
+    //if (firstFullThumb.isPresent()) {  
+      model.addAttribute("reviewThumbs",
+         firstFullThumb.map(path -> MvcUriComponentsBuilder
+              .fromMethodName(AppController.class, "serveReviewThumb", path.getFileName().toString())
+              .build().toUri().toString()));
+    //}*/
 
     return "approvalForm";
   }
