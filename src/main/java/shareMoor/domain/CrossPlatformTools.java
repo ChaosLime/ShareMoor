@@ -1,6 +1,8 @@
 package shareMoor.domain;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 
@@ -74,6 +76,7 @@ public class CrossPlatformTools {
   public static String callWinProgram(String cmd) {
 
     Runtime run = Runtime.getRuntime();
+    
     Process proc = null;
     try {
       proc = run.exec(cmd);
@@ -81,9 +84,14 @@ public class CrossPlatformTools {
       e.printStackTrace();
     }
     System.out.println("Calling path: \"" + cmd + "\"");
-    System.out.println(proc);
+    
+    //TODO: Figured out how to read windows output streams for the creation date
+    //rather than writing a new one upon creation.
+    Date date = new Date();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    return proc.toString();
+    String datetime = formatter.format(date);
+    return datetime;
   }
 
 
