@@ -2,7 +2,10 @@
 // https://github.com/spring-guides/gs-uploading-files
 package shareMoor.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -19,7 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shareMoor.domain.ConfigHandler;
+import shareMoor.domain.CrossPlatformTools;
 import shareMoor.services.ApprovalService;
+import shareMoor.services.StorageProperties;
 import shareMoor.services.StorageService;
 import shareMoor.services.StoreUserContactService;
 import shareMoor.services.ThumbnailService;
@@ -113,6 +118,39 @@ public class AppController {
     String siteQRCodeName = "websiteQR.png";
     result = assestsPath + siteQRCodeName;
     model.addAttribute("siteLink", result);
+
+    // TODO: remove, used for testing Exiftool
+    System.out.println("OS:" + CrossPlatformTools.getOS());
+    String OS = CrossPlatformTools.getOS().toString();
+    String assestDir = StorageProperties.getAssestsLocation().toString() + File.separator;
+    String file = "1.jpg";
+    String status = "public";
+    if (OS == "Linux" || OS == "MacOs" || OS == "Other") {
+
+      CrossPlatformTools.callExternalProgram("sh " + assestDir + "exiftooldemo.sh",
+          assestDir + file + " " + status);
+    }
+    if (OS == "Windows") {
+      CrossPlatformTools.callWinProgram(assestDir + "exiftool(-k).exe");
+
+      String createDate = CrossPlatformTools
+          .callWinProgram(assestDir + "exiftool.exe -b -createdate " + assestDir + file);
+
+      if (createDate.equals("")) {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(formatter.format(date));
+        createDate = formatter.format(date);
+      }
+      CrossPlatformTools.callWinProgram(assestDir + "exiftool.exe -q -all= " + assestDir + file);
+
+      CrossPlatformTools.callWinProgram(
+          assestDir + "exiftool -q -profiletype=" + status + " " + assestDir + file);
+
+      // CrossPlatformTools.callWinProgram(
+      // assestDir + "exiftool -q -delete_original! "+ assestDir + file);
+
+    }
 
     return "qrcodes";
   }
