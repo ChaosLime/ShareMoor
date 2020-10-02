@@ -93,15 +93,14 @@ public class FileSystemStorageService implements StorageService {
   public Stream<Path> loadAllReviewThumbs() {
     try {
       return Files.walk(this.reviewThumbLocation, 1)
-        .filter(path -> !path.equals(this.reviewThumbLocation))
-        .map(this.reviewThumbLocation::relativize);
-    }
-    catch (IOException e) {
+          .filter(path -> !path.equals(this.reviewThumbLocation))
+          .map(this.reviewThumbLocation::relativize);
+    } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
 
   }
-  
+
   @Override
   public Stream<Path> loadAllFinishedFull() {
     try {
@@ -113,15 +112,13 @@ public class FileSystemStorageService implements StorageService {
     }
 
   }
-  
+
   @Override
   public Stream<Path> loadAllReviewFull() {
     try {
-      return Files.walk(this.uploadLocation, 1)
-        .filter(path -> !path.equals(this.uploadLocation))
-        .map(this.uploadLocation::relativize);
-    }
-    catch (IOException e) {
+      return Files.walk(this.uploadLocation, 1).filter(path -> !path.equals(this.uploadLocation))
+          .map(this.uploadLocation::relativize);
+    } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
 
@@ -136,7 +133,7 @@ public class FileSystemStorageService implements StorageService {
   public Path loadReviewThumb(String filename) {
     return reviewThumbLocation.resolve(filename);
   }
-  
+
   @Override
   public Path loadFinishedFull(String filename) {
     // Code will grab file name in the finsihed full location that corrleates with the
@@ -147,15 +144,15 @@ public class FileSystemStorageService implements StorageService {
 
     return finishedFullLocation.resolve(filenameWithExt);
   }
-  
+
   @Override
   public Path loadReviewFull(String filename) {
     // Code will grab file name in the finsihed full location that corrleates with the
     // filename in the thumbnail folder.
     String filenameWithoutExt = HelperClass.getFilename(filename);
-    String filenameWithExt = HelperClass.findFilenameWOExt(uploadLocation.toString(),
-                                                          filenameWithoutExt);
-    
+    String filenameWithExt =
+        HelperClass.findFilenameWOExt(uploadLocation.toString(), filenameWithoutExt);
+
     return uploadLocation.resolve(filenameWithExt);
   }
 
@@ -166,18 +163,15 @@ public class FileSystemStorageService implements StorageService {
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
         return resource;
-      }
-      else {
-        throw new StorageFileNotFoundException(
-            "Could not read file: " + filename);
+      } else {
+        throw new StorageFileNotFoundException("Could not read file: " + filename);
 
       }
-    }
-    catch (MalformedURLException e) {
+    } catch (MalformedURLException e) {
       throw new StorageFileNotFoundException("Could not read file: " + filename, e);
     }
   }
-  
+
   @Override
   public Resource loadAsResourceFinishedThumbs(String filename) {
     try {
@@ -185,18 +179,15 @@ public class FileSystemStorageService implements StorageService {
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
         return resource;
-      }
-      else {
-        throw new StorageFileNotFoundException(
-            "Could not read file: " + filename);
+      } else {
+        throw new StorageFileNotFoundException("Could not read file: " + filename);
 
       }
-    }
-    catch (MalformedURLException e) {
+    } catch (MalformedURLException e) {
       throw new StorageFileNotFoundException("Could not read file: " + filename, e);
     }
   }
-  
+
   @Override
   public Resource loadAsResourceReviewFull(String filename) {
     try {
@@ -274,6 +265,42 @@ public class FileSystemStorageService implements StorageService {
         HelperClass.findFilenameWOExt(assestsLocation.toString(), filenameWithoutExt);
 
     return assestsLocation.resolve(filenameWithExt);
+  }
+
+  @Override
+  public Stream<Path> loadAllFull() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Stream<Path> loadAllThumbs() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Path loadFull(String filename) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Path loadThumb(String filename) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Resource loadAsResourceFull(String filename) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Resource loadAsResourceThumbs(String filename) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

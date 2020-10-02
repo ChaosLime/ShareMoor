@@ -1,6 +1,11 @@
 package shareMoor.controller;
 
+<<<<<<< HEAD
 import java.util.Optional;
+=======
+import java.io.File;
+import java.io.IOException;
+>>>>>>> exiftool
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -19,7 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shareMoor.domain.ConfigHandler;
+import shareMoor.domain.CrossPlatformTools;
 import shareMoor.services.ApprovalService;
+import shareMoor.services.StorageProperties;
 import shareMoor.services.StorageService;
 import shareMoor.services.StoreUserContactService;
 import shareMoor.services.ThumbnailService;
@@ -223,6 +230,13 @@ public class AppController {
     String siteQRCodeName = "websiteQR.png";
     result = assestsPath + siteQRCodeName;
     model.addAttribute("siteLink", result);
+
+    // TODO: remove, used for testing Exiftool. Be sure to abstract to a service.
+    String assestDir = StorageProperties.getAssestsLocation().toString() + File.separator;
+    String file = "1.jpg";
+    String filePath = "/home/nick/demo/";
+    String status = "public";
+    CrossPlatformTools.setUpExifToolCall(assestDir, filePath, file, status);
 
     return "qrcodes";
   }
