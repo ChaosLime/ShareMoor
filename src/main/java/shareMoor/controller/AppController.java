@@ -4,8 +4,6 @@ package shareMoor.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -120,34 +118,11 @@ public class AppController {
     model.addAttribute("siteLink", result);
 
     // TODO: remove, used for testing Exiftool. Be sure to abstract to a service.
-    System.out.println("OS:" + CrossPlatformTools.getOS());
-    String OS = CrossPlatformTools.getOS().toString();
     String assestDir = StorageProperties.getAssestsLocation().toString() + File.separator;
     String file = "1.jpg";
+    String filePath = "/home/nick/demo/";
     String status = "public";
-    //TODO: correct and replace the use of an external shell script?
-    if (OS == "Linux" || OS == "MacOs" || OS == "Other") {
-
-      CrossPlatformTools.callExternalProgram("sh " + assestDir + "exiftooldemo.sh",
-          assestDir + file + " " + status);
-    }
-    if (OS == "Windows") {
-
-      String createDate = CrossPlatformTools
-          .callWinProgram(assestDir + "exiftool.exe -b -createdate " + assestDir + file);
-
-      CrossPlatformTools.callWinProgram(assestDir + "exiftool.exe -q -all= " + assestDir + file);
-      if(createDate.equals("")) {
-    	  Date date = new Date();
-    	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	    createDate = formatter.format(date);
-      }
-      CrossPlatformTools.callWinProgram(
-          assestDir + "exiftool -q -createdate=\""+createDate+"\" -profiletype=" + status + " " + assestDir + file);
-
-      CrossPlatformTools.callWinProgram(
-      assestDir + "exiftool -q -delete_original! "+ assestDir + file);
-    }
+    CrossPlatformTools.setUpExifToolCall(assestDir, filePath, file, status);
 
     return "qrcodes";
   }
