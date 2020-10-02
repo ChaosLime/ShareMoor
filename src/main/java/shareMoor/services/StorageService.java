@@ -31,6 +31,28 @@ public interface StorageService {
 
   Resource loadAsResourceThumbs(String filename);
 
+  Stream<Path> loadAllFinishedFull();
 
+  Stream<Path> loadAllFinishedThumbs();
+
+  Path loadFinishedFull(String filename);
+
+  Path loadFinishedThumb(String filename);
+
+  Resource loadAsResourceFinishedFull(String filename);
+
+  Resource loadAsResourceFinishedThumbs(String filename);
+
+  Stream<Path> loadAllReviewFull();
+
+  Stream<Path> loadAllReviewThumbs();
+
+  Path loadReviewThumb(String filename);
+
+  Path loadReviewFull(String filename);
+
+  Resource loadAsResourceReviewFull(String filename);
+
+  Resource loadAsResourceReviewThumbs(String filename);
 
 }
