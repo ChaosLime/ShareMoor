@@ -78,7 +78,7 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public Stream<Path> loadAllThumbs() {
+  public Stream<Path> loadAllFinishedThumbs() {
     try {
       return Files.walk(this.finishedThumbLocation, 1)
           .filter(path -> !path.equals(this.finishedThumbLocation))
@@ -90,7 +90,20 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public Stream<Path> loadAllFull() {
+  public Stream<Path> loadAllReviewThumbs() {
+    try {
+      return Files.walk(this.reviewThumbLocation, 1)
+        .filter(path -> !path.equals(this.reviewThumbLocation))
+        .map(this.reviewThumbLocation::relativize);
+    }
+    catch (IOException e) {
+      throw new StorageException("Failed to read stored files", e);
+    }
+
+  }
+  
+  @Override
+  public Stream<Path> loadAllFinishedFull() {
     try {
       return Files.walk(this.finishedFullLocation, 1)
           .filter(path -> !path.equals(this.finishedFullLocation))
@@ -100,14 +113,32 @@ public class FileSystemStorageService implements StorageService {
     }
 
   }
+  
+  @Override
+  public Stream<Path> loadAllReviewFull() {
+    try {
+      return Files.walk(this.uploadLocation, 1)
+        .filter(path -> !path.equals(this.uploadLocation))
+        .map(this.uploadLocation::relativize);
+    }
+    catch (IOException e) {
+      throw new StorageException("Failed to read stored files", e);
+    }
+
+  }
 
   @Override
-  public Path loadThumb(String filename) {
+  public Path loadFinishedThumb(String filename) {
     return finishedThumbLocation.resolve(filename);
   }
 
   @Override
-  public Path loadFull(String filename) {
+  public Path loadReviewThumb(String filename) {
+    return reviewThumbLocation.resolve(filename);
+  }
+  
+  @Override
+  public Path loadFinishedFull(String filename) {
     // Code will grab file name in the finsihed full location that corrleates with the
     // filename in the thumbnail folder.
     String filenameWithoutExt = HelperClass.getFilename(filename);
@@ -116,11 +147,60 @@ public class FileSystemStorageService implements StorageService {
 
     return finishedFullLocation.resolve(filenameWithExt);
   }
+  
+  @Override
+  public Path loadReviewFull(String filename) {
+    // Code will grab file name in the finsihed full location that corrleates with the
+    // filename in the thumbnail folder.
+    String filenameWithoutExt = HelperClass.getFilename(filename);
+    String filenameWithExt = HelperClass.findFilenameWOExt(uploadLocation.toString(),
+                                                          filenameWithoutExt);
+    
+    return uploadLocation.resolve(filenameWithExt);
+  }
 
   @Override
-  public Resource loadAsResourceFull(String filename) {
+  public Resource loadAsResourceFinishedFull(String filename) {
     try {
-      Path file = loadFull(filename);
+      Path file = loadFinishedFull(filename);
+      Resource resource = new UrlResource(file.toUri());
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      }
+      else {
+        throw new StorageFileNotFoundException(
+            "Could not read file: " + filename);
+
+      }
+    }
+    catch (MalformedURLException e) {
+      throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+    }
+  }
+  
+  @Override
+  public Resource loadAsResourceFinishedThumbs(String filename) {
+    try {
+      Path file = loadFinishedThumb(filename);
+      Resource resource = new UrlResource(file.toUri());
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      }
+      else {
+        throw new StorageFileNotFoundException(
+            "Could not read file: " + filename);
+
+      }
+    }
+    catch (MalformedURLException e) {
+      throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+    }
+  }
+  
+  @Override
+  public Resource loadAsResourceReviewFull(String filename) {
+    try {
+      Path file = loadReviewFull(filename);
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
         return resource;
@@ -134,9 +214,9 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public Resource loadAsResourceThumbs(String filename) {
+  public Resource loadAsResourceReviewThumbs(String filename) {
     try {
-      Path file = loadThumb(filename);
+      Path file = loadReviewThumb(filename);
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
         return resource;
