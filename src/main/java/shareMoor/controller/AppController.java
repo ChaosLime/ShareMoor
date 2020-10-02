@@ -1,25 +1,30 @@
 package shareMoor.controller;
 
-import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mobile.device.Device;
+import org.springframework.mobile.device.DeviceUtils;
+import org.springframework.mobile.device.site.SitePreference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import shareMoor.domain.HelperClass;
 import shareMoor.services.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Share Moor
@@ -68,9 +73,21 @@ public class AppController {
    * @param model Model
    * @return "uploadForm" String HTML template.
    */
-  @GetMapping("/")
-  public String listUploadedFiles(Model model) {
-
+  @RequestMapping("/")
+  public String listUploadedFiles(Model model, Device device) {
+    
+    System.out.println(device.toString());
+    
+    if (device.isMobile()) {
+      // TODO: fill out and send to mobile template
+    } else if (device.isTablet()) {
+      // TODO: fill out and send to tablet template
+    } else if (device.isNormal()) {
+      // TODO: fill out and send to normal template
+    } else {
+      // TODO: send user to default (normal?) template
+    }
+    
     model.addAttribute("files",
         storageService.loadAllFinishedFull()
             .map(path -> MvcUriComponentsBuilder
@@ -94,7 +111,6 @@ public class AppController {
    * @param model Model
    * @return "approvalForm" String HTML template.
    */
-  @SuppressWarnings("unchecked")
   @GetMapping("/approval")
   public String listFiles(Model model) {
 
@@ -106,22 +122,6 @@ public class AppController {
         storageService.loadAllReviewThumbs().map(path -> MvcUriComponentsBuilder
             .fromMethodName(AppController.class, "serveReviewThumb", path.getFileName().toString())
             .build().toUri().toString()).collect(Collectors.toList()));
-    
-    /*Stream<Path> firstFullFile = storageService.loadFirstReviewFull();
-    Stream<Path> firstFullThumb = storageService.loadAllReviewThumbs();
-    
-    //if (firstFullFile.isPresent()) {
-      model.addAttribute("reviewFiles",
-          firstFullFile.map(path -> MvcUriComponentsBuilder
-          .fromMethodName(AppController.class, "serveReviewFile", path.getFileName().toString())
-          .build().toUri().toString()));
-    //}
-    //if (firstFullThumb.isPresent()) {  
-      model.addAttribute("reviewThumbs",
-         firstFullThumb.map(path -> MvcUriComponentsBuilder
-              .fromMethodName(AppController.class, "serveReviewThumb", path.getFileName().toString())
-              .build().toUri().toString()));
-    //}*/
 
     return "approvalForm";
   }
@@ -202,13 +202,14 @@ public class AppController {
    *         files collected.
    */
   @PostMapping("/contactInfo")
-  public String collectContactInfo(Model model, @RequestParam("contactInfo") String contactInfo) {
+  public String collectContactInfo(Model model, Device device,
+      @RequestParam("contactInfo") String contactInfo) {
 
     storeUserContactService.writeContactInfo(contactInfo);
 
     model.addAttribute("message", "Thank you for providing your contact information!");
 
-    return listUploadedFiles(model);
+    return listUploadedFiles(model, device);
   }
 
   /**
