@@ -12,11 +12,7 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.jpeg.JpegDirectory;
-<<<<<<< HEAD
-=======
-// import javax.activation.MimetypesFileTypeMap;
-// import java.io.File;
->>>>>>> exiftool
+
 
 /**
  * Share Moor
@@ -79,24 +75,21 @@ public class HelperClass {
   }
 
   /**
-<<<<<<< HEAD
-   * Given the filename without an extension, this method will search a defined location for a
-   * filename that matches it in that new directory. This method was designed to allow this program
-   * identify a full file by it's thumbnail photo, since they by convention have the same filename,
-   * but may have different file extensions and file paths.
+   * <<<<<<< HEAD Given the filename without an extension, this method will search a defined
+   * location for a filename that matches it in that new directory. This method was designed to
+   * allow this program identify a full file by it's thumbnail photo, since they by convention have
+   * the same filename, but may have different file extensions and file paths.
    * 
    * @param locationToSearch String is a directory that should contain a file to be searched for.
    * @param filenameWithoutExt String is a filename without the extension that will likely be found
    *        in the location defined by the first parameter.
    * @return filename with the extension of the file in the folder defined by the first parameter.
-=======
-   * Return the file name of a file with the extension when provided just a file name without the
-   * extension.
+   *         ======= Return the file name of a file with the extension when provided just a file
+   *         name without the extension.
    * 
    * @param locationToSearch
    * @param filenameWithoutExt
-   * @return filename with the extension
->>>>>>> exiftool
+   * @return filename with the extension >>>>>>> exiftool
    */
   public static String findFilenameWOExt(String locationToSearch, String filenameWithoutExt) {
     // String locaitonToSearch = locationToSearch; // Give your folderName
@@ -106,20 +99,15 @@ public class HelperClass {
 
       if (listFiles[i].isFile()) {
         String filename = getFilename(listFiles[i].getName());
-<<<<<<< HEAD
-=======
-        // String filename = listFiles[i].getName();
->>>>>>> exiftool
+
         String fileExt = getExtension(listFiles[i].getName());
         // Providing that the name has a match, and the overall length is as
         // expected, the file is a match. Return that one.
         if (filename.startsWith(filenameWithoutExt) && filename.length()
             + fileExt.length() == filenameWithoutExt.length() + fileExt.length()) {
-<<<<<<< HEAD
+
           System.out.println("found file" + " " + filename);
-=======
-          // System.out.println("found file" + " " + filename);
->>>>>>> exiftool
+
           return listFiles[i].getName();
         }
       }
@@ -127,7 +115,6 @@ public class HelperClass {
     return "";
   }
 
-<<<<<<< HEAD
   /**
    * String manipulation that is designed to clean up some extra characters added to Optional
    * parameters. This method will clean the "Optional[" from the beginning of the filePath, and the
@@ -159,8 +146,7 @@ public class HelperClass {
    * @throws MetadataException
    * @throws ImageProcessingException
    */
-=======
->>>>>>> exiftool
+
   public static ImageInformation readImageInformation(File imageFile)
       throws IOException, MetadataException, ImageProcessingException {
     Metadata metadata = ImageMetadataReader.readMetadata(imageFile);
@@ -179,7 +165,6 @@ public class HelperClass {
     return new ImageInformation(orientation, width, height);
   }
 
-<<<<<<< HEAD
   /**
    * Corrects an image's orientation. Used code from
    * https://stackoverflow.com/questions/5905868/how-to-rotate-jpeg-images-based-on-the-orientation-metadata
@@ -193,64 +178,30 @@ public class HelperClass {
    * @return bImg BufferedImage that may have had it's orientation corrected.
    */
   public static BufferedImage correctOrientation(BufferedImage bImg, ImageInformation info) {
-=======
-  // Look at http://chunter.tistory.com/143 for information or
-  // https://jdhao.github.io/2019/07/31/image_rotation_exif_info/
-  // Code came from
-  // https://stackoverflow.com/questions/5905868/how-to-rotate-jpeg-images-based-on-the-orientation-metadata
-  // but was modified for use in the context of this application.
-  public static BufferedImage CorrectOrientation(BufferedImage bImg, ImageInformation info) {
->>>>>>> exiftool
-
     switch (info.orientation) {
       case 1:
         System.out.println("Image correctly oriented. No action required. Case 1.");
         break;
       case 2: // Flip X
-<<<<<<< HEAD
-=======
         // bImg = Scalr.rotate(bImg, Rotation.FLIP_VERT);
         // t.scale(-1.0, 1.0);
         // t.translate(-info.width, 0);
->>>>>>> exiftool
         System.out.println("Image mirrored over y-axis. Not implemented. Case 2.");
         break;
       case 3: // PI rotation
         bImg = Scalr.rotate(bImg, Rotation.CW_180);
-<<<<<<< HEAD
         System.out.println("Rotated 180. Corrected with 180 deg rotation. Case 3.");
         break;
       case 4: // Flip Y
-        System.out.println("Image rotated 180, and mirrored over x-axis. Not implemented. Case 4.");
-        break;
-      case 5: // - PI/2 and Flip X
-=======
-        // t.translate(info.width, info.height);
-        // t.rotate(Math.PI);
-        // System.out.println("Request a PI rotation. Not implemented. Case 3.");
-        System.out.println("Rotated 180. Corrected with 180 deg rotation. Case 3.");
-        break;
-      case 4: // Flip Y
-        // bImg = Scalr.rotate(bImg, Rotation.FLIP_HORZ);
-        // t.scale(1.0, -1.0);
-        // t.translate(0, -info.height);
         System.out.println("Image rotated 180, and mirrored over x-axis. Not implemented. Case 4.");
         break;
       case 5: // - PI/2 and Flip X
         // t.rotate(-Math.PI / 2);
         // t.scale(-1.0, 1.0);
->>>>>>> exiftool
-        System.out.println("Image rotated 270, and mirrored over x-axis. Not implemented. Case 5.");
+        System.out.println("Rotated 180. Corrected with 180 deg rotation. Case 3.");
         break;
       case 6: // -PI/2 and -width
         bImg = Scalr.rotate(bImg, Rotation.CW_90);
-<<<<<<< HEAD
-        System.out.println("Image rotated 270. Corrected with 90 deg rotation. Case 6.");
-        break;
-      case 7: // PI/2 and Flip
-=======
-        // t.translate(info.height, 0);
-        // t.rotate(Math.PI / 2);
         System.out.println("Image rotated 270. Corrected with 90 deg rotation. Case 6.");
         break;
       case 7: // PI/2 and Flip
@@ -258,23 +209,17 @@ public class HelperClass {
         // t.translate(-info.height, 0);
         // t.translate(0, info.width);
         // t.rotate(3 * Math.PI / 2);
->>>>>>> exiftool
         System.out.println("Image rotated 90, and mirrored over x-axis. Not implemented. Case 7.");
         break;
       case 8: // PI / 2
-        bImg = Scalr.rotate(bImg, Rotation.CW_270);
-<<<<<<< HEAD
-=======
         // t.translate(0, info.width);
         // t.rotate(3 * Math.PI / 2);
->>>>>>> exiftool
+        bImg = Scalr.rotate(bImg, Rotation.CW_270);
         System.out.println("Image rotated 90. Corrected with 270 deg rotation. Case 8.");
         break;
     }
     return bImg;
   }
-<<<<<<< HEAD
-=======
 
   /*
    * public static boolean IsThisFileAnImage(File f) { String mimetype = new
@@ -282,5 +227,5 @@ public class HelperClass {
    * (type.equals("image")) System.out.println("It's an image"); else
    * System.out.println("It's NOT an image"); }
    */
->>>>>>> exiftool
+
 }

@@ -1,11 +1,7 @@
 package shareMoor.controller;
 
-<<<<<<< HEAD
-import java.util.Optional;
-=======
 import java.io.File;
-import java.io.IOException;
->>>>>>> exiftool
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
