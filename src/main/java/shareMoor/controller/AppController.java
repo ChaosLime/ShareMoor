@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shareMoor.domain.ConfigHandler;
-import shareMoor.domain.CrossPlatformTools;
 import shareMoor.services.ApprovalService;
 import shareMoor.services.StorageProperties;
 import shareMoor.services.StorageService;
@@ -232,7 +231,7 @@ public class AppController {
     String file = "1.jpg";
     String filePath = "/home/nick/demo/";
     String status = "public";
-    CrossPlatformTools.setUpExifToolCall(assestDir, filePath, file, status);
+    // CrossPlatformTools.setUpExifToolCall(assestDir, filePath, file, status);
 
     return "qrcodes";
   }
