@@ -3,9 +3,7 @@
 //https://github.com/spring-guides/gs-uploading-files -->
 <html xmlns:th="https://www.thymeleaf.org">
 <body>
-<div th:each="assest : ${page}">
-<a th:href=${assest}>Go To Share Page</a>
-</div>
+<a href="/share">Go To Share Page</a>
 	<div th:if="${message}">
 		<h2 th:text="${message}"></h2>
 	</div>

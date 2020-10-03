@@ -102,10 +102,12 @@ public class AppController {
                 .build().toUri().toString())
             .collect(Collectors.toList()));
 
-    String fullAddr = ConfigHandler.getFullAddress().toString();
-    String sharePath = fullAddr + "/share";
+    
+    /*String fullAddr = ConfigHandler.getFullAddress().toString();
+    //String sharePath = fullAddr + "/share";
+    String sharePath = "qrCodes";
     model.addAttribute("page", sharePath);
-
+    */
     return "uploadForm";
   }
 
@@ -212,6 +214,12 @@ public class AppController {
   @GetMapping("/share")
   public String displayQRcodes(Model model) {
 
+    //Resource file2 = storageService.loadAsResourceAssest("wifiQR.png");
+    
+    return "qrcodes";
+    
+    
+    /*
     String result = "";
     String fullAddr = ConfigHandler.getFullAddress().toString();
     String assestsPath = fullAddr + "/assests/";
@@ -235,6 +243,7 @@ public class AppController {
     CrossPlatformTools.setUpExifToolCall(assestDir, filePath, file, status);
 
     return "qrcodes";
+    */
   }
 
   /**

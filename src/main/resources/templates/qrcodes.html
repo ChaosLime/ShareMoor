@@ -14,13 +14,15 @@
 
 
 <h1>Wifi:</h1>
-<div th:each="assest : ${wifi}">
+<!-- <div th:each="assest : ${wifi}">
 <img th:src="${assest}">
-</div>
+</div>-->
+<img th:src="@{assests/wifiQR.png}"/>
 <h1>Site QR code:</h1>
-<div th:each="assest : ${siteLink}">
+<!-- <div th:each="assest : ${siteLink}">
 <img th:src="${assest}">
-</div>
+</div>-->
+<img th:src="@{assests/websiteQR.png}"/>
 
 </body>
 </html>
