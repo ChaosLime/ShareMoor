@@ -85,15 +85,15 @@ public class CrossPlatformTools {
     String program = "";
 
     if (OS == "Linux" || OS == "MacOs" || OS == "Other") {
-      programPath = "";
-      program = "exiftool";
+      program = "Image-ExifTool-12.06/exiftool.pl";
     }
     if (OS == "Windows") {
       program = "exiftool.exe";
     }
     cmd = programPath + program + " -b -createdate " + filePath + file;
+    System.out.println(cmd);
     String createDate = callSystemProgram(cmd);
-    cmd = programPath + program + " -q -all= " + filePath + file;
+    cmd = "perl " + programPath + program + " -q -all= " + filePath + file;
     callSystemProgram(cmd);
 
     if (createDate.equals("")) {
