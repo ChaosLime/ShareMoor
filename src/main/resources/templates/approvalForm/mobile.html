@@ -2,8 +2,30 @@
 //https://spring.io/guides/gs/uploading-files/
 //https://github.com/spring-guides/gs-uploading-files -->
 <html xmlns:th="https://www.thymeleaf.org">
+<link href="/css/mobile.css" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+	<title>Share Moor - Approval</title>
+</head>
+	<h1 class="logo">Share Moor</h1>
+<header>
+
+	<!--Be sure to get a logo into assets if we decide to use one?
+	If so, remove header of logo name
+	<img src="/assets/logo.png" alt="logo" class="logo"> -->
+
+	<nav>
+		<ul>
+			<li><a href="/welcome">Welcome</a></li>
+			<li><a href="/">Upload</a></li>
+			<li><a href="/share">Share</a></li>      
+			<li><a href="/about">About</a></li>
+		</ul>
+	</nav>
+</header>
 <body>
-	<h1>Approval Page</h1>
+	<h1 class="center">Approval Page</h1>
 	<div th:if="${message}">
 		<h2 th:text="${message}"></h2>
 	</div>
@@ -11,20 +33,25 @@
 	<div th:each="file,iter : ${reviewFiles}">
 		<th:block th:if="${iter.index == 0}">
 			<form method="POST" action="/approval">
-
-				<button type="submit" name="approvedFilename" th:value="${file}">Approve</button>
+	
 				<a th:href="${file}"> <!-- <span th:text="${iter.index}"></span>-->
 					<span th:each="file2,iter2 : ${reviewThumbs}"> <th:block
 							th:if="${iter2.index == iter.index}">
-							<img th:src="${file2}" />
+							<img th:src="${file2}" class="approveThumb"/>
 							<!-- <span th:text="${iter.index}"></span>-->
 						</th:block>
 				</span>
 				</a>
-				<button type="submit" name="deniedFilename" th:value="${file}">Deny</button>
-
+				<div class="center">
+					<button type="submit" name="approvedFilename" th:value="${file}" class="approvalBtn">Approve</button>
+					<button type="submit" name="deniedFilename" th:value="${file}" class="denyBtn">Deny</button>
+				</div>
 			</form>
 		</th:block>
 	</div>
-</body>
+	
+</body><br><br>
+<hr>
+<footer class="center">Share Moor, A privacy respecting file sharing tool.<br>[Mobile page]</footer>
+
 </html>

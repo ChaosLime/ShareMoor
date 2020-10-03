@@ -15,12 +15,9 @@
 	<h1 class="logo">Share Moor</h1>
 	<nav>
 		<ul>
-			<li><a href="/">Welcome</a></li>
+			<li><a href="/welcome">Welcome</a></li>
 			<li><a href="/">Upload</a></li>
-			<li>
-				<div th:each="assest : ${page}">
-					<a th:href=${assest}>Share</a></div>
-				</li>      
+			<li><a href="/share">Share</a></li>
 			<li><a href="/about">About</a></li>
 		</ul>
 	</nav>
@@ -30,17 +27,21 @@
 <div class="container center">
 	<div class="center">
 		<h1>Wifi:</h1>
-		<div th:each="assest : ${wifi}">
-		<img th:src="${assest}">
-		</div>
+
+		<img th:src="@{assests/wifiQR.png}"/>
+		<br>
+
 		[TODO: put link here]
 		<h1>Site QR code:</h1>
-		<div th:each="assest : ${siteLink}">
-		<img th:src="${assest}">
-		</div>
+		
+		<img th:src="@{assests/websiteQR.png}"/>
+		<br>
+
 		[TODO: put link here]
 	</div>
 </div>
 
 </body>
+<hr>
+<footer class="center">Share Moor, A privacy respecting file sharing tool.<br>[Normal page]</footer>
 </html>

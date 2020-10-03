@@ -17,12 +17,9 @@
 
 	<nav>
 		<ul>
-			<li><a href="/">Welcome</a></li>
+			<li><a href="/welcome">Welcome</a></li>
 			<li><a href="/">Upload</a></li>
-			<li>
-				<div th:each="assest : ${page}">
-					<a th:href=${assest}>Share</a></div>
-				</li>      
+			<li><a href="/share">Share</a></li>      
 			<li><a href="/about">About</a></li>
 		</ul>
 	</nav>

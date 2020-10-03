@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import shareMoor.domain.ConfigHandler;
 import shareMoor.services.ApprovalService;
 import shareMoor.services.StorageProperties;
 import shareMoor.services.StorageService;
@@ -76,7 +75,7 @@ public class AppController {
   @RequestMapping("/")
   public String listUploadedFiles(Model model, Device device) {
 
-    System.out.println(device.toString());
+    // System.out.println(device.toString());
 
     model.addAttribute("files",
         storageService.loadAllFinishedFull()
@@ -90,10 +89,6 @@ public class AppController {
                 .fromMethodName(AppController.class, "serveThumb", path.getFileName().toString())
                 .build().toUri().toString())
             .collect(Collectors.toList()));
-
-    // For navigation bar.
-    model.addAttribute("page", "share");
-
 
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
@@ -126,8 +121,7 @@ public class AppController {
             .fromMethodName(AppController.class, "serveReviewThumb", path.getFileName().toString())
             .build().toUri().toString()).collect(Collectors.toList()));
 
-    System.out.println(device.toString());
-
+    // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
       htmlPage = "/approvalForm/mobile";
@@ -221,23 +215,6 @@ public class AppController {
   @GetMapping("/share")
   public String displayQRcodes(Model model, Device device) {
 
-
-
-    String result = "";
-    String fullAddr = ConfigHandler.getFullAddress().toString();
-    String assestsPath = fullAddr + "/assests/";
-    String sharePath = fullAddr + "/share";
-
-    model.addAttribute("page", sharePath);
-
-    String websiteQRCodeName = "wifiQR.png";
-    result = assestsPath + websiteQRCodeName;
-    model.addAttribute("wifi", result);
-
-    String siteQRCodeName = "websiteQR.png";
-    result = assestsPath + siteQRCodeName;
-    model.addAttribute("siteLink", result);
-
     // TODO: remove, used for testing Exiftool. Be sure to abstract to a service.
     String assestDir = StorageProperties.getAssestsLocation().toString() + File.separator;
     String file = "1.jpg";
@@ -245,7 +222,7 @@ public class AppController {
     String status = "public";
     // CrossPlatformTools.setUpExifToolCall(assestDir, filePath, file, status);
 
-    System.out.println(device.toString());
+    // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
       htmlPage = "/share/mobile";
@@ -253,6 +230,38 @@ public class AppController {
       htmlPage = "/share/normal";
     } else {
       htmlPage = "/share/normal";
+    }
+    return htmlPage;
+
+  }
+
+  @GetMapping("/about")
+  public String displayAbout(Model model, Device device) {
+
+    // System.out.println(device.toString());
+    String htmlPage = "";
+    if (device.isMobile() || device.isTablet()) {
+      htmlPage = "/about/mobile";
+    } else if (device.isNormal()) {
+      htmlPage = "/about/normal";
+    } else {
+      htmlPage = "/about/normal";
+    }
+    return htmlPage;
+
+  }
+
+  @GetMapping("/welcome")
+  public String displayWelcome(Model model, Device device) {
+
+    // System.out.println(device.toString());
+    String htmlPage = "";
+    if (device.isMobile() || device.isTablet()) {
+      htmlPage = "/welcome/mobile";
+    } else if (device.isNormal()) {
+      htmlPage = "/welcome/normal";
+    } else {
+      htmlPage = "/welcome/normal";
     }
     return htmlPage;
 

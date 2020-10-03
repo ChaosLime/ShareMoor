@@ -2,19 +2,16 @@
 //https://spring.io/guides/gs/uploading-files/
 //https://github.com/spring-guides/gs-uploading-files -->
 <html xmlns:th="https://www.thymeleaf.org">
-<link href="/css/mobile.css" rel="stylesheet">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/css/normal.css" rel="stylesheet">
 <head>
-
-	<title>Share Moor - Share</title>
+	<title>Share Moor - Upload</title>
 </head>
-	<h1 class="logo">Share Moor</h1>
 <header>
 
 	<!--Be sure to get a logo into assets if we decide to use one?
 	If so, remove header of logo name
 	<img src="/assets/logo.png" alt="logo" class="logo"> -->
-
+	<h1 class="logo">Share Moor</h1>
 	<nav>
 		<ul>
 			<li><a href="/welcome">Welcome</a></li>
@@ -25,16 +22,12 @@
 	</nav>
 </header>
 <body>
-<div class="center">
-	<h1>Wifi:</h1>
-	<img th:src="@{assests/wifiQR.png}"/>
-			[TODO: put link here]
-	<h1>Site QR code:</h1>
-	<img th:src="@{assests/websiteQR.png}"/>
-			[TODO: put link here]
+<div class="container center">
+	<div class="center">
+	<h1>Welcome Page</h1>
 </div>
-
+</div>
 </body>
 <hr>
-<footer class="center">Share Moor, A privacy respecting file sharing tool.<br>[Mobile page]</footer>
+<footer class="center">Share Moor, A privacy respecting file sharing tool.<br>[Normal page]</footer>
 </html>
