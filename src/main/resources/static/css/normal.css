@@ -1,0 +1,166 @@
+@charset "UTF-8";
+
+/*
+Navigation CSS
+*/
+header {
+  background: #9999ff;
+}
+
+header::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.logo {
+  float: left;
+  padding-left: 10px;
+}
+
+nav {
+  float: left;
+  padding: 10px;
+
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  display: inline-block;
+  margin-left: 70px;
+  padding-top: 23px;
+
+  position: relative;
+}
+
+nav a {
+  color: #000;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: #000;
+}
+
+nav a::before {
+	content: '';
+	display: block;
+	height: 2px;
+	background-color: #000;
+	
+	position: absolute;
+	bottom: 0;
+	width: 0%;
+	
+	transition: all ease-in-out 250ms;
+}
+
+nav a:hover::before {
+  	width: 100%;
+}
+
+
+/*
+General CSS
+*/
+
+body {
+	margin: 0;
+	background: #e5e5e5;
+	font-family: 'Work Sans', sans-serif;
+	font-weight: 800;
+}
+
+.container {
+	min-width:500px;
+
+}
+
+.center {
+	margin: auto;
+	
+	width: 50%;
+}
+
+.nested-center {
+	margin-left: 25%;
+}
+
+.error{
+	color: red;
+	padding: 10px;
+	margin: 10px;
+}
+
+
+/*
+Thumbnails
+*/
+.grid {
+ 	display: grid;
+	grid-template-columns: repeat(auto-fill, 250px);
+	justify-content: center;
+	row-gap: 10px;
+	column-gap: 10px;
+ 	
+}
+
+.submit {
+	background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.submit:hover {
+	background-color:gray;
+}
+
+.custom-file-upload {
+ 	border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: 'Select files';
+  color: black;
+  display: inline-block;
+  
+  background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+  
+}
+
+input {
+	outline: none;
+}
+
+.email {
+	width: 50%;
+}
+

@@ -1,0 +1,83 @@
+<!-- Webpage came from the following places:
+//https://spring.io/guides/gs/uploading-files/
+//https://github.com/spring-guides/gs-uploading-files -->
+<html xmlns:th="https://www.thymeleaf.org">
+<link href="/css/normal.css" rel="stylesheet">
+<head>
+	<title>Share Moor - Upload</title>
+</head>
+<header>
+
+	<!--Be sure to get a logo into assets if we decide to use one?
+	If so, remove header of logo name
+	<img src="/assets/logo.png" alt="logo" class="logo"> -->
+	<h1 class="logo">Share Moor</h1>
+	<nav>
+		<ul>
+			<li><a href="/">Welcome</a></li>
+			<li><a href="/">Upload</a></li>
+			<li>
+				<div th:each="assest : ${page}">
+					<a th:href=${assest}>Share</a></div>
+				</li>      
+			<li><a href="/about">About</a></li>
+		</ul>
+	</nav>
+</header>
+
+<body>
+<div class="container center">
+	<div class="container center" th:if="${message}">
+		<h2 th:text="${message}"></h2>
+	</div>
+	<div class="container center">
+		
+		<form method="POST" enctype="multipart/form-data" action="/">
+			<div class="nested-center">
+			<br>
+			<label>Want to share Files? Upload them here!<br><br>
+			<input type="file" name="file" multiple="multiple" class="custom-file-input"/>
+			</label>
+			<span th:if="${errorMessage}" th:text="${errorMessage}" class="error">Error</span>
+			<br><br>
+			</div>
+			<input class="submit" type="submit" value="Upload" />
+		</form>
+	</div>
+	<hr>
+	<div class="container center">
+		<form method="POST" action="/contactInfo">
+				<h3>Please provide your email if you would like to be notified after the event to where you can obtain all of the events uploads.</h3>
+				<label class="nested-center">Contact Email: <br>
+				<input type="email" id="contactInfo" name="contactInfo" class="email nested-center">
+				</label>
+				<span th:if="${contactInfoErrorMessage}" th:text="${contactInfoErrorMessage}" class="error">
+				</span>
+				<br><br>
+			
+			<input class="submit" type="submit" value="Submit" />	
+		</form>
+	</div>
+	<hr>
+	<h3 class="nested-center">If you see anything you would like to keep,<br>select it to download it.</h3>
+	<hr>
+	<div class="container">
+		<div  class="grid">
+			<div th:each="file,iter : ${files}">
+				<a th:href="${file}">
+					<!-- <span th:text="${iter.index}"></span>-->
+					<span th:each="file2,iter2 : ${thumbs}">
+						 <th:block th:if="${iter2.index == iter.index}">
+							<img th:src="${file2}"/>
+							<!-- <span th:text="${iter.index}"></span>-->
+						</th:block>
+					</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+<hr>
+<footer class="center">Share Moor, A privacy respecting file sharing tool.<br>[Normal page]</footer>
+</html>

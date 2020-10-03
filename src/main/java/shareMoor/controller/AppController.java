@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shareMoor.domain.ConfigHandler;
-import shareMoor.domain.CrossPlatformTools;
 import shareMoor.services.ApprovalService;
 import shareMoor.services.StorageProperties;
 import shareMoor.services.StorageService;
@@ -79,16 +78,6 @@ public class AppController {
 
     System.out.println(device.toString());
 
-    if (device.isMobile()) {
-      // TODO: fill out and send to mobile template
-    } else if (device.isTablet()) {
-      // TODO: fill out and send to tablet template
-    } else if (device.isNormal()) {
-      // TODO: fill out and send to normal template
-    } else {
-      // TODO: send user to default (normal?) template
-    }
-
     model.addAttribute("files",
         storageService.loadAllFinishedFull()
             .map(path -> MvcUriComponentsBuilder
@@ -102,13 +91,20 @@ public class AppController {
                 .build().toUri().toString())
             .collect(Collectors.toList()));
 
-    
-    /*String fullAddr = ConfigHandler.getFullAddress().toString();
-    //String sharePath = fullAddr + "/share";
-    String sharePath = "qrCodes";
-    model.addAttribute("page", sharePath);
-    */
-    return "uploadForm";
+    // For navigation bar.
+    model.addAttribute("page", "share");
+
+
+    String htmlPage = "";
+    if (device.isMobile() || device.isTablet()) {
+      htmlPage = "/uploadForm/mobile";
+    } else if (device.isNormal()) {
+      htmlPage = "/uploadForm/normal";
+    } else {
+      htmlPage = "/uploadForm/normal";
+    }
+    return htmlPage;
+
   }
 
   /**
@@ -119,7 +115,7 @@ public class AppController {
    * @return "approvalForm" String HTML template.
    */
   @GetMapping("/approval")
-  public String listFiles(Model model) {
+  public String listFiles(Model model, Device device) {
 
     model.addAttribute("reviewFiles",
         storageService.loadAllReviewFull().map(path -> MvcUriComponentsBuilder
@@ -130,7 +126,18 @@ public class AppController {
             .fromMethodName(AppController.class, "serveReviewThumb", path.getFileName().toString())
             .build().toUri().toString()).collect(Collectors.toList()));
 
-    return "approvalForm";
+    System.out.println(device.toString());
+
+    String htmlPage = "";
+    if (device.isMobile() || device.isTablet()) {
+      htmlPage = "/approvalForm/mobile";
+    } else if (device.isNormal()) {
+      htmlPage = "/approvalForm/normal";
+    } else {
+      htmlPage = "/approvalForm/normal";
+    }
+    return htmlPage;
+
   }
 
   /**
@@ -212,14 +219,10 @@ public class AppController {
 
 
   @GetMapping("/share")
-  public String displayQRcodes(Model model) {
+  public String displayQRcodes(Model model, Device device) {
 
-    //Resource file2 = storageService.loadAsResourceAssest("wifiQR.png");
-    
-    return "qrcodes";
-    
-    
-    /*
+
+
     String result = "";
     String fullAddr = ConfigHandler.getFullAddress().toString();
     String assestsPath = fullAddr + "/assests/";
@@ -240,10 +243,19 @@ public class AppController {
     String file = "1.jpg";
     String filePath = "/home/nick/demo/";
     String status = "public";
-    CrossPlatformTools.setUpExifToolCall(assestDir, filePath, file, status);
+    // CrossPlatformTools.setUpExifToolCall(assestDir, filePath, file, status);
 
-    return "qrcodes";
-    */
+    System.out.println(device.toString());
+    String htmlPage = "";
+    if (device.isMobile() || device.isTablet()) {
+      htmlPage = "/share/mobile";
+    } else if (device.isNormal()) {
+      htmlPage = "/share/normal";
+    } else {
+      htmlPage = "/share/normal";
+    }
+    return htmlPage;
+
   }
 
   /**
