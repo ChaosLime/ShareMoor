@@ -1,0 +1,45 @@
+<!-- Webpage came from the following places:
+//https://spring.io/guides/gs/uploading-files/
+//https://github.com/spring-guides/gs-uploading-files -->
+<html xmlns:th="https://www.thymeleaf.org">
+<link href="/css/mobile.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+
+	<title>Share Moor - Share</title>
+</head>
+	<h1 class="logo">Share Moor</h1>
+<header>
+
+	<!--Be sure to get a logo into assets if we decide to use one?
+	If so, remove header of logo name
+	<img src="/assets/logo.png" alt="logo" class="logo"> -->
+
+	<nav>
+		<ul>
+			<li><a href="/">Welcome</a></li>
+			<li><a href="/">Upload</a></li>
+			<li>
+				<div th:each="assest : ${page}">
+					<a th:href=${assest}>Share</a></div>
+				</li>      
+			<li><a href="/about">About</a></li>
+		</ul>
+	</nav>
+</header>
+<body>
+<div class="center">
+	<h1>Wifi:</h1>
+	<div th:each="assest : ${wifi}">
+	<img th:src="${assest}">
+	</div>
+			[TODO: put link here]
+	<h1>Site QR code:</h1>
+	<div th:each="assest : ${siteLink}">
+	<img th:src="${assest}">
+	</div>
+			[TODO: put link here]
+</div>
+
+</body>
+</html>
