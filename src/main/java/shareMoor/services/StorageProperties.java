@@ -17,15 +17,15 @@ public class StorageProperties {
   private static String reviewThumbLocation = ConfigHandler.getSettingsDir("reviewThumb-dir");
   private static String finishedFullLocation = ConfigHandler.getSettingsDir("processedFull-dir");
   private static String finishedThumbLocation = ConfigHandler.getSettingsDir("processedThumb-dir");
-  // The assests Directory should always be in the same location relative to the project.
-  private static String assestsLocation = ".." + File.separator + "assests-dir";
+  // The assets Directory should always be in the same location relative to the project.
+  private static String assetsLocation = ".." + File.separator + "assests-dir";
 
   public static String getAssestsLocation() {
-    return assestsLocation;
+    return assetsLocation;
   }
 
   public static void setAssestsLocation(String assestsLocation) {
-    assestsLocation = assestsLocation;
+    StorageProperties.assetsLocation = assestsLocation;
   }
 
   public String getUploadLocation() {
@@ -33,7 +33,7 @@ public class StorageProperties {
   }
 
   public void setUploadLocation(String uploadLocation) {
-    this.uploadLocation = uploadLocation;
+    StorageProperties.uploadLocation = uploadLocation;
   }
 
   public String getDeniedLocation() {
@@ -41,7 +41,7 @@ public class StorageProperties {
   }
 
   public void setDeniedLocation(String deniedLocation) {
-    this.deniedLocation = deniedLocation;
+    StorageProperties.deniedLocation = deniedLocation;
   }
 
   public String getReviewThumbLocation() {
@@ -49,7 +49,7 @@ public class StorageProperties {
   }
 
   public void setReviewThumbLocation(String reviewThumbLocation) {
-    this.reviewThumbLocation = reviewThumbLocation;
+    StorageProperties.reviewThumbLocation = reviewThumbLocation;
   }
 
   public String getFinishedFullLocation() {
@@ -57,7 +57,7 @@ public class StorageProperties {
   }
 
   public void setFinishedFullLocation(String finishedFullLocation) {
-    this.finishedFullLocation = finishedFullLocation;
+    StorageProperties.finishedFullLocation = finishedFullLocation;
   }
 
   public String getFinishedThumbLocation() {
@@ -65,6 +65,6 @@ public class StorageProperties {
   }
 
   public void setFinishedThumbLocation(String finishedThumbLocation) {
-    this.finishedThumbLocation = finishedThumbLocation;
+    StorageProperties.finishedThumbLocation = finishedThumbLocation;
   }
 }

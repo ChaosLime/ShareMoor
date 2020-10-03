@@ -44,7 +44,7 @@ public class FileSystemStorageService implements StorageService {
     this.finishedThumbLocation = Paths.get(properties.getFinishedThumbLocation());
     this.needsReviewLocation = Paths.get(properties.getDeniedLocation());
     this.reviewThumbLocation = Paths.get(properties.getReviewThumbLocation());
-    this.assestsLocation = Paths.get(properties.getAssestsLocation());
+    this.assestsLocation = Paths.get(StorageProperties.getAssestsLocation());
   }
 
   @Override
@@ -266,41 +266,4 @@ public class FileSystemStorageService implements StorageService {
 
     return assestsLocation.resolve(filenameWithExt);
   }
-
-  @Override
-  public Stream<Path> loadAllFull() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Stream<Path> loadAllThumbs() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Path loadFull(String filename) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Path loadThumb(String filename) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Resource loadAsResourceFull(String filename) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Resource loadAsResourceThumbs(String filename) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
 }

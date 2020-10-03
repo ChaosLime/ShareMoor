@@ -91,9 +91,9 @@ public class AppController {
                 .build().toUri().toString())
             .collect(Collectors.toList()));
 
-    String fullAddr = ConfigHandler.getFullAddress().toString();
-    String sharePath = fullAddr + "/share";
-    model.addAttribute("page", sharePath);
+    // For navigation bar.
+    model.addAttribute("page", "share");
+
 
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
@@ -104,8 +104,6 @@ public class AppController {
       htmlPage = "/uploadForm/normal";
     }
     return htmlPage;
-
-
 
   }
 
@@ -223,6 +221,8 @@ public class AppController {
   @GetMapping("/share")
   public String displayQRcodes(Model model, Device device) {
 
+
+
     String result = "";
     String fullAddr = ConfigHandler.getFullAddress().toString();
     String assestsPath = fullAddr + "/assests/";
@@ -255,6 +255,7 @@ public class AppController {
       htmlPage = "/share/normal";
     }
     return htmlPage;
+
   }
 
   /**

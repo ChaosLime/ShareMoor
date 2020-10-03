@@ -13,23 +13,23 @@ public interface StorageService {
 
   String store(MultipartFile file);
 
-  Stream<Path> loadAllFull();
+  //Stream<Path> loadAllFull();
 
-  Stream<Path> loadAllThumbs();
+  //Stream<Path> loadAllThumbs();
 
-  Path loadFull(String filename);
+  //Path loadFull(String filename);
 
-  Path loadThumb(String filename);
+  //Path loadThumb(String filename);
 
   Path loadAssest(String filename);
 
   Resource loadAsResourceAssest(String filename);
 
-  Resource loadAsResourceFull(String filename);
+  //Resource loadAsResourceFull(String filename);
 
   void deleteAll();
 
-  Resource loadAsResourceThumbs(String filename);
+  //Resource loadAsResourceThumbs(String filename);
 
   Stream<Path> loadAllFinishedFull();
 
