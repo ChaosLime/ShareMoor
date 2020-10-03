@@ -80,17 +80,18 @@ body {
 
 .container {
 	min-width:500px;
+}
 
+.nested-container {
+	min-width: 250px;
 }
 
 .center {
-	margin: auto;
-	
-	width: 50%;
+	text-align: center;
 }
 
 .nested-center {
-	margin-left: 25%;
+	text-align: center;
 }
 
 .error{
@@ -141,7 +142,6 @@ Thumbnails
   content: 'Select files';
   color: black;
   display: inline-block;
-  
   background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
   border: 1px solid #999;
   border-radius: 3px;
@@ -161,6 +161,54 @@ input {
 }
 
 .email {
-	width: 50%;
+	width: 300px;
 }
 
+.approveThumb {
+	width: 75%;
+	
+	
+}
+
+.approvalBtn {
+  width: 15%;
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  margin: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  position:absolute;
+  left: 25%;
+}
+
+.approvalBtn:hover {
+	background-color:gray;
+}
+
+.denyBtn {
+  width: 15%;
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  margin: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  position:absolute;
+  right: 25%;
+}
+
+.denyBtn:hover {
+	background-color:gray;
+}
+
+.containerPrompt {
+	width: 500px;
+	text-align: center;
+}
