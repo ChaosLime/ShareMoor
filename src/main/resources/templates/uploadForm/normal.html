@@ -14,12 +14,9 @@
 	<h1 class="logo">Share Moor</h1>
 	<nav>
 		<ul>
-			<li><a href="/">Welcome</a></li>
+			<li><a href="/welcome">Welcome</a></li>
 			<li><a href="/">Upload</a></li>
-			<li>
-				<div th:each="assest : ${page}">
-					<a th:href=${assest}>Share</a></div>
-				</li>      
+			<li><a href="/share">Share</a></li>
 			<li><a href="/about">About</a></li>
 		</ul>
 	</nav>
@@ -33,7 +30,7 @@
 	<div class="container center">
 		
 		<form method="POST" enctype="multipart/form-data" action="/">
-			<div class="nested-center">
+			<div class="center">
 			<br>
 			<label>Want to share Files? Upload them here!<br><br>
 			<input type="file" name="file" multiple="multiple" class="custom-file-input"/>
@@ -47,9 +44,12 @@
 	<hr>
 	<div class="container center">
 		<form method="POST" action="/contactInfo">
-				<h3>Please provide your email if you would like to be notified after the event to where you can obtain all of the events uploads.</h3>
-				<label class="nested-center">Contact Email: <br>
-				<input type="email" id="contactInfo" name="contactInfo" class="email nested-center">
+				<h3>Please provide your email if you would like to be notified
+				 after the event to where you can
+				  obtain all of the events uploads.
+				</h3>
+				<label class="center">Contact Email: <br>
+				<input type="email" id="contactInfo" name="contactInfo" class="email center">
 				</label>
 				<span th:if="${contactInfoErrorMessage}" th:text="${contactInfoErrorMessage}" class="error">
 				</span>
@@ -59,7 +59,7 @@
 		</form>
 	</div>
 	<hr>
-	<h3 class="nested-center">If you see anything you would like to keep,<br>select it to download it.</h3>
+	<h3 class="center">If you see anything you would like to keep,<br>select it to download it.</h3>
 	<hr>
 	<div class="container">
 		<div  class="grid">
