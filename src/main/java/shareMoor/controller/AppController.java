@@ -92,11 +92,11 @@ public class AppController {
 
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
-      htmlPage = "/uploadForm/mobile";
+      htmlPage = "uploadForm/mobile";
     } else if (device.isNormal()) {
-      htmlPage = "/uploadForm/normal";
+      htmlPage = "uploadForm/normal";
     } else {
-      htmlPage = "/uploadForm/normal";
+      htmlPage = "uploadForm/normal";
     }
     return htmlPage;
 
@@ -124,11 +124,11 @@ public class AppController {
     // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
-      htmlPage = "/approvalForm/mobile";
+      htmlPage = "approvalForm/mobile";
     } else if (device.isNormal()) {
-      htmlPage = "/approvalForm/normal";
+      htmlPage = "approvalForm/normal";
     } else {
-      htmlPage = "/approvalForm/normal";
+      htmlPage = "approvalForm/normal";
     }
     return htmlPage;
 
@@ -225,11 +225,11 @@ public class AppController {
     // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
-      htmlPage = "/share/mobile";
+      htmlPage = "share/mobile";
     } else if (device.isNormal()) {
-      htmlPage = "/share/normal";
+      htmlPage = "share/normal";
     } else {
-      htmlPage = "/share/normal";
+      htmlPage = "share/normal";
     }
     return htmlPage;
 
@@ -241,11 +241,11 @@ public class AppController {
     // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
-      htmlPage = "/about/mobile";
+      htmlPage = "about/mobile";
     } else if (device.isNormal()) {
-      htmlPage = "/about/normal";
+      htmlPage = "about/normal";
     } else {
-      htmlPage = "/about/normal";
+      htmlPage = "about/normal";
     }
     return htmlPage;
 
@@ -257,11 +257,11 @@ public class AppController {
     // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
-      htmlPage = "/welcome/mobile";
+      htmlPage = "welcome/mobile";
     } else if (device.isNormal()) {
-      htmlPage = "/welcome/normal";
+      htmlPage = "welcome/normal";
     } else {
-      htmlPage = "/welcome/normal";
+      htmlPage = "welcome/normal";
     }
     return htmlPage;
 
