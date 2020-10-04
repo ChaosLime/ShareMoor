@@ -42,5 +42,7 @@ public interface StorageService {
   Resource loadAsResourceReviewFull(String filename);
 
   Resource loadAsResourceReviewThumbs(String filename);
+  
+  String getMimeType(String filename);
 
 }
