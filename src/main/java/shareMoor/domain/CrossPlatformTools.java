@@ -78,22 +78,21 @@ public class CrossPlatformTools {
    * @param file
    * @param status
    */
-  public static void setUpExifToolCall(String programPath, String filePath, String file,
-      String status) {
+  public static void setUpExifToolCall(String programPath, String filePath, String status) {
     String OS = getOS().toString();
     String cmd = "";
     String program = "";
 
     if (OS == "Linux" || OS == "MacOs" || OS == "Other") {
-      program = "Image-ExifTool-12.06/exiftool.pl";
+      program = "/Image-ExifTool-12.06/exiftool.pl";
     }
     if (OS == "Windows") {
       program = "exiftool.exe";
     }
-    cmd = programPath + program + " -b -createdate " + filePath + file;
+    cmd = programPath + program + " -b -createdate " + filePath;
     System.out.println(cmd);
     String createDate = callSystemProgram(cmd);
-    cmd = "perl " + programPath + program + " -q -all= " + filePath + file;
+    cmd = "perl " + programPath + program + " -q -all= " + filePath;
     callSystemProgram(cmd);
 
     if (createDate.equals("")) {
@@ -104,13 +103,13 @@ public class CrossPlatformTools {
     }
     createDate = createDate.replace(" ", "\b");
 
-    cmd = programPath + program + " -createdate=" + createDate + " " + filePath + file;
+    cmd = programPath + program + " -createdate=" + createDate + " " + filePath;
     callSystemProgram(cmd);
 
-    cmd = programPath + program + " -q -Keywords=" + status + " " + filePath + file;
+    cmd = programPath + program + " -q -Keywords=" + status + " " + filePath;
     callSystemProgram(cmd);
 
-    cmd = programPath + program + " -q -delete_original! " + filePath + file;
+    cmd = programPath + program + " -q -delete_original! " + filePath;
     callSystemProgram(cmd);
 
   }
