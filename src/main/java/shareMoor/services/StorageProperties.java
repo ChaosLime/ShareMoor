@@ -18,7 +18,7 @@ public class StorageProperties {
   private static String finishedFullLocation = ConfigHandler.getSettingsDir("processedFull-dir");
   private static String finishedThumbLocation = ConfigHandler.getSettingsDir("processedThumb-dir");
   // The assets Directory should always be in the same location relative to the project.
-  private static String assetsLocation = ".." + File.separator + "assests-dir";
+  private static String assetsLocation = ".." + File.separator + "assests-dir" + File.separator;
 
   public static String getAssestsLocation() {
     return assetsLocation;

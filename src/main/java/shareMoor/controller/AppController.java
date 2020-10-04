@@ -1,6 +1,5 @@
 package shareMoor.controller;
 
-import java.io.File;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shareMoor.domain.HelperClass;
 import shareMoor.services.ApprovalService;
-import shareMoor.services.StorageProperties;
+import shareMoor.services.ExifMetaDataService;
 import shareMoor.services.StorageService;
 import shareMoor.services.StoreUserContactService;
 import shareMoor.services.ThumbnailService;
@@ -50,6 +49,8 @@ public class AppController {
 
   private final ApprovalService approvalService;
 
+  private final ExifMetaDataService exifService;
+
   /**
    * Constructor for this controller. Initializes an instance of all services used in this file.
    * 
@@ -61,11 +62,12 @@ public class AppController {
   @Autowired
   public AppController(StorageService storageService,
       StoreUserContactService storeUserContactService, ThumbnailService thumbnailService,
-      ApprovalService approvalService) {
+      ApprovalService approvalService, ExifMetaDataService exifService) {
     this.storageService = storageService;
     this.storeUserContactService = storeUserContactService;
     this.thumbnailService = thumbnailService;
     this.approvalService = approvalService;
+    this.exifService = exifService;
   }
 
   /**
@@ -222,13 +224,6 @@ public class AppController {
   @GetMapping("/share")
   public String displayQRcodes(Model model, Device device) {
 
-    // TODO: remove, used for testing Exiftool. Be sure to abstract to a service.
-    String assestDir = StorageProperties.getAssestsLocation().toString() + File.separator;
-    String file = "1.jpg";
-    String filePath = "/home/nick/demo/";
-    String status = "public";
-    // CrossPlatformTools.setUpExifToolCall(assestDir, filePath, file, status);
-
     // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
@@ -308,6 +303,9 @@ public class AppController {
       RedirectAttributes redirectAttributes) {
 
     String successMessage = "You successfully uploaded your selected files!";
+    // TODO: be sure that the 'status' here will be website adjustable, defaulting to public for
+    // testing.
+    String status = "public";
 
     for (int i = 0; i < file.length; i++) {
       try {
@@ -318,6 +316,10 @@ public class AppController {
         if (storedFileLocation != null) {
           System.out.println(storedFileLocation);
           thumbnailService.createThumbnail(storedFileLocation);
+
+          exifService.scrubFile(storedFileLocation, status);
+        } else {
+          successMessage = "Uploaded Failed.";
         }
 
       } catch (Exception e) {
