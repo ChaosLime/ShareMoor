@@ -78,7 +78,7 @@ public class ThumbnailService {
     }
 
     try {
-      img = Scalr.resize(img, Method.AUTOMATIC, 250);
+      img = Scalr.resize(img, Method.AUTOMATIC, 400);
     } catch (Exception e) {
       throw new StorageException("Unable to scale image.", e);
     }

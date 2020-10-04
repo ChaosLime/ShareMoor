@@ -4,7 +4,7 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <link href="/css/normal.css" rel="stylesheet">
 <head>
-	<title>Share Moor - Upload</title>
+<title>Share Moor - Upload</title>
 </head>
 <header>
 
@@ -16,39 +16,40 @@
 		<ul>
 			<li><a href="/welcome">Welcome</a></li>
 			<li><a href="/">Upload</a></li>
-			<li><a href="/share">Share</a></li>      
+			<li><a href="/share">Share</a></li>
 			<li><a href="/about">About</a></li>
 		</ul>
 	</nav>
 </header>
 <body>
-<div class="container center">
-<div class="nested-container">
-	<h1 >Approval Page</h1>
-	<div th:if="${message}">
-		<h2 th:text="${message}"></h2>
-	</div>
+	<div class="container center">
+		<div class="nested-container">
+			<h1>Approval Page</h1>
+			<div th:if="${message}">
+				<h2 th:text="${message}"></h2>
+			</div>
 
-	<div th:each="file,iter : ${reviewFiles}">
-		<th:block th:if="${iter.index == 0}">
-			<form method="POST" action="/approval">
-	
-				<a th:href="${file}"> <!-- <span th:text="${iter.index}"></span>-->
-					<span th:each="file2,iter2 : ${reviewThumbs}"> <th:block
-							th:if="${iter2.index == iter.index}">
-							<img th:src="${file2}" class="approveThumb"/>
-							<!-- <span th:text="${iter.index}"></span>-->
-						</th:block>
-				</span>
-				</a>
-				<div class="container">
-				<button type="submit" name="approvedFilename" th:value="${file}" class="approvalBtn">Approve</button>
-				<button type="submit" name="deniedFilename" th:value="${file}" class="denyBtn">Deny</button>
-				</div>
-			</form>
-		</th:block>
+			<div th:each="file,iter : ${reviewFiles}">
+				<th:block th:if="${iter.index == 0}">
+					<form method="POST" action="/approval">
+						<div class="container">
+							<button type="submit" name="approvedFilename" th:value="${file}"
+								class="approvalBtn">Approve</button>
+							<button type="submit" name="deniedFilename" th:value="${file}"
+								class="denyBtn">Deny</button>
+						</div>
+						<a th:href="${file}"> <!-- <span th:text="${iter.index}"></span>-->
+							<span th:each="file2,iter2 : ${reviewThumbs}"> <th:block
+									th:if="${iter2.index == iter.index}">
+									<img th:src="${file2}" class="approveThumb" />
+									<!-- <span th:text="${iter.index}"></span>-->
+								</th:block>
+						</span>
+						</a>
+					</form>
+				</th:block>
+			</div>
+		</div>
 	</div>
-	</div>
-</div>
 </body>
 </html>

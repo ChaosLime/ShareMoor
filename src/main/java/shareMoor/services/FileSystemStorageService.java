@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileTime;
+import java.util.Comparator;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -92,9 +95,11 @@ public class FileSystemStorageService implements StorageService {
   @Override
   public Stream<Path> loadAllFinishedThumbs() {
     try {
+      Comparator comp = Comparator.comparingLong(File::lastModified);
       return Files.walk(this.finishedThumbLocation, 1)
           .filter(path -> !path.equals(this.finishedThumbLocation))
-          .map(this.finishedThumbLocation::relativize);
+          .map(this.finishedThumbLocation::relativize).sorted(new SortByDateFinishedThumb());
+
     } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
@@ -104,9 +109,10 @@ public class FileSystemStorageService implements StorageService {
   @Override
   public Stream<Path> loadAllReviewThumbs() {
     try {
+      Comparator comp = Comparator.comparingLong(File::lastModified);
       return Files.walk(this.reviewThumbLocation, 1)
           .filter(path -> !path.equals(this.reviewThumbLocation))
-          .map(this.reviewThumbLocation::relativize);
+          .map(this.reviewThumbLocation::relativize).sorted(new SortByDateReviewThumb());
     } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
@@ -116,9 +122,10 @@ public class FileSystemStorageService implements StorageService {
   @Override
   public Stream<Path> loadAllFinishedFull() {
     try {
+      Comparator comp = Comparator.comparingLong(File::lastModified);
       return Files.walk(this.finishedFullLocation, 1)
           .filter(path -> !path.equals(this.finishedFullLocation))
-          .map(this.finishedFullLocation::relativize);
+          .map(this.finishedFullLocation::relativize).sorted(new SortByDateFinishedFull());
     } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
@@ -128,12 +135,91 @@ public class FileSystemStorageService implements StorageService {
   @Override
   public Stream<Path> loadAllReviewFull() {
     try {
+      // SortByDate comp = Comparator.comparingLong(Stream<Path>::lastModified);
       return Files.walk(this.uploadLocation, 1).filter(path -> !path.equals(this.uploadLocation))
-          .map(this.uploadLocation::relativize);
+          .map(this.uploadLocation::relativize).sorted(new SortByDateReviewFull());
     } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
 
+  }
+
+  private class SortByDateReviewFull implements Comparator<Path> {
+    public int compare(Path path1, Path path2) {
+      FileTime fileTime1 = null;
+      FileTime fileTime2 = null;
+      Path path1Full = Paths.get(uploadLocation.toString() + File.separator + path1.toString());
+      Path path2Full = Paths.get(uploadLocation.toString() + File.separator + path2.toString());
+
+      try {
+        fileTime1 = Files.getLastModifiedTime(path1Full, LinkOption.NOFOLLOW_LINKS);
+        fileTime2 = Files.getLastModifiedTime(path2Full, LinkOption.NOFOLLOW_LINKS);
+      } catch (IOException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+      return fileTime1.compareTo(fileTime2) * -1;
+    }
+  }
+
+  private class SortByDateReviewThumb implements Comparator<Path> {
+    public int compare(Path path1, Path path2) {
+      FileTime fileTime1 = null;
+      FileTime fileTime2 = null;
+      Path path1Full =
+          Paths.get(reviewThumbLocation.toString() + File.separator + path1.toString());
+      Path path2Full =
+          Paths.get(reviewThumbLocation.toString() + File.separator + path2.toString());
+
+      try {
+        fileTime1 = Files.getLastModifiedTime(path1Full, LinkOption.NOFOLLOW_LINKS);
+        fileTime2 = Files.getLastModifiedTime(path2Full, LinkOption.NOFOLLOW_LINKS);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      return fileTime1.compareTo(fileTime2) * -1;
+    }
+  }
+
+  private class SortByDateFinishedFull implements Comparator<Path> {
+    public int compare(Path path1, Path path2) {
+      FileTime fileTime1 = null;
+      FileTime fileTime2 = null;
+      Path path1Full =
+          Paths.get(finishedFullLocation.toString() + File.separator + path1.toString());
+      Path path2Full =
+          Paths.get(finishedFullLocation.toString() + File.separator + path2.toString());
+
+      try {
+        fileTime1 = Files.getLastModifiedTime(path1Full, LinkOption.NOFOLLOW_LINKS);
+        fileTime2 = Files.getLastModifiedTime(path2Full, LinkOption.NOFOLLOW_LINKS);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      return fileTime1.compareTo(fileTime2) * -1;
+    }
+  }
+
+  private class SortByDateFinishedThumb implements Comparator<Path> {
+    public int compare(Path path1, Path path2) {
+      FileTime fileTime1 = null;
+      FileTime fileTime2 = null;
+      Path path1Full =
+          Paths.get(finishedThumbLocation.toString() + File.separator + path1.toString());
+      Path path2Full =
+          Paths.get(finishedThumbLocation.toString() + File.separator + path2.toString());
+
+      try {
+        fileTime1 = Files.getLastModifiedTime(path1Full, LinkOption.NOFOLLOW_LINKS);
+        fileTime2 = Files.getLastModifiedTime(path2Full, LinkOption.NOFOLLOW_LINKS);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      return fileTime1.compareTo(fileTime2) * -1;
+    }
   }
 
   @Override

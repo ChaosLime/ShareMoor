@@ -157,7 +157,9 @@ public class HelperClass {
     try {
       orientation = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
     } catch (MetadataException me) {
-      System.out.println("Could not get orientation");
+      System.out.println("Could not get orientation from metadata.");
+    } catch (NullPointerException e) {
+      System.out.println("Could not access ExifIFD0 Directory.");
     }
     int width = jpegDirectory.getImageWidth();
     int height = jpegDirectory.getImageHeight();
