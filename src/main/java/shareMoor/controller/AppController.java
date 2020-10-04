@@ -1,6 +1,5 @@
 package shareMoor.controller;
 
-import java.io.File;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shareMoor.services.ApprovalService;
-import shareMoor.services.StorageProperties;
 import shareMoor.services.StorageService;
 import shareMoor.services.StoreUserContactService;
 import shareMoor.services.ThumbnailService;
+import shareMoor.services.exifMetaDataService;
 
 /**
  * Share Moor
@@ -214,13 +213,6 @@ public class AppController {
   @GetMapping("/share")
   public String displayQRcodes(Model model, Device device) {
 
-    // TODO: remove, used for testing Exiftool. Be sure to abstract to a service.
-    String assestDir = StorageProperties.getAssestsLocation().toString() + File.separator;
-    String file = "1.jpg";
-    String filePath = "/home/nick/demo/";
-    String status = "public";
-    // CrossPlatformTools.setUpExifToolCall(assestDir, filePath, file, status);
-
     // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
@@ -300,6 +292,9 @@ public class AppController {
       RedirectAttributes redirectAttributes) {
 
     String successMessage = "You successfully uploaded your selected files!";
+    // TODO: be sure that the 'status' here will be website adjustable, defaulting to public for
+    // testing.
+    String status = "public";
 
     for (int i = 0; i < file.length; i++) {
       try {
@@ -310,6 +305,10 @@ public class AppController {
         if (storedFileLocation != null) {
           System.out.println(storedFileLocation);
           thumbnailService.createThumbnail(storedFileLocation);
+
+          exifMetaDataService.scrubFile(storedFileLocation, status);
+        } else {
+          successMessage = "Uploaded Failed.";
         }
 
       } catch (Exception e) {
