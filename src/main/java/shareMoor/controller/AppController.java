@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shareMoor.domain.HelperClass;
 import shareMoor.services.ApprovalService;
 import shareMoor.services.StorageProperties;
 import shareMoor.services.StorageService;
@@ -144,9 +146,12 @@ public class AppController {
   @ResponseBody
   public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
+    MediaType mediaType = MediaType.valueOf(storageService.getMimeType(filename));
+    
     Resource file = storageService.loadAsResourceFinishedFull(filename);
     return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-        "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+        "attachment; filename=\"" + file.getFilename() + "\"")
+        .contentType(mediaType).body(file);
   }
 
   /**
@@ -180,9 +185,12 @@ public class AppController {
   @ResponseBody
   public ResponseEntity<Resource> serveReviewFile(@PathVariable String filename) {
 
+    MediaType mediaType = MediaType.valueOf(storageService.getMimeType(filename));
+    
     Resource file = storageService.loadAsResourceReviewFull(filename);
     return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-        "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+        "attachment; filename=\"" + file.getFilename() + "\"")
+        .contentType(mediaType).body(file);
   }
 
   /**

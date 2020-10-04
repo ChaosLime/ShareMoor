@@ -31,7 +31,7 @@ public class FileSystemStorageService implements StorageService {
   private final Path uploadLocation;
   private final Path finishedFullLocation;
   private final Path finishedThumbLocation;
-  private final Path needsReviewLocation;
+  private final Path deniedLocation;
   private final Path reviewThumbLocation;
   private final Path assestsLocation;
 
@@ -42,7 +42,7 @@ public class FileSystemStorageService implements StorageService {
     this.uploadLocation = Paths.get(properties.getUploadLocation());
     this.finishedFullLocation = Paths.get(properties.getFinishedFullLocation());
     this.finishedThumbLocation = Paths.get(properties.getFinishedThumbLocation());
-    this.needsReviewLocation = Paths.get(properties.getDeniedLocation());
+    this.deniedLocation = Paths.get(properties.getDeniedLocation());
     this.reviewThumbLocation = Paths.get(properties.getReviewThumbLocation());
     this.assestsLocation = Paths.get(StorageProperties.getAssestsLocation());
   }
@@ -224,7 +224,7 @@ public class FileSystemStorageService implements StorageService {
   public void deleteAll() {
     FileSystemUtils.deleteRecursively(uploadLocation.toFile());
     FileSystemUtils.deleteRecursively(finishedFullLocation.toFile());
-    FileSystemUtils.deleteRecursively(needsReviewLocation.toFile());
+    FileSystemUtils.deleteRecursively(deniedLocation.toFile());
     FileSystemUtils.deleteRecursively(finishedThumbLocation.toFile());
     FileSystemUtils.deleteRecursively(reviewThumbLocation.toFile());
   }
@@ -234,7 +234,7 @@ public class FileSystemStorageService implements StorageService {
     try {
       Files.createDirectories(uploadLocation);
       Files.createDirectories(finishedFullLocation);
-      Files.createDirectories(needsReviewLocation);
+      Files.createDirectories(deniedLocation);
       Files.createDirectories(finishedThumbLocation);
       Files.createDirectories(reviewThumbLocation);
     } catch (IOException e) {
@@ -266,4 +266,33 @@ public class FileSystemStorageService implements StorageService {
 
     return assestsLocation.resolve(filenameWithExt);
   }
+
+  /**
+   * Grab correct content type from the filename and extension.
+   * 
+   * @param filename String contains just the filename and extension of the file that is attempting
+   *        to be downloaded.
+   * @return
+   */
+  public String getMimeType(String filename) {
+    Path path = new File(filename).toPath();
+    String mimeType = "application/octet-stream";
+    try {
+      mimeType = Files.probeContentType(path);
+    } catch (IOException e) {
+      System.out.println("Unable to get mimeType from file. Set as default");
+    }
+    return mimeType;
+  }
+
+  // Don't need helper functions apparently. To find mimetype, full path to file
+  // isn't actually required. Java can determine mimetype from file path containing
+  // name and file extension only.
+  /*
+   * public String getMimeTypeFinishedFull(String filename) { return getMimeType(filename,
+   * finishedFullLocation.toString()); }
+   * 
+   * public String getMimeTypeReviewFull(String filename) { return getMimeType(filename,
+   * uploadLocation.toString()); }
+   */
 }
