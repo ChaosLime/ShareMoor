@@ -121,7 +121,6 @@ public class AppController {
             .fromMethodName(AppController.class, "serveReviewThumb", path.getFileName().toString())
             .build().toUri().toString()).collect(Collectors.toList()));
 
-    // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
       htmlPage = "approvalForm/mobile";
@@ -308,9 +307,10 @@ public class AppController {
         // The file will be given a sequential name to ensure that it doesn't
         // conflict with another file. TODO: Check for highest file number on start.
         String storedFileLocation = storageService.store(file[i]);
-        System.out.println(storedFileLocation);
-
-        thumbnailService.createThumbnail(storedFileLocation);
+        if (storedFileLocation != null) {
+          System.out.println(storedFileLocation);
+          thumbnailService.createThumbnail(storedFileLocation);
+        }
 
       } catch (Exception e) {
         redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

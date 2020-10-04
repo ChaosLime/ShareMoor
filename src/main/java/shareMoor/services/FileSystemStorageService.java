@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import shareMoor.domain.ConfigHandler;
 import shareMoor.domain.HelperClass;
 import shareMoor.exception.StorageException;
 import shareMoor.exception.StorageFileNotFoundException;
@@ -61,14 +62,25 @@ public class FileSystemStorageService implements StorageService {
             "Cannot store file with relative path outside current directory " + originalFilename);
       }
 
-      // TODO: Check that the file type is acceptable, if not, then just skip file.
-      // optionally, provide useful error message back to the webpage
-      try (InputStream inputStream = file.getInputStream()) {
-        newFilename = String.valueOf(fileCounter) + HelperClass.getExtension(originalFilename);
-        fileCounter++;
+      /*
+       * If the extension is either not defined within the config file, or its status is true, it
+       * will not be uploaded. Its type will also be checked to see if they accept the file type.
+       */
+      String ext = HelperClass.getExtension(originalFilename).toString();
+      String extType = ConfigHandler.checkExtType(ext);
+      boolean isValidType = ConfigHandler.checkTypeStatus(extType);
+      boolean isExt = ConfigHandler.checkExtStatus(ext);
 
-        Files.copy(inputStream, this.uploadLocation.resolve(newFilename),
-            StandardCopyOption.REPLACE_EXISTING);
+      if (isExt && isValidType) {
+        try (InputStream inputStream = file.getInputStream()) {
+          newFilename = String.valueOf(fileCounter) + HelperClass.getExtension(originalFilename);
+          fileCounter++;
+
+          Files.copy(inputStream, this.uploadLocation.resolve(newFilename),
+              StandardCopyOption.REPLACE_EXISTING);
+        }
+      } else {
+        return null;
       }
     } catch (IOException e) {
       throw new StorageException("Failed to store file " + newFilename, e);
