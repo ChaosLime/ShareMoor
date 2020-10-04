@@ -116,6 +116,53 @@ public class ConfigHandler {
 
   }
 
+  public static boolean checkExtStatus(String ext) {
+    List<Object> list = ConfigHandler.getExtList();
+    Map<String, Object> resultMap = ConfigHandler.findByExt(ext, list);
+    if (resultMap == null) {
+      System.out.println("Extension [" + ext + "] not found on extensions list.");
+    } else {
+      String status = resultMap.get("status").toString();
+      if (status.equals("true")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static boolean checkTypeStatus(String type) {
+    if (type == null) {
+      System.out.println("Type [" + type + "] not found.");
+      return false;
+    }
+    String result = ConfigHandler.getSettingsDir(type);
+    if (result.equals("true")) {
+      return true;
+    }
+    System.out.println("Type [" + type + "] not allowed.");
+    return false;
+  }
+
+  public static String checkExtType(String ext) {
+    List<Object> list = ConfigHandler.getExtList();
+    Map<String, Object> resultMap = ConfigHandler.findByExt(ext, list);
+    if (resultMap == null) {
+      System.out.println("No type found for [" + ext + "].");
+    } else {
+      String type = resultMap.get("type").toString();
+      return type;
+    }
+
+    return null;
+  }
+
+
+  public static List<Object> getExtList() {
+    Map<String, Object> map = ConfigHandler.loadConfig();
+    List<Object> list = ConfigHandler.getExtensionList(map);
+    return list;
+  }
+
   public static void saveMappingToFile(Map<String, Object> map, String savePath) {
     String sb = mappingToStr(map);
     FileIO.writeStrBufferToNewFile(savePath, sb);
