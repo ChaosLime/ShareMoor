@@ -16,12 +16,10 @@ public class ConfigHandler {
       e.printStackTrace();
     }
     return null;
-
   }
 
   private static Map<String, Object> strToMapping(String path) throws IOException {
     String sb = FileIO.getStrFromFile(path);
-
     Map<String, Object> map = null;
     Yaml yaml = new Yaml();
     return map = (Map<String, Object>) yaml.load(sb);
@@ -44,7 +42,6 @@ public class ConfigHandler {
     Map<String, Object> map = new HashMap<>();
     map.put("Extensions", list);
     return map;
-
   }
 
   private static void getAllExtOfType(String type, List<Object> list) {
@@ -58,7 +55,6 @@ public class ConfigHandler {
         for (String key : extensionObj.keySet()) {
           currentKey = key;
         }
-
         Map<String, Object> extension = (Map<String, Object>) extensionObj.get(currentKey);
       }
     }
@@ -74,7 +70,6 @@ public class ConfigHandler {
       }
     }
     return null;
-
   }
 
   /*
@@ -87,33 +82,23 @@ public class ConfigHandler {
   }
 
   public static Map<String, Object> loadConfig() {
-    // load config
-    // String defaultConfigPath =
-    // "src" + File.separator + "resources" + File.separator + "config_default.yaml";
-    // default saving path for the config file.
-    String activeConfigPath = ".." + File.separator + "config.yaml";
-    String savePath = activeConfigPath;
-
+    String savePath = ".." + File.separator + "config.yaml";
     String path = "";
 
-    boolean stateOfConfigFile = FileIO.checkIfFileExists(activeConfigPath);
+    boolean stateOfConfigFile = FileIO.checkIfFileExists(savePath);
 
     if (stateOfConfigFile == true) {
-      path = activeConfigPath;
+      path = savePath;
     } else {
-      System.out.println("Config file at: [" + activeConfigPath + "] Not found.");
+      System.out.println("Config file at: [" + savePath + "] Not found.");
       System.out.println("Grabbing default config.");
-      // path = defaultConfigPath;
-
     }
 
     Map<String, Object> map = getConfigAsMap(path);
     if (!stateOfConfigFile) {
       saveMappingToFile(map, savePath);
     }
-
     return map;
-
   }
 
   public static boolean checkExtStatus(String ext) {
@@ -152,7 +137,6 @@ public class ConfigHandler {
       String type = resultMap.get("type").toString();
       return type;
     }
-
     return null;
   }
 
@@ -194,7 +178,6 @@ public class ConfigHandler {
     Map<String, Object> configMap = ConfigHandler.loadConfig();
     Map<String, Object> settingsMap = ConfigHandler.getConfMapByPath(configMap, "Settings");
     String result = settingsMap.get(key).toString();
-    // System.out.println("Before: " + result);
     for (int i = 0; i < result.length(); i++) {
       char c = result.charAt(i);
       if (c == '/' || c == '\\') {
@@ -234,13 +217,11 @@ public class ConfigHandler {
     Map<String, Object> settingsMap = getConfMapByPath(map, "Settings");
     // TODO: fix up and reduce code reuse.
     // System.out.println(getSettingsValue("https"));
-
     if ((boolean) settingsMap.get("https")) {
       return "https";
     } else {
       return "http";
     }
-
   }
 
   public static String getFullAddress() {
@@ -249,7 +230,6 @@ public class ConfigHandler {
     String protocol = getProtocol();
     String result = protocol + "://" + address + ":" + port;
     return result;
-
   }
 
 }

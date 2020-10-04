@@ -19,10 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shareMoor.services.ApprovalService;
+import shareMoor.services.ExifMetaDataService;
 import shareMoor.services.StorageService;
 import shareMoor.services.StoreUserContactService;
 import shareMoor.services.ThumbnailService;
-import shareMoor.services.exifMetaDataService;
 
 /**
  * Share Moor
@@ -47,6 +47,8 @@ public class AppController {
 
   private final ApprovalService approvalService;
 
+  private final ExifMetaDataService exifService;
+
   /**
    * Constructor for this controller. Initializes an instance of all services used in this file.
    * 
@@ -58,11 +60,12 @@ public class AppController {
   @Autowired
   public AppController(StorageService storageService,
       StoreUserContactService storeUserContactService, ThumbnailService thumbnailService,
-      ApprovalService approvalService) {
+      ApprovalService approvalService, ExifMetaDataService exifService) {
     this.storageService = storageService;
     this.storeUserContactService = storeUserContactService;
     this.thumbnailService = thumbnailService;
     this.approvalService = approvalService;
+    this.exifService = exifService;
   }
 
   /**
@@ -306,7 +309,7 @@ public class AppController {
           System.out.println(storedFileLocation);
           thumbnailService.createThumbnail(storedFileLocation);
 
-          exifMetaDataService.scrubFile(storedFileLocation, status);
+          exifService.scrubFile(storedFileLocation, status);
         } else {
           successMessage = "Uploaded Failed.";
         }

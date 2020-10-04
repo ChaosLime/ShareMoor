@@ -3,8 +3,6 @@ package shareMoor.domain;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 
@@ -55,7 +53,6 @@ public class CrossPlatformTools {
       String s = null;
 
       while ((s = stdInput.readLine()) != null) {
-        // System.out.println(s);
         result += s;
       }
 
@@ -77,67 +74,20 @@ public class CrossPlatformTools {
    * @param filePath
    * @param file
    * @param status
+   * @return
    */
-  public static void setUpExifToolCall(String programPath, String filePath, String status) {
+  public static String setUpExifToolCall(String dir) {
     String OS = getOS().toString();
-    String cmd = "";
     String program = "";
 
     if (OS == "Linux" || OS == "MacOs" || OS == "Other") {
-      program = "/Image-ExifTool-12.06/exiftool.pl";
+      program = "perl " + dir + "/Image-ExifTool-12.06/exiftool.pl";
     }
     if (OS == "Windows") {
-      program = "exiftool.exe";
+      program = dir + "exiftool.exe";
     }
-    cmd = programPath + program + " -b -createdate " + filePath;
-    System.out.println(cmd);
-    String createDate = callSystemProgram(cmd);
-    cmd = "perl " + programPath + program + " -q -all= " + filePath;
-    callSystemProgram(cmd);
 
-    if (createDate.equals("")) {
-      System.out.println("No create date found. Grabbing system time.");
-      Date date = new Date();
-      SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
-      createDate = formatter.format(date).toString();
-    }
-    createDate = createDate.replace(" ", "\b");
-
-    cmd = programPath + program + " -createdate=" + createDate + " " + filePath;
-    callSystemProgram(cmd);
-
-    cmd = programPath + program + " -q -Keywords=" + status + " " + filePath;
-    callSystemProgram(cmd);
-
-    cmd = programPath + program + " -q -delete_original! " + filePath;
-    callSystemProgram(cmd);
-
+    return program;
   }
-  /*
-   * // TODO: remove? // @depricated
-   * 
-   * public static long killProgram(String cmd, long PID) { String path = ""; OSType os = getOS();
-   * switch (os) { case Windows: if (cmd.equals("kill ")) { cmd = "taskkill /F /PID "; } path = cmd
-   * + PID; break; case MacOS: path = cmd + PID; break; case Linux: path = cmd + PID; break; case
-   * Other: path = null; break; } try { if (path == null) { System.out.println("Platform " + os +
-   * " not supported."); } else { Runtime run = Runtime.getRuntime(); Process proc = run.exec(path);
-   * System.out.println("Calling path: \"" + path + PID + "\""); System.out.println(proc);
-   * 
-   * return proc.pid(); } } catch (IOException e) { e.printStackTrace(); } return -1;
-   * 
-   * }
-   * 
-   * public static long callExternalProgram(String cmd, String path) {
-   * 
-   * // Unixes assumes program is within $PATH. // TODO: either povide environment variable, or
-   * provide path to executable. // TODO: check $PATH, or be sure to specify absolute path link
-   * within windows. // TODO: address windows path needing to be abs or it can be realative. OSType
-   * os = getOS(); switch (os) { case Windows: path = cmd + path; break; case MacOS: path = cmd +
-   * path; break; case Linux: path = cmd + " " + path; break; case Other: path = null; break; } try
-   * { if (path == null) { System.out.println("Platform " + os + " not supported."); } else {
-   * Runtime run = Runtime.getRuntime(); Process proc = run.exec(path);
-   * System.out.println("Calling path: \"" + path + "\""); System.out.println(proc);
-   * 
-   * return proc.pid(); } } catch (IOException e) { e.printStackTrace(); } return -1; }
-   */
+
 }
