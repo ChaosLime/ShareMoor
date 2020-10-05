@@ -159,7 +159,7 @@ public class FileSystemStorageService implements StorageService {
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
-      return fileTime2.compareTo(fileTime1);
+      return fileTime1.compareTo(fileTime2);
     }
   }
 
@@ -179,7 +179,7 @@ public class FileSystemStorageService implements StorageService {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-      return fileTime2.compareTo(fileTime1);
+      return fileTime1.compareTo(fileTime2);
     }
   }
 
