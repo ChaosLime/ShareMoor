@@ -37,7 +37,7 @@
 								class="approvalBtn">Approve</button>
 							<button type="submit" name="deniedFilename" th:value="${file}"
 								class="denyBtn">Deny</button>
-						</div>
+						</div><br><br><br>
 						<a th:href="${file}"> <!-- <span th:text="${iter.index}"></span>-->
 							<span th:each="file2,iter2 : ${reviewThumbs}"> <th:block
 									th:if="${iter2.index == iter.index}">

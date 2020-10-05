@@ -1,9 +1,12 @@
 package shareMoor.services;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.imgscalr.Scalr;
+import org.imgscalr.Scalr.Rotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shareMoor.domain.CrossPlatformTools;
@@ -20,41 +23,24 @@ public class ExifMetaDataService {
     this.assestDir = Paths.get(properties.getAssestsLocation());
   }
 
-  public static void scrubFile(String storedFileLocation, String status) {
-    System.out.println("Scrubbing metadata.");
-    String assestPathStr = assestDir.toString();
+  public void scrubFile(String storedFileLocation, String status) {
+    String assestPathStr = assestDir.toString() + File.separator;
 
     String cmd = "";
     String program = CrossPlatformTools.setUpExifToolCall(assestPathStr);
+    
+    //String now = getDateTime();
 
-    cmd = program + " -b -createdate " + storedFileLocation;
-    String createDate = CrossPlatformTools.callSystemProgram(cmd);
-
-    cmd = program + " -q -all= " + storedFileLocation;
+    cmd = program + " -q -all:all= -Keywords=" + status + " -tagsfromfile @ -orientation "
+        + storedFileLocation;
     CrossPlatformTools.callSystemProgram(cmd);
 
-    createDate = checkCreateDate(createDate);
+    File file = new File(storedFileLocation + "_original");
+    file.delete();
+    
 
-    cmd = program + " -createdate=" + createDate + " " + storedFileLocation;
-    CrossPlatformTools.callSystemProgram(cmd);
-
-    cmd = program + " -q -Keywords=" + status + " " + storedFileLocation;
-    CrossPlatformTools.callSystemProgram(cmd);
-
-    cmd = program + " -q -delete_original! " + storedFileLocation;
-    CrossPlatformTools.callSystemProgram(cmd);
   }
 
-  private static String checkCreateDate(String createDate) {
-    if (createDate.equals("")) {
-      System.out.println("No create date found. Grabbing system time.");
-      Date date = new Date();
-      SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
-      createDate = formatter.format(date).toString();
-    }
-    createDate = createDate.replace(" ", "\b");
-    return createDate;
-
-  }
+ 
 
 }

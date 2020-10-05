@@ -315,9 +315,9 @@ public class AppController {
         String storedFileLocation = storageService.store(file[i]);
         if (storedFileLocation != null) {
           System.out.println(storedFileLocation);
-          thumbnailService.createThumbnail(storedFileLocation);
-
           exifService.scrubFile(storedFileLocation, status);
+          thumbnailService.createThumbnail(storedFileLocation);
+         
         } else {
           successMessage = "Uploaded Failed.";
         }

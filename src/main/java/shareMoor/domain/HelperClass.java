@@ -3,6 +3,8 @@ package shareMoor.domain;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Rotation;
 import com.drew.imaging.ImageMetadataReader;
@@ -180,7 +182,7 @@ public class HelperClass {
    * @return bImg BufferedImage that may have had it's orientation corrected.
    */
   public static BufferedImage correctOrientation(BufferedImage bImg, ImageInformation info) {
-    switch (info.orientation) {
+     switch (info.orientation) {
       case 1:
         System.out.println("Image correctly oriented. No action required. Case 1.");
         break;
@@ -229,5 +231,12 @@ public class HelperClass {
    * (type.equals("image")) System.out.println("It's an image"); else
    * System.out.println("It's NOT an image"); }
    */
+  public static String getDateTime() {
+    Date date = new Date();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd-HHmmss.SSS");
+    String now = formatter.format(date).toString();
+
+    return now;
+  }
 
 }

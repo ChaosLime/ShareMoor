@@ -39,7 +39,7 @@ public class FileSystemStorageService implements StorageService {
   private final Path reviewThumbLocation;
   private final Path assestsLocation;
 
-  private int fileCounter = 1;
+ // private int fileCounter = 1;
 
   @Autowired
   public FileSystemStorageService(StorageProperties properties) {
@@ -76,9 +76,10 @@ public class FileSystemStorageService implements StorageService {
 
       if (isExt && isValidType) {
         try (InputStream inputStream = file.getInputStream()) {
-          newFilename = String.valueOf(fileCounter) + HelperClass.getExtension(originalFilename);
-          fileCounter++;
-
+         //newFilename = String.valueOf(fileCounter) + HelperClass.getExtension(originalFilename);
+          //fileCounter++;
+          newFilename = HelperClass.getDateTime() + HelperClass.getExtension(originalFilename);
+          
           Files.copy(inputStream, this.uploadLocation.resolve(newFilename),
               StandardCopyOption.REPLACE_EXISTING);
         }
