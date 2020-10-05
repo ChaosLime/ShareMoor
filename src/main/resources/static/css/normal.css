@@ -213,6 +213,11 @@ input {
 	text-align: center;
 }
 
-img {
+.uploadThumb {
 	width: 250;
+}
+
+.qrCode{
+	max-width: 50%;
+	max-height: 50%;
 }

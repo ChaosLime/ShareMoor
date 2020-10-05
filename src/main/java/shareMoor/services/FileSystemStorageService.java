@@ -39,7 +39,7 @@ public class FileSystemStorageService implements StorageService {
   private final Path reviewThumbLocation;
   private final Path assestsLocation;
 
- // private int fileCounter = 1;
+  // private int fileCounter = 1;
 
   @Autowired
   public FileSystemStorageService(StorageProperties properties) {
@@ -76,10 +76,10 @@ public class FileSystemStorageService implements StorageService {
 
       if (isExt && isValidType) {
         try (InputStream inputStream = file.getInputStream()) {
-         //newFilename = String.valueOf(fileCounter) + HelperClass.getExtension(originalFilename);
-          //fileCounter++;
+          // newFilename = String.valueOf(fileCounter) + HelperClass.getExtension(originalFilename);
+          // fileCounter++;
           newFilename = HelperClass.getDateTime() + HelperClass.getExtension(originalFilename);
-          
+
           Files.copy(inputStream, this.uploadLocation.resolve(newFilename),
               StandardCopyOption.REPLACE_EXISTING);
         }
@@ -159,7 +159,7 @@ public class FileSystemStorageService implements StorageService {
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
-      return fileTime1.compareTo(fileTime2) * -1;
+      return fileTime2.compareTo(fileTime1);
     }
   }
 
@@ -179,7 +179,7 @@ public class FileSystemStorageService implements StorageService {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-      return fileTime1.compareTo(fileTime2) * -1;
+      return fileTime2.compareTo(fileTime1);
     }
   }
 
@@ -199,7 +199,7 @@ public class FileSystemStorageService implements StorageService {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-      return fileTime1.compareTo(fileTime2) * -1;
+      return fileTime2.compareTo(fileTime1);
     }
   }
 
@@ -219,7 +219,7 @@ public class FileSystemStorageService implements StorageService {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-      return fileTime1.compareTo(fileTime2) * -1;
+      return fileTime2.compareTo(fileTime1);
     }
   }
 

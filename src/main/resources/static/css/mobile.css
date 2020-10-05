@@ -159,3 +159,7 @@ img {
 	background-color:gray;
 }
 
+.qrCode{
+	object-fit: scale-down;
+	height: 65%;
+}
