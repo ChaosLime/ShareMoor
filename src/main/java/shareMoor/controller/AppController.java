@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import shareMoor.domain.HelperClass;
 import shareMoor.services.ApprovalService;
 import shareMoor.services.ExifMetaDataService;
 import shareMoor.services.StorageService;
@@ -70,14 +69,30 @@ public class AppController {
     this.exifService = exifService;
   }
 
+  @GetMapping("/")
+  public String displayWelcome(Model model, Device device) {
+
+    // System.out.println(device.toString());
+    String htmlPage = "";
+    if (device.isMobile() || device.isTablet()) {
+      htmlPage = "welcome/mobile";
+    } else if (device.isNormal()) {
+      htmlPage = "welcome/normal";
+    } else {
+      htmlPage = "welcome/normal";
+    }
+    return htmlPage;
+
+  }
+
   /**
    * Default GET mapping that renders all images that the webserver has collected.
    * 
    * @param model Model
    * @return "uploadForm" String HTML template.
    */
-  @RequestMapping("/")
-  public String listUploadedFiles(Model model, Device device) {
+  @RequestMapping("/upload")
+  public String uploadFiles(Model model, Device device) {
 
     // System.out.println(device.toString());
 
@@ -101,6 +116,66 @@ public class AppController {
       htmlPage = "uploadForm/normal";
     } else {
       htmlPage = "uploadForm/normal";
+    }
+    return htmlPage;
+
+  }
+
+  @RequestMapping("/gallery")
+  public String listUploadedFiles(Model model, Device device) {
+
+    // System.out.println(device.toString());
+
+    model.addAttribute("files",
+        storageService.loadAllFinishedFull()
+            .map(path -> MvcUriComponentsBuilder
+                .fromMethodName(AppController.class, "serveFile", path.getFileName().toString())
+                .build().toUri().toString())
+            .collect(Collectors.toList()));
+    model.addAttribute("thumbs",
+        storageService.loadAllFinishedThumbs()
+            .map(path -> MvcUriComponentsBuilder
+                .fromMethodName(AppController.class, "serveThumb", path.getFileName().toString())
+                .build().toUri().toString())
+            .collect(Collectors.toList()));
+
+    String htmlPage = "";
+    if (device.isMobile() || device.isTablet()) {
+      htmlPage = "gallery/mobile";
+    } else if (device.isNormal()) {
+      htmlPage = "gallery/normal";
+    } else {
+      htmlPage = "gallery/normal";
+    }
+    return htmlPage;
+
+  }
+
+  @RequestMapping("/contact")
+  public String contactPage(Model model, Device device) {
+
+    // System.out.println(device.toString());
+
+    model.addAttribute("files",
+        storageService.loadAllFinishedFull()
+            .map(path -> MvcUriComponentsBuilder
+                .fromMethodName(AppController.class, "serveFile", path.getFileName().toString())
+                .build().toUri().toString())
+            .collect(Collectors.toList()));
+    model.addAttribute("thumbs",
+        storageService.loadAllFinishedThumbs()
+            .map(path -> MvcUriComponentsBuilder
+                .fromMethodName(AppController.class, "serveThumb", path.getFileName().toString())
+                .build().toUri().toString())
+            .collect(Collectors.toList()));
+
+    String htmlPage = "";
+    if (device.isMobile() || device.isTablet()) {
+      htmlPage = "contact/mobile";
+    } else if (device.isNormal()) {
+      htmlPage = "contact/normal";
+    } else {
+      htmlPage = "contact/normal";
     }
     return htmlPage;
 
@@ -148,10 +223,11 @@ public class AppController {
   public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
     MediaType mediaType = MediaType.valueOf(storageService.getMimeType(filename));
-    
+
     Resource file = storageService.loadAsResourceFinishedFull(filename);
-    return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-        "attachment; filename=\"" + file.getFilename() + "\"")
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename=\"" + file.getFilename() + "\"")
         .contentType(mediaType).body(file);
   }
 
@@ -187,10 +263,11 @@ public class AppController {
   public ResponseEntity<Resource> serveReviewFile(@PathVariable String filename) {
 
     MediaType mediaType = MediaType.valueOf(storageService.getMimeType(filename));
-    
+
     Resource file = storageService.loadAsResourceReviewFull(filename);
-    return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-        "attachment; filename=\"" + file.getFilename() + "\"")
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename=\"" + file.getFilename() + "\"")
         .contentType(mediaType).body(file);
   }
 
@@ -253,21 +330,6 @@ public class AppController {
 
   }
 
-  @GetMapping("/welcome")
-  public String displayWelcome(Model model, Device device) {
-
-    // System.out.println(device.toString());
-    String htmlPage = "";
-    if (device.isMobile() || device.isTablet()) {
-      htmlPage = "welcome/mobile";
-    } else if (device.isNormal()) {
-      htmlPage = "welcome/normal";
-    } else {
-      htmlPage = "welcome/normal";
-    }
-    return htmlPage;
-
-  }
 
   /**
    * POST mapping that facilitates the storage of voluntarily provided contact information.
@@ -285,7 +347,7 @@ public class AppController {
 
     model.addAttribute("message", "Thank you for providing your contact information!");
 
-    return listUploadedFiles(model, device);
+    return contactPage(model, device);
   }
 
   /**
@@ -298,7 +360,7 @@ public class AppController {
    *        about their attempted file upload.
    * @return "redirect:/" String which sends the user back to the base GET mapping.
    */
-  @PostMapping("/")
+  @PostMapping("/upload")
   public String handleFileUpload(@RequestParam("file") MultipartFile[] file,
       RedirectAttributes redirectAttributes) {
 
@@ -317,7 +379,7 @@ public class AppController {
           System.out.println(storedFileLocation);
           exifService.scrubFile(storedFileLocation, status);
           thumbnailService.createThumbnail(storedFileLocation);
-         
+
         } else {
           successMessage = "Uploaded Failed.";
         }
@@ -330,7 +392,7 @@ public class AppController {
 
     redirectAttributes.addFlashAttribute("message", successMessage);
 
-    return "redirect:/";
+    return "redirect:/upload";
   }
 
   /**
@@ -350,6 +412,8 @@ public class AppController {
       @RequestParam("approvedFilename") Optional<String> approvedFilename,
       @RequestParam("deniedFilename") Optional<String> deniedFilename) {
 
+    // TODO: allow for an auto approve setting which can be defined within the config file.
+    // it was suggested to use a timer to appove images.
     if (approvedFilename.isPresent()) {
       System.out.println("Approved:" + approvedFilename);
       approvalService.saveFileInFinishedFolder(approvedFilename.toString());

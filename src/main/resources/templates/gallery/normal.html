@@ -4,7 +4,7 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <link href="/css/normal.css" rel="stylesheet">
 <head>
-	<title>Share Moor - Upload</title>
+	<title>Share Moor - Gallery</title>
 </head>
 <header>
 
@@ -15,8 +15,8 @@
 	<nav>
 		<ul>
 			<li><a href="/">Welcome</a></li>
-			<li><a href="/upload" class="active-page">Upload</a><div class="active-page-bar"></div></li>      
-			<li><a href="/gallery">Gallery</a></li>
+			<li><a href="/upload">Upload</a></li>
+			<li><a href="/gallery" class="active-page">Gallery</a><div class="active-page-bar"></div></li>
 			<li><a href="/share">Share</a></li>      
 			<li><a href="/contact">Contact</a></li>      
 			<li><a href="/about">About</a></li>
@@ -29,21 +29,24 @@
 	<div class="container center" th:if="${message}">
 		<h2 th:text="${message}"></h2>
 	</div>
-	<div class="container center">
-		
-		<form method="POST" enctype="multipart/form-data" action="/upload">
-			<div class="center">
-			<br>
-			<label>Want to share Files? Upload them here!<br><br>
-			<input type="file" name="file" multiple="multiple" class="custom-file-input"/>
-			</label>
-			<span th:if="${errorMessage}" th:text="${errorMessage}" class="error">Error</span>
-			<br><br>
+
+	<h3 class="center">If you see anything you would like to keep,<br>select it to download it.</h3>
+	<hr>
+	<div class="container">
+		<div  class="grid">
+			<div th:each="file,iter : ${files}">
+				<a th:href="${file}">
+					<!-- <span th:text="${iter.index}"></span>-->
+					<span th:each="file2,iter2 : ${thumbs}">
+						 <th:block th:if="${iter2.index == iter.index}">
+							<img class="uploadThumb" th:src="${file2}"/>
+							<!-- <span th:text="${iter.index}"></span>-->
+						</th:block>
+					</span>
+				</a>
 			</div>
-			<input class="submit" type="submit" value="Upload" />
-		</form>
+		</div>
 	</div>
-	
 	</div>
 </body>
 <hr>
