@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
-	<title>Share Moor - Approval</title>
+<title>Share Moor - Approval</title>
 </head>
-	<h1 class="logo">Share Moor</h1>
+<h1 class="logo">Share Moor</h1>
 <header>
 
 	<!--Be sure to get a logo into assets if we decide to use one?
@@ -17,9 +17,11 @@
 
 	<nav>
 		<ul>
-			<li><a href="/welcome">Welcome</a></li>
-			<li><a href="/">Upload</a></li>
-			<li><a href="/share">Share</a></li>      
+			<li><a href="/">Welcome</a></li>
+			<li><a href="/upload">Upload</a></li>
+			<li><a href="/gallery">Gallery</a></li>
+			<li><a href="/share">Share</a></li>
+			<li><a href="/contact">Contact</a></li>
 			<li><a href="/about">About</a></li>
 		</ul>
 	</nav>
@@ -33,25 +35,34 @@
 	<div th:each="file,iter : ${reviewFiles}">
 		<th:block th:if="${iter.index == 0}">
 			<form method="POST" action="/approval">
-	
-				<a th:href="${file}"> <!-- <span th:text="${iter.index}"></span>-->
+				<div class="container">
+					<button type="submit" name="approvedFilename" th:value="${file}"
+						class="approvalBtn">Approve</button>
+					<button type="submit" name="deniedFilename" th:value="${file}"
+						class="denyBtn">Deny</button>
+				</div>
+				<br>
+				<br>
+				<br>
+				<br> <a th:href="${file}"> <!-- <span th:text="${iter.index}"></span>-->
 					<span th:each="file2,iter2 : ${reviewThumbs}"> <th:block
 							th:if="${iter2.index == iter.index}">
-							<img th:src="${file2}" class="approveThumb"/>
+							<img th:src="${file2}" class="approveThumb" />
 							<!-- <span th:text="${iter.index}"></span>-->
 						</th:block>
 				</span>
 				</a>
-				<div class="center">
-					<button type="submit" name="approvedFilename" th:value="${file}" class="approvalBtn">Approve</button>
-					<button type="submit" name="deniedFilename" th:value="${file}" class="denyBtn">Deny</button>
-				</div>
 			</form>
 		</th:block>
 	</div>
-	
-</body><br><br>
+
+</body>
+<br>
+<br>
 <hr>
-<footer class="center">Share Moor, A privacy respecting file sharing tool.<br>[Mobile page]</footer>
+<footer class="center">
+	Share Moor, A privacy respecting file sharing tool.<br>[Mobile
+	page]
+</footer>
 
 </html>

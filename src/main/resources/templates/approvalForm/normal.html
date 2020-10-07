@@ -4,7 +4,7 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <link href="/css/normal.css" rel="stylesheet">
 <head>
-<title>Share Moor - Upload</title>
+<title>Share Moor - Approval</title>
 </head>
 <header>
 
@@ -14,9 +14,11 @@
 	<h1 class="logo">Share Moor</h1>
 	<nav>
 		<ul>
-			<li><a href="/welcome">Welcome</a></li>
-			<li><a href="/">Upload</a></li>
+			<li><a href="/">Welcome</a></li>
+			<li><a href="/upload">Upload</a></li>
+			<li><a href="/gallery">Gallery</a></li>
 			<li><a href="/share">Share</a></li>
+			<li><a href="/contact">Contact</a></li>
 			<li><a href="/about">About</a></li>
 		</ul>
 	</nav>
@@ -37,8 +39,11 @@
 								class="approvalBtn">Approve</button>
 							<button type="submit" name="deniedFilename" th:value="${file}"
 								class="denyBtn">Deny</button>
-						</div><br><br><br>
-						<a th:href="${file}"> <!-- <span th:text="${iter.index}"></span>-->
+						</div>
+						<br>
+						<br>
+						<br>
+						<br> <a th:href="${file}"> <!-- <span th:text="${iter.index}"></span>-->
 							<span th:each="file2,iter2 : ${reviewThumbs}"> <th:block
 									th:if="${iter2.index == iter.index}">
 									<img th:src="${file2}" class="approveThumb" />
