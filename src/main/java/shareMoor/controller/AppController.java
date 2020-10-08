@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shareMoor.domain.ConfigHandler;
 import shareMoor.services.ApprovalService;
 import shareMoor.services.ExifMetaDataService;
 import shareMoor.services.StorageService;
@@ -108,6 +109,7 @@ public class AppController {
                 .fromMethodName(AppController.class, "serveThumb", path.getFileName().toString())
                 .build().toUri().toString())
             .collect(Collectors.toList()));
+
 
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
@@ -302,6 +304,15 @@ public class AppController {
   public String displayQRcodes(Model model, Device device) {
 
     // System.out.println(device.toString());
+    String uri = ConfigHandler.getFullAddress();
+    model.addAttribute("address", uri);
+
+    String SSID = ConfigHandler.getSSID();
+    model.addAttribute("ssid", SSID);
+    String pass = ConfigHandler.getWifiPass();
+    model.addAttribute("pass", pass);
+
+
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
       htmlPage = "share/mobile";
@@ -364,10 +375,20 @@ public class AppController {
   public String handleFileUpload(@RequestParam("file") MultipartFile[] file,
       RedirectAttributes redirectAttributes) {
 
-    String successMessage = "You successfully uploaded your selected files!";
+    String message = "You successfully uploaded your selected files!";
     // TODO: be sure that the 'status' here will be website adjustable, defaulting to public for
     // testing.
     String status = "public";
+
+    // Checks the case where only one object exists, where it is empty, and if so throws and error.
+
+    String result = storageService.checkIfEmpty(file[0]);
+    if (result != null) {
+      message = "Upload failed. You can not upload nothing.";
+      redirectAttributes.addFlashAttribute("message", message);
+      return "redirect:/upload";
+    }
+    // TODO: check if it files are supported before attempting to scrub and make thumbnails.
 
     for (int i = 0; i < file.length; i++) {
       try {
@@ -381,7 +402,8 @@ public class AppController {
           thumbnailService.createThumbnail(storedFileLocation);
 
         } else {
-          successMessage = "Uploaded Failed.";
+          message =
+              "Uploaded Failed, please try again. If error continues to occur, a file may not be supported.";
         }
 
       } catch (Exception e) {
@@ -390,7 +412,7 @@ public class AppController {
 
     }
 
-    redirectAttributes.addFlashAttribute("message", successMessage);
+    redirectAttributes.addFlashAttribute("message", message);
 
     return "redirect:/upload";
   }
