@@ -384,6 +384,14 @@ public class FileSystemStorageService implements StorageService {
     return mimeType;
   }
 
+  @Override
+  public String checkIfEmpty(MultipartFile file) {
+    if (file.isEmpty()) {
+      return "empty";
+    }
+    return null;
+  }
+
   // Don't need helper functions apparently. To find mimetype, full path to file
   // isn't actually required. Java can determine mimetype from file path containing
   // name and file extension only.
