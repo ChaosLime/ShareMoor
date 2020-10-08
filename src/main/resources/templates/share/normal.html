@@ -32,14 +32,16 @@
 
 		<img class="qrCode" th:src="@{assests/wifiQR.png}"/>
 		<br>
-
-		[TODO: put link here]
+		<br>
+		Wifi Name: <a th:text="${ssid}"></a><br>
+		Password: <a th:text="${pass}"></a>
+		<hr>
 		<h1>Site QR code:</h1>
 		
 		<img class="qrCode" th:src="@{assests/websiteQR.png}"/>
-		<br>
+		<br><br>
 
-		[TODO: put link here]
+		<a th:text="${address}" th:href="${address}"></a>
 	</div>
 </div>
 

@@ -42,7 +42,7 @@
 					<!-- <span th:text="${iter.index}"></span>-->
 					<span th:each="file2,iter2 : ${thumbs}">
 						 <th:block th:if="${iter2.index == iter.index}">
-							<img th:src="${file2}"/>
+							<img class="imagePreview" th:src="${file2}"/>
 							<!-- <span th:text="${iter.index}"></span>-->
 						</th:block>
 					</span>
