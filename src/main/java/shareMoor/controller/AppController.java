@@ -379,7 +379,9 @@ public class AppController {
     // TODO: be sure that the 'status' here will be website adjustable, defaulting to public for
     // testing.
     String status = "public";
-
+    
+    boolean approveAll = Boolean.valueOf(ConfigHandler.getSettingsValue("autoApprove"));
+    
     // Checks the case where only one object exists, where it is empty, and if so throws and error.
 
     String result = storageService.checkIfEmpty(file[0]);
@@ -400,6 +402,11 @@ public class AppController {
           System.out.println(storedFileLocation);
           exifService.scrubFile(storedFileLocation, status);
           thumbnailService.createThumbnail(storedFileLocation);
+          
+          if (approveAll) {
+            System.out.println("Approved:" + storedFileLocation);
+            approvalService.saveFileInFinishedFolder(storedFileLocation);
+          }
 
         } else {
           message =
