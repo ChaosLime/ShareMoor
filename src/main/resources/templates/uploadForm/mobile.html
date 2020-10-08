@@ -6,9 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
 
-	<title>Share Moor - Upload</title>
+<title>Share Moor - Upload</title>
 </head>
-	<h1 class="logo">Share Moor</h1>
+<h1 class="logo">Share Moor</h1>
 <header>
 
 	<!--Be sure to get a logo into assets if we decide to use one?
@@ -18,10 +18,11 @@
 	<nav>
 		<ul>
 			<li><a href="/">Welcome</a></li>
-			<li><a href="/upload" class="active-page">Upload</a><div class="active-page-bar"></div></li>      
+			<li><a href="/upload" class="active-page">Upload</a>
+			<div class="active-page-bar"></div></li>
 			<li><a href="/gallery">Gallery</a></li>
-			<li><a href="/share">Share</a></li>      
-			<li><a href="/contact">Contact</a></li>      
+			<li><a href="/share">Share</a></li>
+			<li><a href="/contact">Contact</a></li>
 			<li><a href="/about">About</a></li>
 		</ul>
 	</nav>
@@ -29,31 +30,61 @@
 
 <body>
 
-<div class="center">
-	<div th:if="${message}">
-		<h2 th:text="${message}"></h2>
-	</div>
-	<div>
-		
-		<form method="POST" enctype="multipart/form-data" action="/upload">
-			<div class="nested-center">
+	<div class="center">
+		<div th:if="${message}">
+			<h2 th:text="${message}"></h2>
+		</div>
+		<div>
 
-		<br>
-			<label>Want to share Files? Upload them here!<br><br>
-			<span th:if="${errorMessage}" th:text="${errorMessage}" class="error">Error</span><br>
-			<input type="file" name="file" multiple="multiple"/>
-			</label>
-			<br>
-			<br>
+			<form method="POST" enctype="multipart/form-data" action="/upload">
+				<div class="nested-center">
+
+					<br> <label>Want to share Files? Upload them here!<br>
+					<br> <span th:if="${errorMessage}" th:text="${errorMessage}"
+						class="error">Error</span><br> <input type="file" name="file"
+						multiple="multiple" class="custom-file-input" />
+					</label> <br> <br>
+				</div>
+				<input onclick="spin()" class="submit" type="submit" value="Upload" />
+			</form>
+			<div id="spinnerLbl">Uploading Files. Please wait.</div>
+			<div id="spinner" class="lds-spinner">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
 			</div>
-			<input class="submit" type="submit" value="Upload" />
-		</form>
-	</div>	 
-  </div>
-
-
+		</div>
 	</div>
+	<!-- Currently using a spinner for a visual indicator that a file is being uploaded. -->
+	<script>
+		var spinner = document.getElementById("spinner"), clickMe = document
+				.getElementById('clickMe'); //Keeping it unobstrusive
+		var spinnerLbl = document.getElementById("spinnerLbl"), clickMe = document
+				.getElementById('clickMe'); //Keeping it unobstrusive
+		function spin() {
+
+			var button = this;
+			spinner.style.visibility = "visible";
+			spinnerLbl.style.visibility = "visible";
+			button.setAttribute("disabled", "true");
+
+		}
+
+		clickMe.onclick = spin; //Onclick call. Pass no arguments.​​​​​
+	</script>
 </body>
 <hr>
-<footer class="center">Share Moor, A privacy respecting file sharing tool.<br>[Mobile page]</footer>
+<footer class="center">
+	Share Moor, A privacy respecting file sharing tool.<br>[Mobile
+	page]
+</footer>
 </html>

@@ -28,12 +28,18 @@
 </header>
 <body>
 <div class="center">
-	<h1>Wifi:</h1>
-	<img class="qrCode" th:src="@{assests/wifiQR.png}"/>
-			[TODO: put link here]
-	<h1>Site QR code:</h1>
-	<img class="qrCode" th:src="@{assests/websiteQR.png}"/>
-			[TODO: put link here]
+	<h1>Wifi QR code:</h1>
+
+		<img class="qrCode" th:src="@{assests/wifiQR.png}"/>
+
+		Wifi Name: <a th:text="${ssid}"></a><br>
+		Password: <a th:text="${pass}"></a>
+		<hr>
+		<h1>Site QR code:</h1>
+		
+		<img class="qrCode" th:src="@{assests/websiteQR.png}"/>
+
+		<a th:text="${address}" th:href="${address}"></a>
 </div>
 
 </body>
