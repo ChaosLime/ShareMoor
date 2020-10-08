@@ -96,7 +96,7 @@ public class FileSystemStorageService implements StorageService {
   @Override
   public Stream<Path> loadAllFinishedThumbs() {
     try {
-      Comparator comp = Comparator.comparingLong(File::lastModified);
+      // Comparator comp = Comparator.comparingLong(File::lastModified);
       return Files.walk(this.finishedThumbLocation, 1)
           .filter(path -> !path.equals(this.finishedThumbLocation))
           .map(this.finishedThumbLocation::relativize).sorted(new SortByDateFinishedThumb());
@@ -110,7 +110,7 @@ public class FileSystemStorageService implements StorageService {
   @Override
   public Stream<Path> loadAllReviewThumbs() {
     try {
-      Comparator comp = Comparator.comparingLong(File::lastModified);
+      // Comparator comp = Comparator.comparingLong(File::lastModified);
       return Files.walk(this.reviewThumbLocation, 1)
           .filter(path -> !path.equals(this.reviewThumbLocation))
           .map(this.reviewThumbLocation::relativize).sorted(new SortByDateReviewThumb());
@@ -123,7 +123,7 @@ public class FileSystemStorageService implements StorageService {
   @Override
   public Stream<Path> loadAllFinishedFull() {
     try {
-      Comparator comp = Comparator.comparingLong(File::lastModified);
+      // Comparator comp = Comparator.comparingLong(File::lastModified);
       return Files.walk(this.finishedFullLocation, 1)
           .filter(path -> !path.equals(this.finishedFullLocation))
           .map(this.finishedFullLocation::relativize).sorted(new SortByDateFinishedFull());

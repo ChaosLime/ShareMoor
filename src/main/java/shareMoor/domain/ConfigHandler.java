@@ -44,9 +44,9 @@ public class ConfigHandler {
     return map;
   }
 
-  private static void getAllExtOfType(String type, List<Object> list) {
+  @SuppressWarnings("unused")
+  private static void getAllExtOfType(final String type, final List<Object> list) {
     // Print out all types of extensions
-    Map<String, Object> newList = null;
     for (int i = 0; i < list.size(); i++) {
       Map<String, Object> extensionObj = (Map<String, Object>) list.get(i);
 

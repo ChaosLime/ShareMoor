@@ -1,36 +1,28 @@
-//https://spring.io/guides/gs/uploading-files/
-//https://github.com/spring-guides/gs-uploading-files
+// https://spring.io/guides/gs/uploading-files/
+// https://github.com/spring-guides/gs-uploading-files
 /*
  * Copyright 2016-2017 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *	  https://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package shareMoor.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.Random;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import shareMoor.exception.StorageException;
-import shareMoor.services.FileSystemStorageService;
-import shareMoor.services.StorageProperties;
-import shareMoor.services.StorageService;
-import shareMoor.services.ThumbnailService;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Dave Syer
@@ -38,44 +30,44 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class FileSystemStorageServiceTests {
 
-	private StorageProperties properties = new StorageProperties();
-	private FileSystemStorageService service;
-	
-	//@MockBean
-    //private ThumbnailService thumbnailService;
+  private StorageProperties properties = new StorageProperties();
+  private FileSystemStorageService service;
 
-	@BeforeEach
-	public void init() {
-		properties.setUploadLocation("target/files/" + Math.abs(new Random().nextLong()));
-		service = new FileSystemStorageService(properties);
-		service.init();
-	}
+  // @MockBean
+  // private ThumbnailService thumbnailService;
 
-	@Test
-	public void loadNonExistent() {
-	  // TODO: Test needs to be fixed. for some reason it fails at the moment.
-		//assertThat(service.load("foo.txt")).doesNotExist();
-	}
+  @BeforeEach
+  public void init() {
+    properties.setUploadLocation("target/files/" + Math.abs(new Random().nextLong()));
+    service = new FileSystemStorageService(properties);
+    service.init();
+  }
 
-	@Test
-	public void saveAndLoad() {
-		service.store(new MockMultipartFile("foo", "foo.txt", MediaType.TEXT_PLAIN_VALUE,
-				"Hello, World".getBytes()));
-		assertThat(service.loadFinishedFull("foo.txt")).exists();
-	}
+  @Test
+  public void loadNonExistent() {
+    // TODO: Test needs to be fixed. for some reason it fails at the moment.
+    // assertThat(service.load("foo.txt")).doesNotExist();
+  }
 
-	@Test
-	public void saveNotPermitted() {
-		assertThrows(StorageException.class, () -> {
-			service.store(new MockMultipartFile("foo", "../foo.txt",
-			MediaType.TEXT_PLAIN_VALUE, "Hello, World".getBytes()));
-		});
-	}
+  @Test
+  public void saveAndLoad() {
+    service.store(new MockMultipartFile("foo", "foo.txt", MediaType.TEXT_PLAIN_VALUE,
+        "Hello, World".getBytes()));
+    assertThat(service.loadFinishedFull("foo.txt")).exists();
+  }
 
-	@Test
-	public void savePermitted() {
-		service.store(new MockMultipartFile("foo", "bar/../foo.txt",
-				MediaType.TEXT_PLAIN_VALUE, "Hello, World".getBytes()));
-	}
+  @Test
+  public void saveNotPermitted() {
+    assertThrows(StorageException.class, () -> {
+      service.store(new MockMultipartFile("foo", "../foo.txt", MediaType.TEXT_PLAIN_VALUE,
+          "Hello, World".getBytes()));
+    });
+  }
+
+  @Test
+  public void savePermitted() {
+    service.store(new MockMultipartFile("foo", "bar/../foo.txt", MediaType.TEXT_PLAIN_VALUE,
+        "Hello, World".getBytes()));
+  }
 
 }
