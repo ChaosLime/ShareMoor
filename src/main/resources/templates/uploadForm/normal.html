@@ -17,7 +17,8 @@
 			<li><a href="/">Welcome</a></li>
 			<li><a href="/upload" class="active-page">Upload</a>
 				<div class="active-page-bar"></div></li>
-			<li><a href="/gallery">Gallery</a></li>
+			<li><a href="/gallery">Gallery View</a></li>
+			<li><a href="/pageView">Page View</a></li>
 			<li><a href="/share">Share</a></li>
 			<li><a href="/contact">Contact</a></li>
 			<li><a href="/about">About</a></li>
@@ -40,8 +41,7 @@
 					</label> <span th:if="${errorMessage}" th:text="${errorMessage}"
 						class="error">Error</span> <br> <br>
 				</div>
-				<input onclick="spin()" class="submit" type="submit"
-					value="Upload" />
+				<input onclick="spin()" class="submit" type="submit" value="Upload" />
 			</form>
 
 			<div id="spinnerLbl">Uploading Files. Please wait.</div>
@@ -80,7 +80,7 @@
 		clickMe.onclick = spin; //Onclick call. Pass no arguments.​​​​​
 	</script>
 
-	</body>
+</body>
 <hr>
 <footer class="center">
 	Share Moor, A privacy respecting file sharing tool.<br>[Normal
