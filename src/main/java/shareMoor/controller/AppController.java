@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,8 +73,6 @@ public class AppController {
 
   @GetMapping("/")
   public String displayWelcome(Model model, Device device) {
-
-    // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
       htmlPage = "welcome/mobile";
@@ -83,7 +82,6 @@ public class AppController {
       htmlPage = "welcome/normal";
     }
     return htmlPage;
-
   }
 
   /**
@@ -94,9 +92,6 @@ public class AppController {
    */
   @RequestMapping("/upload")
   public String uploadFiles(Model model, Device device) {
-
-    // System.out.println(device.toString());
-
     model.addAttribute("files",
         storageService.loadAllFinishedFull()
             .map(path -> MvcUriComponentsBuilder
@@ -110,7 +105,6 @@ public class AppController {
                 .build().toUri().toString())
             .collect(Collectors.toList()));
 
-
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
       htmlPage = "uploadForm/mobile";
@@ -120,14 +114,10 @@ public class AppController {
       htmlPage = "uploadForm/normal";
     }
     return htmlPage;
-
   }
 
   @RequestMapping("/gallery")
   public String listUploadedFiles(Model model, Device device) {
-
-    // System.out.println(device.toString());
-
     model.addAttribute("files",
         storageService.loadAllFinishedFull()
             .map(path -> MvcUriComponentsBuilder
@@ -150,14 +140,61 @@ public class AppController {
       htmlPage = "gallery/normal";
     }
     return htmlPage;
+  }
 
+  @RequestMapping(path = {"/pageView"}, method = RequestMethod.GET)
+  public String listUploadedFilesFirstPage(Model model, Device device) {
+
+    model.addAttribute("pageNumber", 1);
+    
+    model.addAttribute("pageSize", 5);
+
+    Optional<Integer> pageNum = Optional.ofNullable(1);
+    
+    Optional<Integer> pageSize = Optional.ofNullable(5);
+
+    return listUploadedFilesPageView(model, device, pageNum, pageSize);
+  }
+
+  @PostMapping("/pageView/page")
+  public String listUploadedFilesPageView(Model model, Device device,
+      @RequestParam("pageNumber") Optional<Integer> pageNumber,
+      @RequestParam("pageSize") Optional<Integer> pageSize) {
+    
+    model.addAttribute("files",
+        storageService.loadAllFinishedFull()
+            .map(path -> MvcUriComponentsBuilder
+                .fromMethodName(AppController.class, "serveFile", path.getFileName().toString())
+                .build().toUri().toString())
+            .collect(Collectors.toList()));
+    
+    if (pageNumber.isPresent()) {
+      model.addAttribute("pageNumber", pageNumber.get());
+    } else {
+      model.addAttribute("pageNumber", 1);
+    }
+    
+    if (pageSize.isPresent()) {
+      model.addAttribute("pageSize", pageSize.get());
+      int numberOfFiles = storageService.countFilesInFinishedFullDir();
+      model.addAttribute("maxPageNumber", Math.ceil((double) numberOfFiles / (double)pageSize.get()));
+    } else {
+      model.addAttribute("pageSize", 5);
+    }
+
+    String htmlPage = "";
+    if (device.isMobile() || device.isTablet()) {
+      htmlPage = "pageView/mobile";
+    } else if (device.isNormal()) {
+      htmlPage = "pageView/normal";
+    } else {
+      htmlPage = "pageView/normal";
+    }
+    return htmlPage;
   }
 
   @RequestMapping("/contact")
   public String contactPage(Model model, Device device) {
-
-    // System.out.println(device.toString());
-
     model.addAttribute("files",
         storageService.loadAllFinishedFull()
             .map(path -> MvcUriComponentsBuilder
@@ -180,7 +217,6 @@ public class AppController {
       htmlPage = "contact/normal";
     }
     return htmlPage;
-
   }
 
   /**
@@ -192,7 +228,6 @@ public class AppController {
    */
   @GetMapping("/approval")
   public String listFiles(Model model, Device device) {
-
     model.addAttribute("reviewFiles",
         storageService.loadAllReviewFull().map(path -> MvcUriComponentsBuilder
             .fromMethodName(AppController.class, "serveReviewFile", path.getFileName().toString())
@@ -211,7 +246,6 @@ public class AppController {
       htmlPage = "approvalForm/normal";
     }
     return htmlPage;
-
   }
 
   /**
@@ -299,11 +333,8 @@ public class AppController {
         "attachment; filename=\"" + file.getFilename() + "\"").body(file);
   }
 
-
   @GetMapping("/share")
   public String displayQRcodes(Model model, Device device) {
-
-    // System.out.println(device.toString());
     String uri = ConfigHandler.getFullAddress();
     model.addAttribute("address", uri);
 
@@ -311,7 +342,6 @@ public class AppController {
     model.addAttribute("ssid", SSID);
     String pass = ConfigHandler.getWifiPass();
     model.addAttribute("pass", pass);
-
 
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
@@ -322,13 +352,10 @@ public class AppController {
       htmlPage = "share/normal";
     }
     return htmlPage;
-
   }
 
   @GetMapping("/about")
   public String displayAbout(Model model, Device device) {
-
-    // System.out.println(device.toString());
     String htmlPage = "";
     if (device.isMobile() || device.isTablet()) {
       htmlPage = "about/mobile";
@@ -338,9 +365,7 @@ public class AppController {
       htmlPage = "about/normal";
     }
     return htmlPage;
-
   }
-
 
   /**
    * POST mapping that facilitates the storage of voluntarily provided contact information.
@@ -352,11 +377,14 @@ public class AppController {
    */
   @PostMapping("/contactInfo")
   public String collectContactInfo(Model model, Device device,
-      @RequestParam("contactInfo") String contactInfo) {
+      @RequestParam("contactInfo") Optional<String> contactInfo) {
 
-    storeUserContactService.writeContactInfo(contactInfo);
-
-    model.addAttribute("message", "Thank you for providing your contact information!");
+    if (contactInfo.isPresent()) {
+      storeUserContactService.writeContactInfo(contactInfo.get());
+      model.addAttribute("message", "Thank you for providing your contact information!");
+    } else {
+      model.addAttribute("message", "Cannot submit an empty email address. Please try again.");
+    }
 
     return contactPage(model, device);
   }
@@ -379,9 +407,9 @@ public class AppController {
     // TODO: be sure that the 'status' here will be website adjustable, defaulting to public for
     // testing.
     String status = "public";
-    
+
     boolean approveAll = Boolean.valueOf(ConfigHandler.getSettingsValue("autoApprove"));
-    
+
     // Checks the case where only one object exists, where it is empty, and if so throws and error.
 
     String result = storageService.checkIfEmpty(file[0]);
@@ -390,7 +418,6 @@ public class AppController {
       redirectAttributes.addFlashAttribute("message", message);
       return "redirect:/upload";
     }
-    // TODO: check if it files are supported before attempting to scrub and make thumbnails.
 
     for (int i = 0; i < file.length; i++) {
       try {
@@ -402,7 +429,7 @@ public class AppController {
           System.out.println(storedFileLocation);
           exifService.scrubFile(storedFileLocation, status);
           thumbnailService.createThumbnail(storedFileLocation);
-          
+
           if (approveAll) {
             System.out.println("Approved:" + storedFileLocation);
             approvalService.saveFileInFinishedFolder(storedFileLocation);
@@ -416,7 +443,6 @@ public class AppController {
       } catch (Exception e) {
         redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
       }
-
     }
 
     redirectAttributes.addFlashAttribute("message", message);
@@ -441,8 +467,6 @@ public class AppController {
       @RequestParam("approvedFilename") Optional<String> approvedFilename,
       @RequestParam("deniedFilename") Optional<String> deniedFilename) {
 
-    // TODO: allow for an auto approve setting which can be defined within the config file.
-    // it was suggested to use a timer to appove images.
     if (approvedFilename.isPresent()) {
       System.out.println("Approved:" + approvedFilename);
       approvalService.saveFileInFinishedFolder(approvedFilename.toString());
@@ -455,5 +479,4 @@ public class AppController {
 
     return "redirect:/approval";
   }
-
 }

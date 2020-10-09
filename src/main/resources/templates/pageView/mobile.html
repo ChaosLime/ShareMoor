@@ -1,0 +1,72 @@
+<!-- Webpage came from the following places:
+//https://spring.io/guides/gs/uploading-files/
+//https://github.com/spring-guides/gs-uploading-files -->
+<html xmlns:th="https://www.thymeleaf.org">
+<link href="/css/mobile.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+
+<title>Share Moor - Page View</title>
+</head>
+<h1 class="logo">Share Moor</h1>
+<header>
+
+	<!--Be sure to get a logo into assets if we decide to use one?
+	If so, remove header of logo name
+	<img src="/assets/logo.png" alt="logo" class="logo"> -->
+
+	<nav>
+		<ul>
+			<li><a href="/">Welcome</a></li>
+			<li><a href="/upload">Upload</a></li>
+			<li><a href="/gallery">Gallery View</a></li>
+			<li><a href="/pageView" class="active-page">Page View</a>
+				<div class="active-page-bar"></div></li>
+			<li><a href="/share">Share</a></li>
+			<li><a href="/contact">Contact</a></li>
+			<li><a href="/about">About</a></li>
+		</ul>
+	</nav>
+</header>
+
+<body>
+
+	<div class="center">
+		<div th:if="${message}">
+			<h2 th:text="${message}"></h2>
+		</div>
+		<h3 class="center">
+			If you see anything you would like to keep,<br>select it to
+			download it.
+		</h3>
+		<hr>
+
+		<form action="/pageView/page" method="POST">
+			<label for="pageNumber">Page Number</label> <input type="number"
+				id="pageNumber" name="pageNumber" min="1" th:max="${maxPageNumber}"
+				th:value="${pageNumber}"> <label for="pageSize"></label>Page
+			Size <input type="number" id="pageSize" name="pageSize" min="1"
+				max="20" th:value="${pageSize}"> <input type="submit">
+		</form>
+		
+		<div>
+			<div>
+				<th:block th:each="file,iter : ${files}"
+					th:if="${iter.index >= ((pageNumber - 1) * pageSize) &&
+					iter.index < (pageNumber * pageSize)}">
+					<div>
+						<a th:href="${file}"> <img class="imagePreview"
+							th:src="${file}" />
+						</a>
+					</div>
+				</th:block>
+			</div>
+		</div>
+	</div>
+</body>
+<hr>
+<footer class="center">
+	Share Moor, A privacy respecting file sharing tool.<br>[Mobile
+	page]
+</footer>
+</html>

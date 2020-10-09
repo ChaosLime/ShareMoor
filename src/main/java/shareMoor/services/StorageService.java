@@ -47,4 +47,6 @@ public interface StorageService {
 
   String checkIfEmpty(MultipartFile file);
 
+  int countFilesInFinishedFullDir();
+
 }
