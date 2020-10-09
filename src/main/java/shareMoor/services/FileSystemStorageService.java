@@ -29,17 +29,12 @@ import shareMoor.exception.StorageFileNotFoundException;
 @Service
 public class FileSystemStorageService implements StorageService {
 
-  // TODO: Create a counter and a method in this service that will be responsible
-  // for finding the next file number to use.
-
   private final Path uploadLocation;
   private final Path finishedFullLocation;
   private final Path finishedThumbLocation;
   private final Path deniedLocation;
   private final Path reviewThumbLocation;
   private final Path assestsLocation;
-
-  // private int fileCounter = 1;
 
   @Autowired
   public FileSystemStorageService(StorageProperties properties) {
@@ -76,8 +71,6 @@ public class FileSystemStorageService implements StorageService {
 
       if (isExt && isValidType) {
         try (InputStream inputStream = file.getInputStream()) {
-          // newFilename = String.valueOf(fileCounter) + HelperClass.getExtension(originalFilename);
-          // fileCounter++;
           newFilename = HelperClass.getDateTime() + HelperClass.getExtension(originalFilename);
 
           Files.copy(inputStream, this.uploadLocation.resolve(newFilename),
@@ -96,53 +89,44 @@ public class FileSystemStorageService implements StorageService {
   @Override
   public Stream<Path> loadAllFinishedThumbs() {
     try {
-      // Comparator comp = Comparator.comparingLong(File::lastModified);
       return Files.walk(this.finishedThumbLocation, 1)
           .filter(path -> !path.equals(this.finishedThumbLocation))
           .map(this.finishedThumbLocation::relativize).sorted(new SortByDateFinishedThumb());
-
     } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
-
   }
 
   @Override
   public Stream<Path> loadAllReviewThumbs() {
     try {
-      // Comparator comp = Comparator.comparingLong(File::lastModified);
       return Files.walk(this.reviewThumbLocation, 1)
           .filter(path -> !path.equals(this.reviewThumbLocation))
           .map(this.reviewThumbLocation::relativize).sorted(new SortByDateReviewThumb());
     } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
-
   }
 
   @Override
   public Stream<Path> loadAllFinishedFull() {
     try {
-      // Comparator comp = Comparator.comparingLong(File::lastModified);
       return Files.walk(this.finishedFullLocation, 1)
           .filter(path -> !path.equals(this.finishedFullLocation))
           .map(this.finishedFullLocation::relativize).sorted(new SortByDateFinishedFull());
     } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
-
   }
 
   @Override
   public Stream<Path> loadAllReviewFull() {
     try {
-      // SortByDate comp = Comparator.comparingLong(Stream<Path>::lastModified);
       return Files.walk(this.uploadLocation, 1).filter(path -> !path.equals(this.uploadLocation))
           .map(this.uploadLocation::relativize).sorted(new SortByDateReviewFull());
     } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
-
   }
 
   private class SortByDateReviewFull implements Comparator<Path> {
@@ -246,7 +230,7 @@ public class FileSystemStorageService implements StorageService {
 
   @Override
   public Path loadReviewFull(String filename) {
-    // Code will grab file name in the finsihed full location that corrleates with the
+    // Code will grab file name in the finished full location that correlates with the
     // filename in the thumbnail folder.
     String filenameWithoutExt = HelperClass.getFilename(filename);
     String filenameWithExt =
@@ -392,14 +376,17 @@ public class FileSystemStorageService implements StorageService {
     return null;
   }
 
-  // Don't need helper functions apparently. To find mimetype, full path to file
-  // isn't actually required. Java can determine mimetype from file path containing
-  // name and file extension only.
-  /*
-   * public String getMimeTypeFinishedFull(String filename) { return getMimeType(filename,
-   * finishedFullLocation.toString()); }
-   * 
-   * public String getMimeTypeReviewFull(String filename) { return getMimeType(filename,
-   * uploadLocation.toString()); }
-   */
+  //https://www.codeproject.com/questions/423929/java-return-number-of-files-on-folder
+  @Override
+  public int countFilesInFinishedFullDir() {
+
+    File f = new File(finishedFullLocation.toString());
+    int count = 0;
+    for (File file : f.listFiles()) {
+      if (file.isFile()) {
+        count++;
+      }
+    }
+    return count;
+  }
 }

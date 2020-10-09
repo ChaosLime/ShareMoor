@@ -4,7 +4,7 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <link href="/css/normal.css" rel="stylesheet">
 <head>
-<title>Share Moor - Gallery</title>
+<title>Share Moor - Page View</title>
 </head>
 <header>
 
@@ -16,9 +16,9 @@
 		<ul>
 			<li><a href="/">Welcome</a></li>
 			<li><a href="/upload">Upload</a></li>
-			<li><a href="/gallery" class="active-page">Gallery View</a>
-			<div class="active-page-bar"></div></li>
-			<li><a href="/pageView">Page View</a></li>
+			<li><a href="/gallery">Gallery View</a></li>
+			<li><a href="/pageView" class="active-page">Page View</a>
+				<div class="active-page-bar"></div></li>
 			<li><a href="/share">Share</a></li>
 			<li><a href="/contact">Contact</a></li>
 			<li><a href="/about">About</a></li>
@@ -37,18 +37,26 @@
 			download it.
 		</h3>
 		<hr>
+
+		<form action="/pageView/page" method="POST">
+			<label for="pageNumber">Page Number</label> <input type="number" id="pageNumber"
+				name="pageNumber" min="1" th:max="${maxPageNumber}" th:value="${pageNumber}">
+			<label for="pageSize"></label>Page Size <input type="number" id="pageSize"
+				name="pageSize" min="1" max="20" th:value="${pageSize}">
+			<input type="submit">
+		</form>
+
 		<div class="container">
 			<div class="grid">
-				<div th:each="file,iter : ${files}">
-					<a th:href="${file}"> <!-- <span th:text="${iter.index}"></span>-->
-						<span th:each="file2,iter2 : ${thumbs}"> <th:block
-								th:if="${iter2.index == iter.index}">
-								<img class="uploadThumb" th:src="${file2}" />
-								<!-- <span th:text="${iter.index}"></span>-->
-							</th:block>
-					</span>
-					</a>
-				</div>
+				<th:block th:each="file,iter : ${files}"
+					th:if="${iter.index >= ((pageNumber - 1) * pageSize) &&
+					iter.index < (pageNumber * pageSize)}">
+					<div>
+						<a th:href="${file}"> <img class="uploadThumb"
+							th:src="${file}" />
+						</a>
+					</div>
+				</th:block>
 			</div>
 		</div>
 	</div>
