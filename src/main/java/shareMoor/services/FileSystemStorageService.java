@@ -63,9 +63,14 @@ public class FileSystemStorageService implements StorageService {
       /*
        * If the extension is either not defined within the config file, or its status is true, it
        * will not be uploaded. Its type will also be checked to see if they accept the file type.
+       * Handles all cases of ext by setting and checking it all to lower case. TODO: change ext to
+       * all lower case or preserve original case?
        */
-      String ext = HelperClass.getExtension(originalFilename).toString();
+      String ext = HelperClass.getExtension(originalFilename).toString().toLowerCase();
       String extType = ConfigHandler.checkExtType(ext);
+      if (extType != null) {
+        extType.toLowerCase();
+      }
       boolean isValidType = ConfigHandler.checkTypeStatus(extType);
       boolean isExt = ConfigHandler.checkExtStatus(ext);
 
@@ -376,7 +381,7 @@ public class FileSystemStorageService implements StorageService {
     return null;
   }
 
-  //https://www.codeproject.com/questions/423929/java-return-number-of-files-on-folder
+  // https://www.codeproject.com/questions/423929/java-return-number-of-files-on-folder
   @Override
   public int countFilesInFinishedFullDir() {
 
