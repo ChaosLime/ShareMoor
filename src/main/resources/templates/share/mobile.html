@@ -29,18 +29,28 @@
 	</nav>
 </header>
 <body>
-	<div class="center">
-		<h1>Wifi QR code:</h1>
+	<div class="container center">
+		<h1>Share</h1>
+		<div class="text-container">To share this program with others,
+			be sure that they are on the network that the host is using.
+			You can login to wifi using the supplied QR codes on a mobile device by using
+			your phones camera or a QR code reading app.<br><br>
+			If not able to use QR codes, please use the provided information below them.
+			<br> Once on the network you can then use the second QR code to get to the site.
+			</div>
+		<div class="center">
+			<h1>Login to Wifi using QR Code:</h1>
 
-		<img class="qrCode" th:src="@{assests/wifiQR.png}" /> Wifi Name: <a
-			th:text="${ssid}"></a><br> Password: <a th:text="${pass}"></a>
-		<hr>
-		<h1>Site QR code:</h1>
+			<img class="qrCode" th:src="@{assests/wifiQR.png}" /> <br> <br>
+			Wifi Name: <a th:text="${ssid}"></a><br> Password: <a
+				th:text="${pass}"></a>
+			<hr>
+			<h1>Get to site using QR code:</h1>
 
-		<img class="qrCode" th:src="@{assests/websiteQR.png}" /> <a
-			th:text="${address}" th:href="${address}"></a>
+			<img class="qrCode" th:src="@{assests/websiteQR.png}" /> <br> <br>
+			<a th:text="${address}" th:href="${address}"></a>
+		</div>
 	</div>
-
 </body>
 <hr>
 <footer class="center">
