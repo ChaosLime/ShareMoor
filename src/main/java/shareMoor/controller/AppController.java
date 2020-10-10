@@ -116,6 +116,7 @@ public class AppController {
     return htmlPage;
   }
 
+  // TODO: disable for mobile view? or to handle endless scroll and potentional slowness.
   @RequestMapping("/gallery")
   public String listUploadedFiles(Model model, Device device) {
     model.addAttribute("files",
@@ -142,15 +143,17 @@ public class AppController {
     return htmlPage;
   }
 
+  // TODO: limit users to a default amount per page and have a dynamic navigator
+  // (i.e. BACK 1, _2_, 3, 4 NEXT if on page 2) Limit 10 per page?
   @RequestMapping(path = {"/pageView"}, method = RequestMethod.GET)
   public String listUploadedFilesFirstPage(Model model, Device device) {
 
     model.addAttribute("pageNumber", 1);
-    
+
     model.addAttribute("pageSize", 5);
 
     Optional<Integer> pageNum = Optional.ofNullable(1);
-    
+
     Optional<Integer> pageSize = Optional.ofNullable(5);
 
     return listUploadedFilesPageView(model, device, pageNum, pageSize);
@@ -160,24 +163,25 @@ public class AppController {
   public String listUploadedFilesPageView(Model model, Device device,
       @RequestParam("pageNumber") Optional<Integer> pageNumber,
       @RequestParam("pageSize") Optional<Integer> pageSize) {
-    
+
     model.addAttribute("files",
         storageService.loadAllFinishedFull()
             .map(path -> MvcUriComponentsBuilder
                 .fromMethodName(AppController.class, "serveFile", path.getFileName().toString())
                 .build().toUri().toString())
             .collect(Collectors.toList()));
-    
+
     if (pageNumber.isPresent()) {
       model.addAttribute("pageNumber", pageNumber.get());
     } else {
       model.addAttribute("pageNumber", 1);
     }
-    
+
     if (pageSize.isPresent()) {
       model.addAttribute("pageSize", pageSize.get());
       int numberOfFiles = storageService.countFilesInFinishedFullDir();
-      model.addAttribute("maxPageNumber", Math.ceil((double) numberOfFiles / (double)pageSize.get()));
+      model.addAttribute("maxPageNumber",
+          Math.ceil((double) numberOfFiles / (double) pageSize.get()));
     } else {
       model.addAttribute("pageSize", 5);
     }
