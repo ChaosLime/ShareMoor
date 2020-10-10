@@ -31,9 +31,10 @@ nav ul {
 
 nav li {
 	display: inline-block;
-	margin-left: 70px;
+	margin-left: 10px;
 	padding-top: 23px;
 	position: relative;
+	
 }
 
 nav a {
@@ -90,17 +91,15 @@ body {
 
 .container {
 	min-width: 500px;
+	margin:auto;
 }
 
-.nested-container {
-	min-width: 250px;
+.text-container {
+	width: 75%;
+	margin:auto;
 }
 
 .center {
-	text-align: center;
-}
-
-.nested-center {
 	text-align: center;
 }
 
@@ -229,23 +228,21 @@ input {
 	max-height: 50%;
 }
 
-/* test progress bar*/
-#Progress_Status {
-	width: 50%;
-	background-color: #ddd;
-	position: absolute;
-	left: 25%;
+.text-left {
+	display: inline-block;
+	text-align: left;
 }
 
-#myprogressBar {
-	width: 1%;
-	height: 35px;
-	background-color: #4CAF50;
-	text-align: center;
-	line-height: 32px;
-	color: black;
+.center-ul {
+	list-style-position: inside;
+  text-align: left; 
+  padding-left: 30%;
 }
-/* test */
+
+/* 
+Spinner 
+https://loading.io/css/
+ */
 #spinner {
 	    visibility: hidden;
 }
@@ -259,8 +256,7 @@ input {
   position: relative;
   width: 80px;
   height: 80px;
-
-  
+ 
 }
 .lds-spinner div {
   transform-origin: 40px 40px;
@@ -275,7 +271,8 @@ input {
   width: 6px;
   height: 18px;
   border-radius: 20%;
-  background: #fff;
+  /*background: #fff;*/
+  background: #4c4c4c;
 }
 .lds-spinner div:nth-child(1) {
   transform: rotate(0deg);
