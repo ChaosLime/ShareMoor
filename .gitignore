@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+##Project working directories##
+/upload-dir/
+/reviewThumb-dir/
+/processedThumb-dir/
+/processedFull-dir/
+/denied-dir/
+contact_info.csv
