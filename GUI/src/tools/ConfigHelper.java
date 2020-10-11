@@ -92,36 +92,41 @@ public class ConfigHelper {
 
   public static Map<String, Object> loadConfig() {
 
-    String defaultConfigPath = "config_default.yaml";
+    String defaultConfigPath =
+        ".." + File.separator + "assests-dir" + File.separator + "config_default.yaml";
 
     // default saving path for the config file.
     String savePath = ".." + File.separator + "config.yaml";
 
     String path = "";
+    boolean stateOfConfigFile = false;
+    stateOfConfigFile = FileIO.checkIfFileExists(savePath);
 
-    boolean stateOfConfigFile = FileIO.checkIfFileExists(savePath);
+    Map<String, Object> map = null;
+    Map<String, Object> springServerMap = null;
 
-    if (stateOfConfigFile == true) {
+    if (stateOfConfigFile) {
       path = savePath;
+      map = getConfigAsMap(path);
+      saveMappingToFile(map, savePath);
+      springServerMap = ConfigHelper.getConfMapByPath(map, "SpringServerApplicationObject");
+      return map;
     } else {
       System.out.println("Config file at: [" + savePath + "] Not found.");
       System.out.println("Grabbing default config.");
       path = defaultConfigPath;
-
-    }
-
-    Map<String, Object> map = getConfigAsMap(path);
-    if (!stateOfConfigFile) {
+      map = getConfigAsMap(path);
       saveMappingToFile(map, savePath);
-      Map<String, Object> springServerMap =
-          ConfigHelper.getConfMapByPath(map, "SpringServerApplicationObject");
+      springServerMap = ConfigHelper.getConfMapByPath(map, "SpringServerApplicationObject");
+      return map;
     }
-    return map;
+
   }
 
   public static void saveMappingToFile(Map<String, Object> map, String savePath) {
     String sb = mappingToStr(map);
     FileIO.writeStrBufferToNewFile(savePath, sb);
+    // TODO remove?
     System.out.println("Saved.");
   }
 
