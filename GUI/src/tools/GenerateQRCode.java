@@ -40,6 +40,7 @@ public class GenerateQRCode {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    // TODO remove?
     System.out.println("Generating website QR code.");
   }
 
@@ -65,6 +66,7 @@ public class GenerateQRCode {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    // TODO remove?
     System.out.println("Generating Wifi QR code.");
   }
 

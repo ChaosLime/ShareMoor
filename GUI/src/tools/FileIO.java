@@ -40,6 +40,7 @@ public class FileIO {
       writer.write(sb);
       writer.flush();
       writer.close();
+      // TODO remove?
       System.out.println("Saving file at: [" + path + "]");
 
     } catch (IOException e) {
