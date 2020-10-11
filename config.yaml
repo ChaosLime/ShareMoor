@@ -1,0 +1,27 @@
+SpringServerApplicationObject:
+  spring:
+    servlet:
+      multipart: {max-file-size: -1, max-request-size: -1}
+  server: {address: 192.168.1.122, port: '8080'}
+Settings: {deleteUserContacts: false, allowUserContacts: true, deleteOldFiles: false,
+  https: false, upload-dir: ../upload-dir, denied-dir: ../denied-dir, reviewThumb-dir: ../reviewThumb-dir,
+  processedFull-dir: ../processedFull-dir, processedThumb-dir: ../processedThumb-dir,
+  contactInfo-dir: ../, contactInfo-name: contact_info.csv, mainConfig-dir: ../, assests-dir: ../assests-dir,
+  photo: true, video: false, audio: false, document: false, serverJar: ../jar-dir/ShareMoor-spring-server.jar,
+  SSID: '546', wifiPass: Thisisthewifipassword1, wifiType: WPA2, contact-dir: ../,
+  autoApprove: true}
+Files:
+  Extensions:
+  - .ai: {status: true, ext: ai, type: photo}
+  - .bmp: {status: true, ext: bmp, type: photo}
+  - .gif: {status: true, ext: gif, type: photo}
+  - .ico: {status: true, ext: ico, type: photo}
+  - .jpeg: {status: true, ext: jpeg, type: photo}
+  - .jpg: {status: true, ext: jpg, type: photo}
+  - .png: {status: true, ext: png, type: photo}
+  - .ps: {status: true, ext: ps, type: photo}
+  - .psd: {status: true, ext: psd, type: photo}
+  - .svg: {status: true, ext: svg, type: photo}
+  - .tif: {status: true, ext: tif, type: photo}
+  - .tiff: {status: true, ext: tiff, type: photo}
+  - .raw: {status: true, ext: raw, type: photo}
