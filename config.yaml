@@ -8,8 +8,7 @@ Settings: {deleteUserContacts: false, allowUserContacts: true, deleteOldFiles: f
   processedFull-dir: ../processedFull-dir, processedThumb-dir: ../processedThumb-dir,
   contactInfo-dir: ../, contactInfo-name: contact_info.csv, mainConfig-dir: ../, assests-dir: ../assests-dir,
   photo: true, video: false, audio: false, document: false, serverJar: ../jar-dir/ShareMoor-spring-server.jar,
-  SSID: '(SSID)', wifiPass: (Password), wifiType: WPA2, contact-dir: ../,
-  autoApprove: true}
+  SSID: (SSID), wifiPass: (password), wifiType: WPA2, contact-dir: ../, autoApprove: true}
 Files:
   Extensions:
   - .ai: {status: true, ext: ai, type: photo}
