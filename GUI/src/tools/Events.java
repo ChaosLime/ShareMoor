@@ -18,14 +18,16 @@ import frames.TabbedPanes;
 public class Events {
   private static long PID = 0;
   private static boolean SERVERSTATUS = false;
-  public static boolean configUpdated = false;
+  // public static boolean configUpdated = false;
+  private static boolean CONFIGUPDATESTATUS = false;
 
   public static void startButtonEvent(JButton button) {
     button.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ae) {
 
-        if (button.getText() == "Start") {
+        if (button.getText() == "Start" && CONFIGUPDATESTATUS) {
           SERVERSTATUS = true;
+
           GenerateQRCode.webSiteAddress(Networking.getFullAddress().toString());
           GenerateQRCode.wifiAccess();
 
@@ -47,6 +49,9 @@ public class Events {
           System.out.println("Server [Start]");
           button.setText("Stop");
 
+        } else if (!CONFIGUPDATESTATUS) {
+          JOptionPane.showMessageDialog(null,
+              "Configuration is out of date. Please check and update before starting.");
         } else if (button.getText() == "Stop") {
           if (JOptionPane.showConfirmDialog(null, "Are you sure you want to stop the program?",
               "WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -64,7 +69,6 @@ public class Events {
             button.setText("Stop");
             System.out.println("Server [Idle]");
           }
-
         }
       }
     });
@@ -96,8 +100,6 @@ public class Events {
 
   }
 
-  static boolean state = false;
-
   public static void saveButtonEvent(JButton button, String path, Map<String, Object> map,
       Map<String, Object> springServerMap, Map<String, Object> settingsMap,
       Map<String, Object> extObjListMap) {
@@ -108,7 +110,7 @@ public class Events {
 
       public void actionPerformed(ActionEvent ae) {
 
-        if (state == true) {
+        if (CONFIGUPDATESTATUS == true) {
           if (JOptionPane.showConfirmDialog(null, "Save changes to config file?", "WARNING",
               JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
@@ -126,15 +128,15 @@ public class Events {
             GenerateQRCode.webSiteAddress(Networking.getFullAddress().toString());
             GenerateQRCode.wifiAccess();
 
-            state = false;
+            CONFIGUPDATESTATUS = true;
 
           } else {
             System.out.println("File not Saved.");
-            state = false;
+            CONFIGUPDATESTATUS = false;
           }
 
         } else {
-          state = true;
+          CONFIGUPDATESTATUS = true;
         }
 
       }
