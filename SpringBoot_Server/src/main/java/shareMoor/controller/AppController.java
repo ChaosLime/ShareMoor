@@ -328,7 +328,7 @@ public class AppController {
         "attachment; filename=\"" + file.getFilename() + "\"").body(file);
   }
 
-  @GetMapping("/assests/{filename:.+}")
+  @GetMapping("/assets/{filename:.+}")
   @ResponseBody
   public ResponseEntity<Resource> serveAssest(@PathVariable String filename) {
 

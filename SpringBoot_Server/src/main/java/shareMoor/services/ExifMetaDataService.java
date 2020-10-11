@@ -15,7 +15,7 @@ public class ExifMetaDataService {
   @Autowired
   public ExifMetaDataService(StorageProperties properties) {
     Paths.get(properties.getDeniedLocation());
-    ExifMetaDataService.assestDir = Paths.get(StorageProperties.getAssestsLocation());
+    ExifMetaDataService.assestDir = Paths.get(StorageProperties.getAssetsLocation());
   }
 
   /**

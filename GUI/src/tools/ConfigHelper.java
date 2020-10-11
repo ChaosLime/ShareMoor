@@ -93,7 +93,7 @@ public class ConfigHelper {
   public static Map<String, Object> loadConfig() {
 
     String defaultConfigPath =
-        ".." + File.separator + "assests-dir" + File.separator + "config_default.yaml";
+        ".." + File.separator + "assets-dir" + File.separator + "config_default.yaml";
 
     // default saving path for the config file.
     String savePath = ".." + File.separator + "config.yaml";

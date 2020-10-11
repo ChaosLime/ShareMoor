@@ -57,7 +57,7 @@ public class Main extends JFrame {
     });
 
     ImageIcon img =
-        new ImageIcon(ConfigHelper.getSettingsDir("assests-dir") + File.separator + "icon.png");
+        new ImageIcon(ConfigHelper.getSettingsDir("assets-dir") + File.separator + "icon.png");
     frame.setIconImage(img.getImage());
     // frame.setJMenuBar(MenuBar.createMenuBar());
 

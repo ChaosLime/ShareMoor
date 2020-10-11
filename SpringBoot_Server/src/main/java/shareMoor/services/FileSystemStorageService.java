@@ -34,7 +34,7 @@ public class FileSystemStorageService implements StorageService {
   private final Path finishedThumbLocation;
   private final Path deniedLocation;
   private final Path reviewThumbLocation;
-  private final Path assestsLocation;
+  private final Path assetsLocation;
 
   @Autowired
   public FileSystemStorageService(StorageProperties properties) {
@@ -43,7 +43,7 @@ public class FileSystemStorageService implements StorageService {
     this.finishedThumbLocation = Paths.get(properties.getFinishedThumbLocation());
     this.deniedLocation = Paths.get(properties.getDeniedLocation());
     this.reviewThumbLocation = Paths.get(properties.getReviewThumbLocation());
-    this.assestsLocation = Paths.get(StorageProperties.getAssestsLocation());
+    this.assetsLocation = Paths.get(StorageProperties.getAssetsLocation());
   }
 
   @Override
@@ -350,9 +350,9 @@ public class FileSystemStorageService implements StorageService {
 
     String filenameWithoutExt = HelperClass.getFilename(filename);
     String filenameWithExt =
-        HelperClass.findFilenameWOExt(assestsLocation.toString(), filenameWithoutExt);
+        HelperClass.findFilenameWOExt(assetsLocation.toString(), filenameWithoutExt);
 
-    return assestsLocation.resolve(filenameWithExt);
+    return assetsLocation.resolve(filenameWithExt);
   }
 
   /**

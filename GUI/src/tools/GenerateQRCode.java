@@ -22,7 +22,7 @@ public class GenerateQRCode {
   public static void webSiteAddress(String qrCodeText) {
     // TODO: correct path to setable within config.
     String fileName = "websiteQR.png";
-    String dir = ConfigHelper.getSettingsDir("assests-dir");
+    String dir = ConfigHelper.getSettingsDir("assets-dir");
     String filePath = dir + File.separator + fileName;
     String fileType = "png";
 
@@ -55,7 +55,7 @@ public class GenerateQRCode {
 
     // TODO: correct path to setable within config.
     String fileName = "wifiQR.png";
-    String dir = ConfigHelper.getSettingsDir("assests-dir");
+    String dir = ConfigHelper.getSettingsDir("assets-dir");
     String filePath = dir + File.separator + fileName;
     String fileType = "png";
     File qrFile = new File(filePath);

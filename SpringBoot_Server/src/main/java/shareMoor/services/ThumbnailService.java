@@ -26,14 +26,14 @@ import shareMoor.exception.StorageException;
 public class ThumbnailService {
 
   private final Path reviewThumbLocation;
-  private final Path assestsLocation;
+  private final Path assetsLocation;
 
   public final String imageExtTxt = ".png";
 
   @Autowired
   public ThumbnailService(StorageProperties properties) {
     this.reviewThumbLocation = Paths.get(properties.getReviewThumbLocation());
-    this.assestsLocation = Paths.get(properties.getAssestsLocation());
+    this.assetsLocation = Paths.get(properties.getAssetsLocation());
 
   }
 
@@ -97,7 +97,7 @@ public class ThumbnailService {
   private BufferedImage getDefaultThumbnail() {
     BufferedImage img;
     try {
-      File file = new File(assestsLocation + File.separator + "fileIcon.jpg");
+      File file = new File(assetsLocation + File.separator + "fileIcon.jpg");
       img = Imaging.getBufferedImage(file);
     } catch (IOException | ImageReadException e) {
       throw new StorageException("Failed to retrieve fileIcon.jpg from resoruces folder.", e);
