@@ -117,7 +117,10 @@ public class TabbedPanes extends JPanel {
 
     // Setting Up Save/Update control panel
     JPanel btnPanel = new JPanel();
+    JLabel buttonLabel = new JLabel("Double click button to update.");
     JButton saveBtn = new JButton("Update");
+
+    btnPanel.add(buttonLabel);
     btnPanel.add(saveBtn);
 
     // Setting Up Item Config panel
@@ -176,13 +179,11 @@ public class TabbedPanes extends JPanel {
 
     panel.add(configOptionPanel, BorderLayout.PAGE_START);
     panel.add(btnPanel);
-
-    saveBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseEntered(java.awt.event.MouseEvent evt) {
-        saveBtn.doClick();
-      }
-    });
-
+    // TODO remove. replace with user prompt to double click rather than using event mouse hover.
+    /*
+     * saveBtn.addMouseListener(new java.awt.event.MouseAdapter() { public void
+     * mouseEntered(java.awt.event.MouseEvent evt) { saveBtn.doClick(); } });
+     */
     Events.saveButtonEvent(saveBtn, savePath, map, springServerMap, settingsMap, extObjListMap);
 
     return panel;
