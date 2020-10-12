@@ -1,8 +1,12 @@
 package shareMoor.domain;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 
 
@@ -80,11 +84,31 @@ public class CrossPlatformTools {
     String OS = getOS().toString().toLowerCase();
     String program = "";
 
-    if (OS.equals("linux") || OS.equals("macos") || OS.equals("other")) {
-      program = "perl " + dir + "/Image-ExifTool-12.06/exiftool.pl";
+    // TODO fix for both exe and other. but ideally if one is missing, the other probably is missing
+    // as well
+
+    Path path = Paths.get(dir + File.separator + "exiftool.exe");
+    boolean isUnpacked = Files.exists(path);
+
+    if (!isUnpacked) {
+      Path source = Paths.get(dir + "ExifTool.zip");
+      Path target = Paths.get(dir);
+      try {
+        FileIO.unzip(source, target);
+        System.out.println("Done");
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+      isUnpacked = true;
     }
-    if (OS.equals("windows")) {
-      program = dir + "exiftool.exe";
+    if (isUnpacked) {
+      if (OS.equals("linux") || OS.equals("macos") || OS.equals("other")) {
+        program = "perl " + dir + "/Image-ExifTool-12.06/exiftool.pl";
+      }
+      if (OS.equals("windows")) {
+        program = dir + "exiftool.exe";
+      }
     }
 
     return program;
