@@ -77,13 +77,13 @@ public class CrossPlatformTools {
    * @return
    */
   public static String setUpExifToolCall(String dir) {
-    String OS = getOS().toString();
+    String OS = getOS().toString().toLowerCase();
     String program = "";
 
-    if (OS == "Linux" || OS == "MacOs" || OS == "Other") {
+    if (OS.equals("linux") || OS.equals("macos") || OS.equals("other")) {
       program = "perl " + dir + "/Image-ExifTool-12.06/exiftool.pl";
     }
-    if (OS == "Windows") {
+    if (OS.equals("windows")) {
       program = dir + "exiftool.exe";
     }
 

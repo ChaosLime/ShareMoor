@@ -55,9 +55,7 @@
 					th:if="${iter.index >= ((pageNumber - 1) * pageSize) &&
 					iter.index < (pageNumber * pageSize)}">
 					<div>
-						<a th:href="${file}"> <img class="imagePreview"
-							th:src="${file}" />
-						</a>
+						<img class="imagePreview" th:src="${file}" />
 					</div>
 				</th:block>
 			</div>
