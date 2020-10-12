@@ -5,8 +5,8 @@ A simple event based file sharing application.
 To deploy, please install the following dependies in their respective locations:
 
 Current uses of Exiftool 12.06 and are delivered contained with a zip file. 
-Please unpack it within the contents of package below. Script to automate coming soon.
-If zip file is missing, please download from the respective website.
+SpringBoot_Server application upon upload will varify the existance of exiftool, and will unpack zip according.
+If zip file is missing, please download from the respective website and place as directed below.
  
 Exiftool:
 https://exiftool.org/
