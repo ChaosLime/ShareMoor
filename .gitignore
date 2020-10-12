@@ -41,5 +41,5 @@ build/
 contact_info.csv
 
 ##EXIFtool ##
-/asset-dir/exiftool.exe
-/asset-dir/Image-ExifTool-12.06/
+assets-dir/exiftool.exe
+assets-dir/Image-ExifTool-12.06
