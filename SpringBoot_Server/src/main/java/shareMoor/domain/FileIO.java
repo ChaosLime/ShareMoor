@@ -3,9 +3,15 @@ package shareMoor.domain;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class FileIO {
   public static String getStrFromFile(String path) {
@@ -57,5 +63,70 @@ public class FileIO {
     } else {
       return false;
     }
+  }
+
+  /**
+   * Handles unzipping of a directory specfied.
+   * 
+   * @param source
+   * @param target
+   * @throws IOException
+   */
+  public static void unzip(Path source, Path target) throws IOException {
+
+    try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(source.toFile()))) {
+
+      ZipEntry zipEntry = zipInputStream.getNextEntry();
+
+      while (zipEntry != null) {
+
+        boolean isDirectory = false;
+
+        if (zipEntry.getName().endsWith(File.separator)) {
+          isDirectory = true;
+        }
+
+        Path newPath = zipSlipProtect(zipEntry, target);
+
+        if (isDirectory) {
+          Files.createDirectories(newPath);
+        } else {
+
+          if (newPath.getParent() != null) {
+            if (Files.notExists(newPath.getParent())) {
+              Files.createDirectories(newPath.getParent());
+            }
+          }
+          Files.copy(zipInputStream, newPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+
+        zipEntry = zipInputStream.getNextEntry();
+
+      }
+      zipInputStream.closeEntry();
+
+    }
+
+  }
+
+  /**
+   * This is a protection found to handle zip slip attacks.
+   * https://snyk.io/research/zip-slip-vulnerability
+   * 
+   * @param zipEntry
+   * @param targetDir
+   * @return
+   * @throws IOException
+   */
+  public static Path zipSlipProtect(ZipEntry zipEntry, Path targetDir) throws IOException {
+
+    Path targetDirResolved = targetDir.resolve(zipEntry.getName());
+
+    Path normalizePath = targetDirResolved.normalize();
+    if (!normalizePath.startsWith(targetDir)) {
+      throw new IOException("Bad zip entry: " + zipEntry.getName());
+    }
+
+    return normalizePath;
   }
 }
