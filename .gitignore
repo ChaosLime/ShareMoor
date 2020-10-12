@@ -39,3 +39,7 @@ build/
 /processedFull-dir/
 /denied-dir/
 contact_info.csv
+
+##EXIFtool ##
+/asset-dir/exiftool.exe
+/asset-dir/Image-ExifTool-12.06/
