@@ -2,7 +2,7 @@ SpringServerApplicationObject:
   spring:
     servlet:
       multipart: {max-file-size: -1, max-request-size: -1}
-  server: {address: 0.0.0.0, port: '8080'}
+  server: {address: 192.168.1.122, port: '8080'}
 Settings: {deleteUserContacts: false, allowUserContacts: true, deleteOldFiles: false,
   https: false, upload-dir: ../upload-dir, denied-dir: ../denied-dir, reviewThumb-dir: ../reviewThumb-dir,
   processedFull-dir: ../processedFull-dir, processedThumb-dir: ../processedThumb-dir,
