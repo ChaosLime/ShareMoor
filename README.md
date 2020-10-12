@@ -4,9 +4,9 @@ A simple event based file sharing application.
 
 To deploy, please install the following dependies in their respective locations:
 
-Current uses of exiftool are delivered as zip files. 
-Please unpack and put in locations specfied below. Script to automate coming soon.
-If zip files below are missing, please download from the respective website.
+Current uses of Exiftool 12.06 and are delivered contained with a zip file. 
+Please unpack it within the contents of package below. Script to automate coming soon.
+If zip file is missing, please download from the respective website.
  
 Exiftool:
 https://exiftool.org/
