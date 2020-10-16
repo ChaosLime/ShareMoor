@@ -1,3 +1,17 @@
+/*
+ * This file is part of Share Moor
+ * 
+ * Share Moor is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * Share Moor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with Share Moor. If not,
+ * see <https://www.gnu.org/licenses/>.
+ */
 package shareMoor.domain;
 
 import java.awt.image.BufferedImage;
@@ -182,7 +196,7 @@ public class HelperClass {
    * @return bImg BufferedImage that may have had it's orientation corrected.
    */
   public static BufferedImage correctOrientation(BufferedImage bImg, ImageInformation info) {
-     switch (info.orientation) {
+    switch (info.orientation) {
       case 1:
         System.out.println("Image correctly oriented. No action required. Case 1.");
         break;

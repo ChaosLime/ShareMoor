@@ -1,3 +1,18 @@
+/*
+ * This file is part of Share Moor
+ * 
+ * Share Moor is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * Share Moor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with Share Moor. If not,
+ * see <https://www.gnu.org/licenses/>.
+ */
+
 package shareMoor.services;
 
 import java.io.File;
@@ -15,7 +30,8 @@ import shareMoor.exception.StorageException;
  * 
  * ApprovalService.java
  * 
- * Purpose: To facilitate the approval or denial of a file that has already been uploaded to Share Moor, but has not been made visible to other users.
+ * Purpose: To facilitate the approval or denial of a file that has already been uploaded to Share
+ * Moor, but has not been made visible to other users.
  * 
  * @author Mitchell Saunders
  *
@@ -32,7 +48,8 @@ public class ApprovalService {
   /**
    * Constructor for this service that gathers all folder locations that are defined elsewhere.
    * 
-   * @param properties StorageProperties which holds all pertinent information about where files are stored.
+   * @param properties StorageProperties which holds all pertinent information about where files are
+   *        stored.
    */
   @Autowired
   public ApprovalService(StorageProperties properties) {
@@ -46,11 +63,13 @@ public class ApprovalService {
   /**
    * Save file that has been approved into a folder that will make that file visible to the users.
    * 
-   * @param fullPath String can be the full file path or the path that is visible to the user on the web side.
+   * @param fullPath String can be the full file path or the path that is visible to the user on the
+   *        web side.
    */
   public void saveFileInFinishedFolder(String fullPath) {
     String cleanedFullPath = HelperClass.cleanOptionalFilePath(fullPath);
-    String filename = HelperClass.getFilename(cleanedFullPath) + HelperClass.getExtension(cleanedFullPath);
+    String filename =
+        HelperClass.getFilename(cleanedFullPath) + HelperClass.getExtension(cleanedFullPath);
 
     // Copy main file from review folder to finished folder.
     File source = new File(uploadLocation + File.separator + filename);
@@ -74,7 +93,8 @@ public class ApprovalService {
 
   public void saveFilesInDeniedFolder(String fullPath) {
     String cleanedFullPath = HelperClass.cleanOptionalFilePath(fullPath);
-    String filename = HelperClass.getFilename(cleanedFullPath) + HelperClass.getExtension(cleanedFullPath);
+    String filename =
+        HelperClass.getFilename(cleanedFullPath) + HelperClass.getExtension(cleanedFullPath);
 
     // Copy main file from review folder to finished folder.
     File source = new File(uploadLocation + File.separator + filename);
@@ -90,9 +110,9 @@ public class ApprovalService {
     String filenameWithExt =
         HelperClass.findFilenameWOExt(reviewThumbLocation.toString(), filenameWithoutExt);
     source = new File(reviewThumbLocation + File.separator + filenameWithExt);
-    //dest = new File(finishedThumbLocation + File.separator + filenameWithExt);
+    // dest = new File(finishedThumbLocation + File.separator + filenameWithExt);
 
-    //copyFiles(source, dest);
+    // copyFiles(source, dest);
     source.delete();
   }
 

@@ -1,3 +1,18 @@
+/*
+ * This file is part of Share Moor
+ * 
+ * Share Moor is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * Share Moor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with Share Moor. If not,
+ * see <https://www.gnu.org/licenses/>.
+ */
+
 // https://www.baeldung.com/spring-maxuploadsizeexceeded
 
 package shareMoor.exception;
@@ -48,10 +63,10 @@ public class FileUploadExceptionAdvice {
         + "The file size maximum is " + maxFileSize + ".     "
         + "The total size of files that can be uploaded must not exceed " + maxRequestSize + ".";
 
-     ModelAndView modelAndView = new ModelAndView("uploadForm/normal");
-     modelAndView.getModel().put("errorMessage", errorMessage);
-     return modelAndView;
-    //return "redirect:/";
+    ModelAndView modelAndView = new ModelAndView("uploadForm/normal");
+    modelAndView.getModel().put("errorMessage", errorMessage);
+    return modelAndView;
+    // return "redirect:/";
   }
 
   private String getPropertyValue(@RequestParam("key") String key) {
