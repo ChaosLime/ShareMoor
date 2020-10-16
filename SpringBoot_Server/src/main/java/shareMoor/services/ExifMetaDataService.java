@@ -7,6 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shareMoor.domain.CrossPlatformTools;
 
+/**
+ * Use of the tool Exiftool by Phil Harvey is a game changer. https://exiftool.org/ All
+ * documentation of uses are on his FAQ and forums.
+ * 
+ * @author nick
+ *
+ */
 @Service
 public class ExifMetaDataService {
 
