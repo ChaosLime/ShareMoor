@@ -15,16 +15,25 @@
 package frames;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -54,28 +63,53 @@ public class TabbedPanes extends JPanel {
     // TODO: allow tabs to be exited and reopened from menu bar?
 
     JPanel panel1 = new JPanel();
-    tabbedPane.addTab("Welcome", null, panel1, "Welcome!!");
-    panel1.setLayout(new FlowLayout());
     mainPanelSetup(panel1);
+    panel1.setLayout(new FlowLayout());
+
+    JScrollPane scrollerPane1 = new JScrollPane(panel1);
+    scrollerPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+    scrollerPane1.getVerticalScrollBar().setUnitIncrement(16);
+
+
+
+    tabbedPane.addTab("Welcome", null, scrollerPane1, "Welcome!!");
     tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+
 
     JPanel panel2 = new JPanel(new BorderLayout());
     panel2 = editConfigTabSetup(panel2);
 
-    JScrollPane scrollerPane = new JScrollPane(panel2);
-    scrollerPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-    scrollerPane.getVerticalScrollBar().setUnitIncrement(16);
-    tabbedPane.addTab("Edit Config", null, scrollerPane, "Configure and Edit");
+    JScrollPane scrollerPane2 = new JScrollPane(panel2);
+    scrollerPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+    scrollerPane2.getVerticalScrollBar().setUnitIncrement(16);
+
+    tabbedPane.addTab("Edit Config", null, scrollerPane2, "Configure and Edit");
     tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-    JPanel panel3 = new JPanel();
-    tabbedPane.addTab("About", null, panel3, "About");
+
+    JPanel panel3 = new JPanel(new BorderLayout());
+
+    panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
     aboutTabSetup(panel3);
+
+    JScrollPane scrollerPane3 = new JScrollPane(panel3);
+    scrollerPane3.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+    scrollerPane3.getVerticalScrollBar().setUnitIncrement(16);
+
+    tabbedPane.addTab("About", null, scrollerPane3, "About");
     tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
+
+
     JPanel panel4 = new JPanel();
-    tabbedPane.addTab("Help", null, panel4, "Need some Help?");
     helpTabSetup(panel4);
+    // panel4.setLayout(new BoxLayout(panel4, BoxLayout.Y_AXIS));
+
+    JScrollPane scrollerPane4 = new JScrollPane(panel4);
+    scrollerPane4.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+    scrollerPane4.getVerticalScrollBar().setUnitIncrement(16);
+
+    tabbedPane.addTab("Help", null, scrollerPane4, "Need some Help?");
     tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 
     // Add the tabbed pane to this panel.
@@ -105,6 +139,7 @@ public class TabbedPanes extends JPanel {
     textPane.setText(getMainPanelText());
     textPane.setEditable(false);
     textPane.isOpaque();
+    textPane.setHighlighter(null);
 
     panel.add(textPane);
   }
@@ -210,18 +245,88 @@ public class TabbedPanes extends JPanel {
     return panel;
   }
 
+
+  private String getAboutText() {
+    // TODO: move this to an external file or handle this as a swing object?
+    return " Share Moor is a privacy centered crowdsourced file sharing tool.\n"
+        + "    Copyright (C) 2020  Mitchell and Nicholas Saunders\n" + "\n"
+        + "    This program is free software: you can redistribute it and/or modify\n"
+        + "    it under the terms of the GNU General Public License as published by\n"
+        + "    the Free Software Foundation, either version 3 of the License, or\n"
+        + "    (at your option) any later version.\n" + "\n"
+        + "    This program is distributed in the hope that it will be useful,\n"
+        + "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+        + "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+        + "    GNU General Public License for more details.\n" + "\n"
+        + "    You should have received a copy of the GNU General Public License\n"
+        + "    along with this program.  If not, see <https://www.gnu.org/licenses/>.";
+  }
+
   // tab3
   private void aboutTabSetup(JPanel panel) {
-    JLabel label = new JLabel("(About information will go here)");
-    panel.add(label);
+
+    JTextPane textPane = new JTextPane();
+
+    JLabel copyingLbl = new JLabel();
+    copyingLbl.setText("License:");
+
+    JLabel projectPreviewLbl = new JLabel();
+    projectPreviewLbl.setText("Project Page:");
+
+    JLabel projectHyperLink = new JLabel();
+    projectHyperLink.setText("<html><a>https://github.com/ChaosLime/ShareMoor</a></html>");
+    projectHyperLink.setForeground(Color.BLUE);
+    projectHyperLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+    projectHyperLink.addMouseListener(new MouseAdapter() {
+
+      // TODO: move to events class
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        try {
+
+          Desktop.getDesktop().browse(new URI("https://github.com/ChaosLime/ShareMoor"));
+
+        } catch (IOException | URISyntaxException e1) {
+          e1.printStackTrace();
+        }
+      }
+
+    });
 
 
+    textPane.setEditable(false);
+    textPane.isBackgroundSet();
+
+    textPane.setText(getAboutText());
+    textPane.setEditable(false);
+    textPane.isOpaque();
+    textPane.setHighlighter(null);
+
+
+    panel.setLayout(new BorderLayout());
+    panel.add(copyingLbl, BorderLayout.PAGE_START);
+    panel.add(textPane, BorderLayout.CENTER);
+    panel.add(projectHyperLink, BorderLayout.SOUTH);
+
+  }
+
+  private String getHelpText() {
+    // TODO: move this to an external file or handle this as a swing object?
+    return "This section will contain general tips and tricks to use the software.\n"
+        + "At this time, if there are any issues,\ncheck out the project page found on the about tab.";
   }
 
   // tab4
   private void helpTabSetup(JPanel panel) {
-    JLabel label = new JLabel("(Help information will go here)");
-    panel.add(label);
+    JTextPane textPane = new JTextPane();
+
+    textPane.setText(getHelpText());
+    textPane.setEditable(false);
+    textPane.isOpaque();
+    textPane.setHighlighter(null);
+
+    panel.add(textPane, BorderLayout.CENTER);
 
   }
 
@@ -239,7 +344,6 @@ public class TabbedPanes extends JPanel {
   private void lockConfigPanel(JPanel panel) {
     configPanel = panel;
   }
-
 
   // Contains a mapping all objects by label of extension.
   static Map<String, Object> mapOfCheckBoxes = new HashMap<String, Object>();
