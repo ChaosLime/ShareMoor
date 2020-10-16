@@ -14,7 +14,7 @@ public class Networking {
   private static String protocol;
   private static String port;
 
-  public Networking( String ipAddr, String protocol, String port) {
+  public Networking(String ipAddr, String protocol, String port) {
     super();
     this.ipAddr = ipAddr;
     Networking.protocol = protocol;
@@ -43,8 +43,9 @@ public class Networking {
     return HostAddresses;
   }
 
+  // TODO: move to ConfigHelper.
   public static String getPort() {
-    // TODO: reduce loading of config here.
+
     Map<String, Object> map = ConfigHelper.loadConfig();
     Map<String, Object> springServerMap =
         ConfigHelper.getConfMapByPath(map, "SpringServerApplicationObject");
@@ -57,8 +58,8 @@ public class Networking {
     Networking.port = port;
   }
 
+  // TODO: move to ConfigHelper.
   public static String getProtocol() {
-    // TODO: reduce loading of config here.
     Map<String, Object> map = ConfigHelper.loadConfig();
     Map<String, Object> settingsMap = ConfigHelper.getConfMapByPath(map, "Settings");
 

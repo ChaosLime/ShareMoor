@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Just a easy way to check the object type. Useful to testing.
+ * 
+ * @author nick
+ *
+ */
 public class Checker {
   public static String dataType(Object obj) {
 

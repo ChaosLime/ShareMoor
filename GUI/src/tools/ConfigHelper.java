@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 
+/**
+ * For all snakeYaml interfaces within the program, the documentation found at:
+ * https://bitbucket.org/asomov/snakeyaml/wiki/Documentation is an invaluable tool.
+ * 
+ * @author nick
+ **/
 public class ConfigHelper {
   private static Map<String, Object> getConfigAsMap(String path) {
     try {
@@ -18,6 +24,15 @@ public class ConfigHelper {
 
   }
 
+  /**
+   * By inputting yaml file to be read's path, it will convert it from a string to a yaml mapping
+   * object which can be parsed using the snameYaml library.
+   * 
+   * @param path
+   * @return
+   * @throws IOException
+   * @author nick
+   */
   @SuppressWarnings({"unchecked", "unused"})
   private static Map<String, Object> strToMapping(String path) throws IOException {
     String sb = FileIO.getStrFromFile(path);
@@ -27,11 +42,27 @@ public class ConfigHelper {
     return map = (Map<String, Object>) yaml.load(sb);
   }
 
+  /**
+   * As suggested, returning a yaml mapping back into a yaml file via a string buffer.
+   * 
+   * @param map
+   * @return
+   * @author nick
+   */
   private static String mappingToStr(Map<String, Object> map) {
     Yaml yaml = new Yaml();
     return yaml.dump(map);
   }
 
+  /**
+   * A yaml mapping that contains a list, can return the list objects give that the parent then
+   * subset are 'Files' and 'Extensions' as reflected in the code, as well as the configuration yaml
+   * file.
+   * 
+   * @param map
+   * @return
+   * @author nick
+   */
   @SuppressWarnings("unchecked")
   public static List<Object> getExtensionList(Map<String, Object> map) {
     List<Object> list = null;
@@ -41,6 +72,14 @@ public class ConfigHelper {
     return list;
   }
 
+  /**
+   * From the ExentionList Objects returned above, a particular list element can be returned back as
+   * a map.
+   * 
+   * @param list
+   * @return
+   * @author nick
+   */
   public static Map<String, Object> getExtensionMapping(List<Object> list) {
     Map<String, Object> map = new HashMap<>();
     map.put("Extensions", list);
@@ -48,6 +87,14 @@ public class ConfigHelper {
 
   }
 
+  /**
+   * Given the type of file, it checks the list for its type, then only returns a list of extentions
+   * of that type.
+   * 
+   * @param type
+   * @param list
+   * @author nick
+   */
   @SuppressWarnings({"unused", "unchecked"})
   private static void getAllExtOfType(String type, List<Object> list) {
     // Print out all types of extensions
@@ -80,15 +127,35 @@ public class ConfigHelper {
 
   }
 
-  /*
+  /**
    * When passing a mapping, a String can be passed to return the object contained by the string.
    * ex. {test={key={key:value, key:value}}} if mapping if above is provided with string "test"
    * should return {key={key:value, key:value}}
+   * 
+   * @param map
+   * @param str
+   * @return
+   * @author nick
    */
   @SuppressWarnings("unchecked")
   public static Map<String, Object> getConfMapByPath(Map<String, Object> map, String str) {
     return (Map<String, Object>) map.get(str);
   }
+
+
+
+  public static void saveMappingToFile(Map<String, Object> map, String savePath) {
+    String sb = mappingToStr(map);
+    FileIO.writeStrBufferToNewFile(savePath, sb);
+    // TODO remove?
+    System.out.println("Saved.");
+  }
+
+  /**
+   * Sections below are specfic calls to the configuation yaml file
+   * 
+   * @author nick
+   */
 
   public static Map<String, Object> loadConfig() {
 
@@ -121,13 +188,6 @@ public class ConfigHelper {
       return map;
     }
 
-  }
-
-  public static void saveMappingToFile(Map<String, Object> map, String savePath) {
-    String sb = mappingToStr(map);
-    FileIO.writeStrBufferToNewFile(savePath, sb);
-    // TODO remove?
-    System.out.println("Saved.");
   }
 
   public static String getSSID() {

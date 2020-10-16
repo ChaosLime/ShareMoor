@@ -96,6 +96,13 @@ public class TabbedPanes extends JPanel {
   }
 
   // tab2
+  /**
+   * This tab is the configuration editor page. Logic should be moved out of the tab into its out
+   * class.
+   * 
+   * @param panel
+   * @return
+   */
   private JPanel editConfigTabSetup(JPanel panel) {
 
     // TODO: abstract getting parts of map object.
@@ -189,9 +196,36 @@ public class TabbedPanes extends JPanel {
     return panel;
   }
 
+  // tab3
+  private void aboutTabSetup(JPanel panel) {
+    JLabel label = new JLabel("(About information will go here)");
+    panel.add(label);
+
+
+  }
+
+  // tab4
+  private void helpTabSetup(JPanel panel) {
+    JLabel label = new JLabel("(Help information will go here)");
+    panel.add(label);
+
+  }
+
+  public static void getConfigPanel(JButton btn, boolean b) {
+    Events.togglePanel(btn, configPanel, b);
+  }
+
+  /**
+   * All functions below should be in their own class. TODO: move functions below. Only panel and
+   * tab config should remain
+   * 
+   * @author nick
+   */
+
   private void lockConfigPanel(JPanel panel) {
     configPanel = panel;
   }
+
 
   // Contains a mapping all objects by label of extension.
   static Map<String, Object> mapOfCheckBoxes = new HashMap<String, Object>();
@@ -224,6 +258,14 @@ public class TabbedPanes extends JPanel {
     generateExtCheckboxes(list, panel, status);
   }
 
+  /**
+   * Generates checkboxes by a list of Objects. Currently only handles the check for photo types,
+   * but it should be made generic TODO: abstract photoStatus to a generic status call.
+   * 
+   * @param list
+   * @param panel
+   * @param photoStatus
+   */
   public static void generateExtCheckboxes(List<Object> list, JPanel panel, boolean photoStatus) {
     for (int i = 0; i < list.size(); i++) {
       Map<String, Object> tempMap = (Map<String, Object>) list.get(i);
@@ -387,25 +429,6 @@ public class TabbedPanes extends JPanel {
       }
 
     });
-  }
-
-  // tab3
-  private void aboutTabSetup(JPanel panel) {
-    JLabel label = new JLabel("(About information will go here)");
-    panel.add(label);
-
-
-  }
-
-  // tab4
-  private void helpTabSetup(JPanel panel) {
-    JLabel label = new JLabel("(Help information will go here)");
-    panel.add(label);
-
-  }
-
-  public static void getConfigPanel(JButton btn, boolean b) {
-    Events.togglePanel(btn, configPanel, b);
   }
 
 }

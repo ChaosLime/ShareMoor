@@ -8,6 +8,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileIO {
+  /**
+   * Reading of a file and putting it into a String Buffer.
+   * 
+   * @param path
+   * @return
+   */
   public static String getStrFromFile(String path) {
     BufferedReader br = null;
     FileReader fr = null;
@@ -34,6 +40,13 @@ public class FileIO {
     return stringBuffer.toString();
   }
 
+  /**
+   * By providing a path containing the file name along with a String buffer to be written, It will
+   * be written to location.
+   * 
+   * @param path
+   * @param sb
+   */
   public static void writeStrBufferToNewFile(String path, String sb) {
     try {
       BufferedWriter writer = new BufferedWriter(new FileWriter(path));

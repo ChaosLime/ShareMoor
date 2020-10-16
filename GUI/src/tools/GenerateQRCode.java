@@ -14,13 +14,23 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+/**
+ * Useful tool for generating QR codes for the wifi and site location. Class needs help in terms of
+ * structure, but is functional at this time.
+ * 
+ * @author nick
+ *
+ */
 public class GenerateQRCode {
   // TODO: figure out appropriate size for QR codes
   // perhaps make it large and scale back?
   static int sizeOfQRCodes = 1000;
 
+
+  // TODO: make a generic function which can specify a name, location, and embed string/type.
   public static void webSiteAddress(String qrCodeText) {
     // TODO: correct path to setable within config.
+
     String fileName = "websiteQR.png";
     String dir = ConfigHelper.getSettingsDir("assets-dir");
     String filePath = dir + File.separator + fileName;
@@ -70,6 +80,17 @@ public class GenerateQRCode {
     System.out.println("Generating Wifi QR code.");
   }
 
+  /**
+   * Source for use of ZXing tool.
+   * https://www.journaldev.com/470/java-qr-code-generator-zxing-example
+   * 
+   * @param qrFile
+   * @param qrCodeText
+   * @param size
+   * @param fileType
+   * @throws WriterException
+   * @throws IOException
+   */
   private static void createQRImage(File qrFile, String qrCodeText, int size, String fileType)
       throws WriterException, IOException {
     // Create the ByteMatrix for the QR-Code that encodes the given String

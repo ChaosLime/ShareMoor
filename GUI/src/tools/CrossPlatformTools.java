@@ -18,6 +18,7 @@ public class CrossPlatformTools {
    * detect the operating system from the os.name System property and cache the result
    * 
    * @returns - the operating system detected
+   * @author nick
    */
   public static OSType getOS() {
     if (detectedOS == null) {
@@ -90,7 +91,7 @@ public class CrossPlatformTools {
       } else {
         Runtime run = Runtime.getRuntime();
         Process proc = run.exec(path);
-        System.out.println("Calling path: \"" + path  + "\"");
+        System.out.println("Calling path: \"" + path + "\"");
         System.out.println(proc);
 
         return proc.pid();
@@ -105,42 +106,42 @@ public class CrossPlatformTools {
     setTheme();
   }
 
-public static long killProgram(String cmd, long PID) {
-	String path ="";
-	 OSType os = getOS();
-	    switch (os) {
-	      case Windows:
-	    	  if(cmd.equals("kill ")) {
-	    		  cmd = "taskkill /F /PID ";
-	    	  }
-	        path = cmd + PID;
-	        break;
-	      case MacOS:
-	        path = cmd + PID;
-	        break;
-	      case Linux:
-	        path =  cmd + PID;
-	        break;
-	      case Other:
-	        path = null;
-	        break;
-	    }
-	    try {
-	      if (path == null) {
-	        System.out.println("Platform " + os + " not supported.");
-	      } else {
-	        Runtime run = Runtime.getRuntime();
-	        Process proc = run.exec(path);
-	        System.out.println("Calling path: \"" + path + PID+ "\"");
-	        System.out.println(proc);
+  public static long killProgram(String cmd, long PID) {
+    String path = "";
+    OSType os = getOS();
+    switch (os) {
+      case Windows:
+        if (cmd.equals("kill ")) {
+          cmd = "taskkill /F /PID ";
+        }
+        path = cmd + PID;
+        break;
+      case MacOS:
+        path = cmd + PID;
+        break;
+      case Linux:
+        path = cmd + PID;
+        break;
+      case Other:
+        path = null;
+        break;
+    }
+    try {
+      if (path == null) {
+        System.out.println("Platform " + os + " not supported.");
+      } else {
+        Runtime run = Runtime.getRuntime();
+        Process proc = run.exec(path);
+        System.out.println("Calling path: \"" + path + PID + "\"");
+        System.out.println(proc);
 
-	        return proc.pid();
-	      }
-	    } catch (IOException e) {
-	      e.printStackTrace();
-	    }
-	    return -1;
-	
-}
+        return proc.pid();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return -1;
+
+  }
 
 }
