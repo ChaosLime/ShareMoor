@@ -89,7 +89,10 @@ Noteable Things:
 **config.yaml:** Program configuration file. Is vital for functionality and operation of server. Generated from configuration tool.
 **application.yaml:** Program configuration file. Is vital for functionality and operation of server. Generated from configuration tool.
 
-## Source
+## Source Directories
+Frontend Configuration Tool: **GUI**
+Spring Boot Server: **SpringBoot_Server** 
+
 Not required for operation of program, but is provided for ease of configuration and testing.
 Targeted jar's generated from source's maven profiles are required to be in place at '/jar-dir/' for program operation outside of an IDE environment.
 
