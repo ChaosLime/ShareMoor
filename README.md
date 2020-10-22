@@ -79,18 +79,26 @@ Note: Windows zip contains originally from source "exiftool(-k).exe", adjust nam
 
 # Using Share Moor
 Once in graphical operation given the front end tool, a configuration will have to be set up and saved prior to server operation.
+
 Some assets, such as QR codes and directories will be generated as required.
 
 Noteable Things:
+
 **Upload-dir:** Landing place for files as they are uploaded. Do not edit or modify anything contained within.
+
 **ProcessedFull-dir:** Contains all files which have been collected and processed. 
+
 **Denied-dir:** A feature that has allows for a user to approve or deny photos. This is were the denied files go. This feature is not fully implemented at this time.
+
 **contact_info.csv:** A file that contains contact info, in the form of emails from users who want to have access the the files at a later point.
+
 **config.yaml:** Program configuration file. Is vital for functionality and operation of server. Generated from configuration tool.
+
 **application.yaml:** Program configuration file. Is vital for functionality and operation of server. Generated from configuration tool.
 
 ## Source Directories
 Frontend Configuration Tool: **GUI**
+
 Spring Boot Server: **SpringBoot_Server** 
 
 Not required for operation of program, but is provided for ease of configuration and testing.
