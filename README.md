@@ -1,7 +1,7 @@
 # Share Moor
-A simple event based file sharing application.
+A simple event based file sharing application meant for event file sharing.
 # About
-(Info about the project goes here)
+A cross-platform, browser-based, self-hosted, account-less, and privacy centered media sharing tool. Made using Java and the Spring framework. Uses a variety of open source tools that scrub personally identifiable information from the files shared.
 # Platforms
 Tool is CrossPlatform and has been tested and ran on:
 * Windows 10
